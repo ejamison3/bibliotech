@@ -30,7 +30,7 @@ class Book(db.Model):
                            secondary="books_tags",
                            backref="books")
     users = db.relationship("User",
-                            secondary="books_users",
+                            secondary="users_books",
                             backref="books")
 
     # middle table relationships
@@ -91,7 +91,7 @@ class Category(db.Model):
     # backref on books allows accessing related books via 'books' term
 
     def __repr__(self):
-        return f'<Category id={self.id} category={self.category}>'
+        return f'<Category id={self.id} category={self.category_name}>'
 
 class Tag(db.Model):
     """Data model for Tag"""
@@ -111,7 +111,7 @@ class Tag(db.Model):
 class BookTag(db.Model):
     """Data model for Tag and Book association table"""
 
-    __tablename__ = "tags"
+    __tablename__ = "books_tags"
 
     id = db.Column(db.Integer,
                    primary_key=True,
@@ -182,3 +182,46 @@ class UserBook(db.Model):
 
 class Rating(db.Model):
     """Data model for Rating table - middle table between User and Book tables"""
+
+    __tablename__ = "ratings"
+
+    id = db.Column(db.Integer, 
+                   primary_key=True,
+                   autoincrement=True)
+    score = db.Column(db.Enum('1', '2', '3', '4', '5', name="rating_scores"), nullable=False)
+    description = db.Column(db.Text)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.id'),
+                        nullable=False)
+    book_id = db.Column(db.Integer,
+                        db.ForeignKey('books.id'),
+                        nullable=False)
+
+    def __repr__(self):
+        return (
+            f'Rating id={self.id} score={self.score} '
+            f'user_id={self.user_id} book_id={self.book_id}'
+        )
+
+def connect_to_db(app):
+    """Connect the database to our Flask app"""
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///books'   # if running on a different port, then 'postgres://localhost:5433/books'
+    app.config['SQLQLCHEMY_ECHO'] = False
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.app = app
+    db.init_app(app)
+
+###################################################
+# For Testing #
+
+if __name__ == "__main__":
+    import server
+
+    app = server.Flask(__name__)
+
+    connect_to_db(app)
+    print("Connected to DB.")
+
+    db.create_all()
+    
