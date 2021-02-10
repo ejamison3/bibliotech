@@ -40,8 +40,8 @@ class Author(db.Model):
         return f'<Author id={self.id} lname={self.lname}'
 
 
-class Book_Author(db.Model):
-    """Data model for Book and Author join table"""
+class BookAuthor(db.Model):
+    """Data model for Book and Author association table"""
 
     __tablename__ = "books_authors"
 
@@ -67,8 +67,49 @@ class Category(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    category = db.Column(db.Enum('fiction', 'reference', name="book_categories"))    # What does name mean? 
+    category = db.Column(db.Enum('fiction', 'reference', name="book_categories"), nullable=False)    # What does name mean? 
 
     def __repr__(self):
         return f'<Category id={self.id} category={self.category}>'
 
+class Tag(db.Model):
+    """Data model for tags"""
+
+    __tablename__ = "tags"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    tag_name = db.Column(db.Enum('sci-fiction', 'fantasy', 'python', 'reference', name="tag_values"), 
+                         nullable=False)   # can this be defined in a variable and then put in here?
+    
+    def __repr__(self):
+        return f'<Tag id={self.id} tag_name={self.tag_name}>'
+
+
+class BookTag(db.Model):
+    """Data model for Tag and Book association table"""
+
+    __tablename__ = "tags"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    book_id = db.Column(db.Integer,
+                       db.ForeignKey('books.id'),
+                       nullable=False)
+    tag_id = db.Column(db.Integer,
+                       db.ForeignKey('tags.id'),
+                       nullable=False)
+    user_id = db.Column(db.Integer,
+                       db.ForeignKey('users.id'),
+                       nullable=False)
+    
+    def __repr__(self):
+        return (
+            f'<BookTag id={self.id} ' 
+            f'book_id={self.book_id} '
+            f'tag_id={self.tag_id} '
+            f'tag_id={self.user_id} '
+        )
+                
