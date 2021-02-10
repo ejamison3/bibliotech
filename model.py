@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class Book(db.Model):
-    """Data model for a book"""
+    """Data model for Book"""
 
     __tablename__ = "books"
 
@@ -21,12 +21,31 @@ class Book(db.Model):
                             db.ForeignKey('categories.id'),
                             nullable=False) 
     
+    # create relationships
+    # association table relationships
+    authors = db.relationship("Author",
+                              secondary="books_authors",
+                              backref="books")
+    tags = db.relationship("Tag",
+                           secondary="books_tags",
+                           backref="books")
+    users = db.relationship("User",
+                            secondary="books_users",
+                            backref="books")
+
+    # middle table relationships
+    ratings = db.relationship("Rating")
+
+    # many to one relationship
+    category = db.relationship("Category",
+                               backref="books")
+    
     def __repr__(self):
         return f'<Book id={self.id} title={self.title}'  # should I include more attributes?
 
 
 class Author(db.Model):
-    """Data model for an author"""
+    """Data model for Author"""
 
     __tablename__ = "authors"
 
@@ -60,20 +79,22 @@ class BookAuthor(db.Model):
 
 
 class Category(db.Model):
-    """Data model for categories"""
+    """Data model for Category"""
 
     __tablename__ = "categories"
 
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    category = db.Column(db.Enum('fiction', 'reference', name="book_categories"), nullable=False)    # What does name mean? 
+    category_name = db.Column(db.Enum('fiction', 'reference', name="book_categories"), nullable=False)    # What does name mean? 
+
+    # backref on books allows accessing related books via 'books' term
 
     def __repr__(self):
         return f'<Category id={self.id} category={self.category}>'
 
 class Tag(db.Model):
-    """Data model for tags"""
+    """Data model for Tag"""
 
     __tablename__ = "tags"
 
@@ -112,4 +133,52 @@ class BookTag(db.Model):
             f'tag_id={self.tag_id} '
             f'tag_id={self.user_id} '
         )
-                
+
+
+class User(db.Model):
+    """Data model for User"""
+
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    username = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(30), nullable=False)  
+
+    # backref books on Book allows access to user books using 'books' term
+
+    # middle table relationship
+    ratings = db.relationship("Rating")
+
+    def __repr__(self):
+        return f'<User id={self.id} username={self.username}'
+
+
+class UserBook(db.Model):
+    """Data model for User and Book association table"""
+
+    __tablename__ = "users_books"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.id'),
+                        nullable=False)
+    book_id = db.Column(db.Integer,
+                        db.ForeignKey('books.id'),
+                        nullable=False)
+    has_read = db.Column(db.Boolean,
+                         default=False,
+                         nullable=False)        # make sure default syntax is correct
+
+    # relationships
+    book = db.relationship("Book")
+    user = db.relationship("User")
+    
+    def __repr__(self):
+        return f'<UserBook id={self.id} user_id={self.user_id} book_id={self.book_id}'
+
+class Rating(db.Model):
+    """Data model for Rating table - middle table between User and Book tables"""
