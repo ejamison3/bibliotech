@@ -18,11 +18,14 @@ class Book(db.Model):
     publication_year = db.Column(db.Integer)    # can this be limited to 4 ints?
     pages = db.Column(db.Integer)  
     avg_rating = db.Column(db.Integer)
-    category_id = db.Column(db.Integer, 
-                            db.ForeignKey('categories.id'),
-                            nullable=False) 
+    category_id = db.Column(db.Integer,
+                            db.ForeignKey('categories.id')) 
     
     # create relationships
+    # many to one relationship
+    category = db.relationship("Category",
+                               backref="books")
+
     # association table relationships
     authors = db.relationship("Author",
                               secondary="books_authors",
@@ -36,13 +39,26 @@ class Book(db.Model):
 
     # middle table relationships
     ratings = db.relationship("Rating")
-
-    # many to one relationship
-    category = db.relationship("Category",
-                               backref="books")
+    
     
     def __repr__(self):
         return f'<Book id={self.id} title={self.title}'  # should I include more attributes?
+
+
+class Category(db.Model):
+    """Data model for Category"""
+
+    __tablename__ = "categories"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    category_name = db.Column(db.Enum('fiction', 'non-fiction', 'reference', name="book_categories"), nullable=False)    # What does name mean? 
+
+    # backref on books allows accessing related books via 'books' term
+
+    def __repr__(self):
+        return f'<Category id={self.id} category={self.category_name}>'
 
 
 class Author(db.Model):
@@ -79,22 +95,6 @@ class BookAuthor(db.Model):
         return f'<Book_Author id={self.id} book_id={self.book_id} author_id={self.author_id}>'
 
 
-class Category(db.Model):
-    """Data model for Category"""
-
-    __tablename__ = "categories"
-
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   autoincrement=True)
-    category_name = db.Column(db.Enum('fiction', 'reference', name="book_categories"), nullable=False)    # What does name mean? 
-
-    # backref on books allows accessing related books via 'books' term
-
-    def __repr__(self):
-        return f'<Category id={self.id} category={self.category_name}>'
-
-
 class Tag(db.Model):
     """Data model for Tag"""
 
@@ -125,8 +125,7 @@ class BookTag(db.Model):
                        db.ForeignKey('tags.id'),
                        nullable=False)
     user_id = db.Column(db.Integer,
-                       db.ForeignKey('users.id'),
-                       nullable=False)
+                       db.ForeignKey('users.id'))
     
     def __repr__(self):
         return (

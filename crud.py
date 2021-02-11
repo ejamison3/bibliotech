@@ -61,10 +61,9 @@ def create_author(lname, fname=None):
     return temp_author
 
 
-def create_books_authors_relationship():
+def create_books_authors_relationship(book_record, author_record):
     """Create relationship between books and authors tables"""
 
-    
 
 def create_books_tags_relationship():
     """Create relationship between books and tags tables"""

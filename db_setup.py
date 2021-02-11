@@ -17,7 +17,8 @@ tags_list = {
 
 # when adding values, update enum in Category class definition
 categories_list = {
-    'fiction', 
+    'fiction',
+    'non-fiction',
     'reference',
 }
 
@@ -52,3 +53,6 @@ if __name__ == "__main__":
     print("Connected to DB.")
 
     db.create_all()
+
+    create_categories()
+    create_tags()
