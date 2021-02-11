@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class Book(db.Model):
     """Data model for Book"""
 
@@ -93,6 +94,7 @@ class Category(db.Model):
     def __repr__(self):
         return f'<Category id={self.id} category={self.category_name}>'
 
+
 class Tag(db.Model):
     """Data model for Tag"""
 
@@ -101,7 +103,7 @@ class Tag(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    tag_name = db.Column(db.Enum('sci-fiction', 'fantasy', 'python', 'reference', name="tag_values"), 
+    tag_name = db.Column(db.String(50), 
                          nullable=False)   # can this be defined in a variable and then put in here?
     
     def __repr__(self):
@@ -180,6 +182,7 @@ class UserBook(db.Model):
     def __repr__(self):
         return f'<UserBook id={self.id} user_id={self.user_id} book_id={self.book_id}'
 
+
 class Rating(db.Model):
     """Data model for Rating table - middle table between User and Book tables"""
 
@@ -202,6 +205,7 @@ class Rating(db.Model):
             f'Rating id={self.id} score={self.score} '
             f'user_id={self.user_id} book_id={self.book_id}'
         )
+
 
 def connect_to_db(app):
     """Connect the database to our Flask app"""
