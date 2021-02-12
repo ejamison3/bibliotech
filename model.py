@@ -126,6 +126,9 @@ class BookTag(db.Model):
                        nullable=False)
     user_id = db.Column(db.Integer,
                        db.ForeignKey('users.id'))
+
+    # relationships
+    # user_book relationship defined via backref on UserBook class
     
     def __repr__(self):
         return (
@@ -175,8 +178,7 @@ class UserBook(db.Model):
                          nullable=False)        # make sure default syntax is correct
 
     # relationships
-    book = db.relationship("Book")
-    user = db.relationship("User")
+    book_tags = db.relationship("BookTag", backref="user_book")
     
     def __repr__(self):
         return f'<UserBook id={self.id} user_id={self.user_id} book_id={self.book_id}'
