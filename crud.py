@@ -2,14 +2,16 @@
 
 May split this into multiple files in future"""
 
-from model import Book, Category, Author, Tag, User, Ratingdb
+from model import Book, Category, Author, Tag, User, Rating, db
 
 # CURRENT PROBLEMS
 # 1. No way to set has_read attribute in users_books table
-# 2. No way to create link between users_books and books_tags table. should this even be a thing? 
-#    Yes, it should but I gotta think it through
+# 2. Relationship between associations tables has problems. 
+#    Needs to be fixed in model.py file but need to talk to Andrew
 
 # categories and tags records are created in db_setup.py file. This is a one time creation. 
+
+################################### CREATE FUNCTIONS ###########################
 
 def create_book(
                 title, 
@@ -17,9 +19,9 @@ def create_book(
                 pub_year = None, 
                 pgs = None, 
                 cat_record = None, 
-                user_record = None, 
                 author_records = None, 
-                tag_records = None):
+                tag_records = None,
+                user_record = None):
     """Create new book record and return newly created book
     
         Any record should be as the record object. 
@@ -37,22 +39,31 @@ def create_book(
 
     # create relationship to categories table
     if cat_record:
-        print(f'create relationship to categories table - NEED TO IMPLEMENT')
+        create_book_category_relationship(temp_book, cat_record)
     
     # create relationship to authors table
-        if author_records:
-            print(f'create relationship to authors table - NEED TO IMPLEMENT')
+    if author_records:
+        for author_record in author_records:
+            create_books_authors_relationship(temp_book, author_record)
 
     # create relationship to tags table
     if tag_records:
-        print(f'create relationship to tags table - NEED TO IMPLEMENT')
+        for tag_record in tag_records:
+            create_books_tags_relationship(temp_book, tag_record)
 
     # create relationship to users table
     if user_record:
-        print(f'create relationship to users table - NEED TO IMPLEMENT')
+        create_users_books_relationship(temp_book, user_record)
 
     return temp_book
   
+
+def create_book_category_relationship(book_record, cat_record):
+    """Create books to categories relationship"""
+    
+    cat_record.books.append(book_record)
+    db.session.commit()
+
 
 # not all authors have first names
 def create_author(lname, fname=None):
@@ -96,17 +107,17 @@ def create_user(name, pw):
     return temp_user
 
 
+def create_users_books_relationship(book_record, user_record):
+    """Create relationship between users and books tables"""
+
+    user_record.books.append(book_record)
+    db.session.commit()
+
+
 def create_users_books_tags_relationship(user_book_record, book_tag_record):
     """Create relationship between users_books table and books_tags table"""
 
     user_book_record.book_tags.append(book_tag_record)
-    db.session.commit()
-
-
-def create_users_books_relationship(user_record, book_record):
-    """Create relationship between users and books tables"""
-
-    user_record.books.append(book_record)
     db.session.commit()
 
 
@@ -115,9 +126,22 @@ def create_rating(score, user_record, book_record, description=None):
 
     temp_rating = Rating(score=score, description=description)
     db.session.add(temp_rating)
-    db.commit()     # do now to create ratings.id?
+    db.session.commit()     # do now to create ratings.id?
 
     # create relationships to users and books tables
     user_record.ratings.append(temp_rating)
     book_record.ratings.append(temp_rating)
 
+####################### SEARCH FUNCTIONS #######################################
+
+def get_user(username):
+    """Get user by username"""
+    
+    return User.query.filter(User.username == username).first()
+
+if __name__ == "__main__":
+    from server import app
+    from model import connect_to_db
+
+    connect_to_db(app)
+    print("Connected to DB.")

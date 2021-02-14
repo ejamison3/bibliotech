@@ -38,7 +38,7 @@ class Book(db.Model):
                             backref="books")
 
     # middle table relationships
-    ratings = db.relationship("Rating")
+    ratings = db.relationship("Rating", backref="book")
     
     
     def __repr__(self):
@@ -128,7 +128,7 @@ class BookTag(db.Model):
                        db.ForeignKey('users.id'))
 
     # relationships
-    # user_book relationship defined via backref on UserBook class
+    users = db.relationship("Users", backref=books_tags)
     
     def __repr__(self):
         return (
@@ -153,7 +153,7 @@ class User(db.Model):
     # backref books on Book allows access to user books using 'books' term
 
     # middle table relationship
-    ratings = db.relationship("Rating")
+    ratings = db.relationship("Rating", backref="user")
 
     def __repr__(self):
         return f'<User id={self.id} username={self.username}'
@@ -178,7 +178,7 @@ class UserBook(db.Model):
                          nullable=False)        # make sure default syntax is correct
 
     # relationships
-    book_tags = db.relationship("BookTag", backref="user_book")
+    # book_tags = db.relationship("BookTag", backref="user_book")
     
     def __repr__(self):
         return f'<UserBook id={self.id} user_id={self.user_id} book_id={self.book_id}'
@@ -195,11 +195,9 @@ class Rating(db.Model):
     score = db.Column(db.Enum('1', '2', '3', '4', '5', name="rating_scores"), nullable=False)
     description = db.Column(db.Text)
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.id'),
-                        nullable=False)
+                        db.ForeignKey('users.id'))
     book_id = db.Column(db.Integer,
-                        db.ForeignKey('books.id'),
-                        nullable=False)
+                        db.ForeignKey('books.id'))
 
     def __repr__(self):
         return (
