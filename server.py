@@ -16,7 +16,7 @@ def homepage():
     """View homepage."""
 
     # if user logged in show homepage, otherwise redirect to login screen
-    return render_template('homepage.html')
+    return render_template('index.html')
 
 @app.route('/users', methods=['POST'])
 def login():

@@ -15,6 +15,7 @@ class Book(db.Model):
                    autoincrement=True)
     title = db.Column(db.String(100), nullable=False)
     publisher = db.Column(db.String(50))
+    description = db.Column(db.Text)
     publication_year = db.Column(db.Integer)    # can this be limited to 4 ints?
     pages = db.Column(db.Integer)  
     avg_rating = db.Column(db.Integer)
@@ -128,7 +129,7 @@ class BookTag(db.Model):
                        db.ForeignKey('users.id'))
 
     # relationships
-    users = db.relationship("Users", backref=books_tags)
+    users = db.relationship("User", backref="books_tags")
     
     def __repr__(self):
         return (

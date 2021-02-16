@@ -18,7 +18,7 @@ def create_book(
                 pub = None, 
                 pub_year = None, 
                 pgs = None, 
-                description = None,
+                descr = None,
                 author_records = None, 
                 tag_records = None,
                 user_record = None,
@@ -31,6 +31,7 @@ def create_book(
 
     temp_book = Book(title=title,
                     publisher=pub,
+                    description=descr,
                     publication_year=pub_year,
                     pages=pgs)
     
@@ -135,10 +136,24 @@ def create_rating(score, user_record, book_record, description=None):
 
 ####################### SEARCH FUNCTIONS #######################################
 
+def get_book_by_title(title):
+    """Get book by title"""
+
+    return Book.query.filter(Book.title == title).first()
+
+
 def get_user(username):
     """Get user by username"""
     
     return User.query.filter(User.username == username).first()
+
+
+def get_author(lname, fname=None):
+    """Get author by lname and fname if given"""
+
+    return Author.query.filter(Author.lname == lname, Author.fname == fname).first()
+
+    
 
 if __name__ == "__main__":
     from server import app
