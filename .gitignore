@@ -3,4 +3,4 @@
 __pycache__
 env
 test.py
-secret.py
+secret.sh

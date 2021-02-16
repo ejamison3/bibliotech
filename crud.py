@@ -18,10 +18,11 @@ def create_book(
                 pub = None, 
                 pub_year = None, 
                 pgs = None, 
-                cat_record = None, 
+                description = None,
                 author_records = None, 
                 tag_records = None,
-                user_record = None):
+                user_record = None,
+                cat_record = None):
     """Create new book record and return newly created book
     
         Any record should be as the record object. 
