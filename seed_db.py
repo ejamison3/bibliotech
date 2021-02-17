@@ -1,7 +1,8 @@
 """Seed database with results from NYT Books api"""
 
-from crud import get_author, create_author, get_book_by_title, create_book
+from crud import *
 import os
+import re
 
 
 def seed_book_author(filename):
@@ -44,13 +45,37 @@ def seed_book_author(filename):
         if temp_book == None:
             if len(author_record_list) == 0:
                 author_record_list = None
-            create_book(title, pub=book_data_list[2], descr=book_data_list[3], author_records=author_record_list)
+            temp_book = create_book(title, pub=book_data_list[2], descr=book_data_list[3], author_records=author_record_list)
+
+        
+        add_similar_tags(temp_book, os.path.basename(filename))
+
+
+def add_similar_tags(book_record, similar_tag):
+
+    # future use re.split so split by regex (split by , space and -)
+    word_list = similar_tag.rstrip().split('-')
+
+    prev_word = ''
+    for word in word_list:
+        if len(word) > 1:
+            word = prev_word + word
+        else:
+            continue
+
+        new_tags = get_similar_tags(word)
+        for tag in new_tags:
+            create_books_tags_relationship(book_record, tag)
+
+
 
 def seed_with_all_lists(my_path):
     file_names = os.listdir(my_path)
 
     for file_name in file_names:
         print(f'Now making file: {file_name}')
+
+
         seed_book_author(f'{my_path}/{file_name}')
 
 

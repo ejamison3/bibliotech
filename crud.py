@@ -153,6 +153,12 @@ def get_author(lname, fname=None):
 
     return Author.query.filter(Author.lname == lname, Author.fname == fname).first()
 
+
+def get_similar_tags(similar_phrase):
+    """Get all tags with name similar to similar_phrase"""
+
+    return Tag.query.filter(Tag.tag_name.like(f'%{similar_phrase}%')).all()
+
     
 
 if __name__ == "__main__":
