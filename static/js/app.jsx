@@ -4,41 +4,69 @@ const Link = ReactRouterDOM.Link;
 const Switch = ReactRouterDOM.Switch;
 const Route = ReactRouterDOM.Route;
 
-const Home = () => {
-  return (
-    <div>
-      <h1>Welcome to BiblioTech!</h1>
-      <p>You are on the home screen</p>
-    </div>
-  )
+const Home = (prop) => {
+  if (prop.userId === null) {
+    return (
+      <div>
+        <h1>Welcome to BiblioTech!</h1>
+        <p>Please login to use the site</p>
+      </div>
+    )
+  }else{
+    return (
+      <div>
+        <h1>Welcome to BiblioTech {prop.username}!</h1>
+        <p>You are on the home screen</p>
+      </div>
+    )
+  }
 };
 
 
-<div>Icons made by <a href="" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
 const App = (props) => {
   const [userId, setUserId] = React.useState(null);
+  const [username, setUsername] = React.useState(null);
+
+  const logInOutButton = (userId === null) ? 'Login' : 'Logout'
+  const logInOutUrl = (userId === null) ? '/login' : '/logout'
+
+  // let logInOutButton = 'Login'
 
   return (
     <Router>
       <div>
-        
         <header>
           <Link to="/"><img className="home-logo header-part" src="/static/img/book.png"/></Link>
           <button className="header-part">
-            <Link to="/">Home</Link>
-          </button>
-          <button className="header-part">
-            <Link to="/login">Log In</Link>
+            <Link to={logInOutUrl}>{logInOutButton}</Link>
           </button>
         </header>
+        <footer>
+          <div>Icons made by <a href="" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        </footer>
 
         <Switch>
           <Route path="/login">
-            <DisplayLogin />
+            <DisplayLogin 
+              userId={userId}
+              setUserId={setUserId}
+              username={username}
+              setUsername={setUsername}
+            />
+          </Route>
+          <Route path="/logout">
+            <DisplayLogout
+              userId={userId}
+              setUserId={setUserId}
+              username={username}
+              setUsername={setUsername}
+            />
           </Route>
           <Route exact path="/">
-            <Home />
+            <Home 
+              userId={userId}
+              username={username}
+            />
           </Route>
         </Switch>
       </div>

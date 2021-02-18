@@ -28,10 +28,10 @@ def login_in():
 
     username = req['username']
     pwd = req['pwd']
-    print(f'UNICORNS: {username}  pwd: {pwd}')
     user = get_user(username)
 
     response = {
+        'message': None,
         'error': None,
         'user_id': None,
         'username': None,
@@ -42,32 +42,19 @@ def login_in():
         if pwd == user.password:
             response['user_id'] = user.id
             response['username'] = user.username
+            response['message'] = 'OK'
+            status_code = 200
         else:
             response['error'] = 'Password is incorrect'
+            response['message'] = 'Unauthorized'
+            status_code = 401
     else:
         response['error'] = 'User does not exists'
+        response['message'] = 'Unauthorized'
+        status_code = 401
 
-    return jsonify(response)
-
-    # username_entered = request.form.get('username')
-    # pwd_entered = request.form.get('pwd')
-
-    # user = get_user(username_entered)
-
-    # if user is None:
-    #     # Give error message that user DNE
-    #     pass
-    # elif pwd_entered == user.password:
-    #     # do something to log user in?
-    #     session['user_key'] = user.id
-    # else:
-    #     # Give error that password is incorrect
-    #     pass
-
-
-    # return redirect('/')
-
-
+    return (jsonify(response), status_code)
+    
 
 # @app.route('/users', methods=['POST'])
 # def login():
