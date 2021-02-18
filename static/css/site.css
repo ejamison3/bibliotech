@@ -1,5 +1,23 @@
-.center {
+header {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  color: red;
+}
+
+.header-part {
+  flex-grow: 4;
+  color: purple;
+}
+
+.home-logo {
+  max-width: 15%;
+  height: auto;
+}
+
+.center {
+  display:flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }

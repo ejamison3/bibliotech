@@ -4,36 +4,28 @@
   <meta charset="UTF-8">
   <title>BiblioTech</title>
 
-  <!-- We'll load React dependencies on all pages for this app. -->
+  <!-- Load bable, react, react-router-dom -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
   <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.min.js" integrity="sha512-NG4Cm3Ubs7d/nPyzrTFM53RP8tPjQhRT0hea48yJ/qEXsuhq7wGbjX68A5gBiW6BoCQbqE3/M+UOj2lLXPauhw==" crossorigin="anonymous"></script>
 
-  <script src="/static/js/HeaderContainer.jsx" type="text/jsx"></script>
-  <script src="/static/js/MainContainer.jsx" type="text/jsx"></script>
-  <script src="/static/js/Login.jsx" type="text/jsx"></script>
-
-
-  <!-- Page specific javascript included here -->
-  <!-- {% block js %}
-  {% endblock %} -->
+  <!-- Load applicable jsx files -->
+  <script src="/static/js/user.jsx" type="text/jsx"></script>
+  <script src="/static/js/app.jsx" type="text/jsx"></script>
 
   <meta name="theme-color" content="#000000" />
 
-  <link href="/static/css/site.css"/>
+  <link rel="stylesheet" href="/static/css/site.css"/>
 </head>
 
 <body>
   <div id="root"></div>
-  <div id="unicorn"></div>
   <!-- {% for msg in get_flashed_messages() %}
     <p class="flash-msg">
       {{ msg}}
     </p>
   {% endfor %} -->
 
-  <h2>BLAH BLAH</h2>
-
-  <!-- {% block body %}{% endblock %} -->
 </body>
 </html>
