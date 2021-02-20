@@ -15,6 +15,11 @@ const DisplayCreateUser = () => {
     const pwd = document.getElementById('pwd').value;
     const pwdDup = document.getElementById('pwd-dup').value;
 
+    if (pwd != pwdDup){
+      alert('Password does not match. Please enter your password twice.');
+      return;
+    }
+
     fetch('createAccount', {
       method: 'POST',
       headers: {
@@ -43,13 +48,13 @@ const DisplayCreateUser = () => {
       <h1 className="center-text">Create Account</h1>
       <form className="center" action="/createAccount" method="POST">
           <label htmlFor="username">Username: </label>
-          <input type="text" id="username" name="username" maxLength="20" required autoFocus/>
+          <input type="text" id="username" name="username" maxLength="20" placeholder="username" required autoFocus/>
           <br/>
           <label htmlFor="pwd">Password: </label>
-          <input type="password" id="pwd" name="pwd" maxLength="30" required />
+          <input type="password" id="pwd" name="pwd" maxLength="30" placeholder="***" required />
           <br/>
           <label htmlFor="pwd-dup">Confirm Password: </label>
-          <input type="password" id="pwd-dup" name="pwd-dup" maxLength="30" required />
+          <input type="password" id="pwd-dup" name="pwd-dup" maxLength="30" placeholder="***" required />
           <br/>
           <button onClick={CreateUser} id="user-create">Create Account</button>
         </form>
@@ -97,7 +102,7 @@ const DisplayLogin = (prop) => {
         <h2 className="center-text">Log In</h2>
         <form className="center" action="/userLogin" method="POST">
           <label htmlFor="username">Username: </label>
-          <input type="text" id="username" name="username" maxLength="20" required autoFocus/>
+          <input type="text" id="username" name="username" maxLength="20" placeholder="username" required autoFocus/>
           <br/>
           <label htmlFor="pwd">Password: </label>
           <input type="password" id="pwd" name="pwd" maxLength="30" required />

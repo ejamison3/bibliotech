@@ -23,24 +23,48 @@ const Home = (prop) => {
   }
 };
 
+const Header = (prop) => {
+
+  if (prop.userId === null){
+    return (
+      <header>
+          <Link to="/"><img className="home-logo header-part" src="/static/img/book.png" /></Link>
+          <button>
+            <Link to={'/login'}>Login</Link>
+          </button>
+        </header>
+    )
+  }else{
+    return (
+      <header>
+          <Link to="/"><img className="home-logo header-part" src="/static/img/book.png" /></Link>
+          <SearchBar 
+            userId = {prop.userId}
+            history={prop.history}
+          />
+          <button>
+            <Link to={'/logout'}>Logout</Link>
+          </button>
+        </header>
+    )
+  }
+}
 
 
-const App = (props) => {
+
+const App = () => {
   const [userId, setUserId] = React.useState(null);
   const [username, setUsername] = React.useState(null);
 
-  const logInOutButton = (userId === null) ? 'Login' : 'Logout';
-  const logInOutUrl = (userId === null) ? '/login' : '/logout';
+  // const logInOutButton = (userId === null) ? 'Login' : 'Logout';
+  // const logInOutUrl = (userId === null) ? '/login' : '/logout';
 
   return (
     <Router>
       <div>
-        <header>
-          <Link to="/"><img className="home-logo header-part" src="/static/img/book.png" /></Link>
-          <button>
-            <Link to={logInOutUrl}>{logInOutButton}</Link>
-          </button>
-        </header>
+        <Header 
+          userId = {userId}
+          username={username}/>
         <footer>
           <div>Icons made by <a href="" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
         </footer>
