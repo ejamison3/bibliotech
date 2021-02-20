@@ -54,7 +54,52 @@ def login_in():
         status_code = 401
 
     return (jsonify(response), status_code)
-    
+
+
+@app.route('/createAccount', methods=['POST'])
+def create_account():
+    """Create Account"""
+
+    req = request.get_json()
+    print(req)
+
+    username = req['username']
+    pwd = req['pwd']
+    pwd_dup = req['pwdDup']
+
+    # see if user exists
+    user = get_user(username)
+
+    response = {
+        'message': None,
+        'error': None,
+        'user_id': None,
+        'username': None,
+    }
+
+    if user is None:
+        # check password
+        if pwd == pwd_dup:
+            # create user, if successful
+            user = create_user(username, pwd)
+            if user is not None:
+                response['message'] = 'OK'
+                status_code = 200
+            else:
+                response['message'] = 'Could not create new user'
+                status_code = 422
+        else:
+            response['error'] = 'Password is inconsistent'
+            response['message'] = 'Unauthorized'
+            status_code = 401
+    else:
+        response['error'] = 'User already exists'
+        response['message'] = 'Unauthorized'
+        status_code = 422
+
+    return (jsonify(response), status_code)
+
+
 
 # @app.route('/users', methods=['POST'])
 # def login():

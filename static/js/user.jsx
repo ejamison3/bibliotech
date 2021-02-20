@@ -3,8 +3,64 @@
 // For components related to user login/logout & create user
 
 
+const DisplayCreateUser = () => {
+  let history = useHistory();
+
+  console.log('in DisplayCreateUser')
+
+  const CreateUser = (evt) => {
+    evt.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const pwd = document.getElementById('pwd').value;
+    const pwdDup = document.getElementById('pwd-dup').value;
+
+    fetch('createAccount', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        pwd,
+        pwdDup,
+      })
+    })
+    .then(response => {
+      if (response.status !== 200){
+        alert('Username already exists or passwords don\'t match')
+        return;
+      }
+      response.json().then(data => {
+        alert('User ' + username + ' created! Please log in.')
+        history.push("/login")
+      })
+    })
+  }
+
+  return (
+    <div className="center-text">
+      <h1 className="center-text">Create Account</h1>
+      <form className="center" action="/createAccount" method="POST">
+          <label htmlFor="username">Username: </label>
+          <input type="text" id="username" name="username" maxLength="20" required autoFocus/>
+          <br/>
+          <label htmlFor="pwd">Password: </label>
+          <input type="password" id="pwd" name="pwd" maxLength="30" required />
+          <br/>
+          <label htmlFor="pwd-dup">Confirm Password: </label>
+          <input type="password" id="pwd-dup" name="pwd-dup" maxLength="30" required />
+          <br/>
+          <button onClick={CreateUser} id="user-create">Create Account</button>
+        </form>
+    </div>
+  )
+}
+
 
 const DisplayLogin = (prop) => {
+  let history = useHistory();
+
 
   const LoginUser = (evt) => {
     evt.preventDefault();
@@ -30,14 +86,15 @@ const DisplayLogin = (prop) => {
       response.json().then(data => {
         prop.setUserId(data.user_id)
         prop.setUsername(data.username)
+        history.push("/")
       })
     })    
   }
 
-  if (prop.userId === null){
+  if (prop.userId === null || prop.userId === undefined){
     return (
       <div>
-        <h2>Log In</h2>
+        <h2 className="center-text">Log In</h2>
         <form className="center" action="/userLogin" method="POST">
           <label htmlFor="username">Username: </label>
           <input type="text" id="username" name="username" maxLength="20" required autoFocus/>
@@ -47,20 +104,30 @@ const DisplayLogin = (prop) => {
           <br/>
           <button onClick={LoginUser} id="user-login">Login</button>
         </form>
+        <Link to="/createUser" className="center-text">
+          <p className="center-text">Create Account</p>
+        </Link>
       </div>
     )
   }else{
-    return (<Home />)
+    return (
+      <Home
+        userId={prop.userId}
+        username={prop.username}
+      />)
   }
 };
 
 const DisplayLogout = (prop) => {
-  //log user out
-  //remove from prop
+  const prev_username = prop.username
+
+  prop.setUserId(null)
+  prop.setUsername(null)
 
   return (
     <div>
-      Goodbye previously logged in user!
+      Goodbye {prev_username}! <br/>
+      You have been logged out!
     </div>
   )
 

@@ -3,18 +3,19 @@ const Router = ReactRouterDOM.BrowserRouter;
 const Link = ReactRouterDOM.Link;
 const Switch = ReactRouterDOM.Switch;
 const Route = ReactRouterDOM.Route;
+const useHistory = ReactRouterDOM.useHistory;
 
 const Home = (prop) => {
   if (prop.userId === null) {
     return (
-      <div>
+      <div className="center-text">
         <h1>Welcome to BiblioTech!</h1>
         <p>Please login to use the site</p>
       </div>
     )
   }else{
     return (
-      <div>
+      <div className="center-text">
         <h1>Welcome to BiblioTech {prop.username}!</h1>
         <p>You are on the home screen</p>
       </div>
@@ -23,21 +24,20 @@ const Home = (prop) => {
 };
 
 
+
 const App = (props) => {
   const [userId, setUserId] = React.useState(null);
   const [username, setUsername] = React.useState(null);
 
-  const logInOutButton = (userId === null) ? 'Login' : 'Logout'
-  const logInOutUrl = (userId === null) ? '/login' : '/logout'
-
-  // let logInOutButton = 'Login'
+  const logInOutButton = (userId === null) ? 'Login' : 'Logout';
+  const logInOutUrl = (userId === null) ? '/login' : '/logout';
 
   return (
     <Router>
       <div>
         <header>
-          <Link to="/"><img className="home-logo header-part" src="/static/img/book.png"/></Link>
-          <button className="header-part">
+          <Link to="/"><img className="home-logo header-part" src="/static/img/book.png" /></Link>
+          <button>
             <Link to={logInOutUrl}>{logInOutButton}</Link>
           </button>
         </header>
@@ -52,21 +52,27 @@ const App = (props) => {
               setUserId={setUserId}
               username={username}
               setUsername={setUsername}
+              history={history}
             />
           </Route>
           <Route path="/logout">
             <DisplayLogout
-              userId={userId}
+              userId = {userId}
               setUserId={setUserId}
               username={username}
               setUsername={setUsername}
+              history={history}
             />
           </Route>
           <Route exact path="/">
             <Home 
               userId={userId}
               username={username}
+              history={history}
             />
+          </Route>
+          <Route exact path="/createUser">
+            <DisplayCreateUser />
           </Route>
         </Switch>
       </div>
