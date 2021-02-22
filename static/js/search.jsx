@@ -7,14 +7,13 @@ const SearchBar = (prop) => {
     return (
       <div>
         <form>
-          <label for="search-field"></label>
-          <input type="text" placeholder="Search for books" autoFocus/>
-          <input list="search-options" type="dropdown"></input>
-            <datalist id="search-options">
-              <option value="Title"/>
-              <option value="Author"/>
-              <option value="Tag"/>
-            </datalist>
+          <select id="search-type-dropdown" type="dropdown">
+            <option value="Title" selected/>
+            <option value="Author"/>
+            <option value="Tag"/>
+          </select>
+          <label htmlFor="search-field"></label>
+          <input type="text" placeholder="Type search phrase" autoFocus/>
           <button>Search</button>
         </form>
       </div>

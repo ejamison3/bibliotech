@@ -5,6 +5,7 @@ const Switch = ReactRouterDOM.Switch;
 const Route = ReactRouterDOM.Route;
 const useHistory = ReactRouterDOM.useHistory;
 
+
 const Home = (prop) => {
   if (prop.userId === null) {
     return (
@@ -28,7 +29,7 @@ const Header = (prop) => {
   if (prop.userId === null){
     return (
       <header>
-          <Link to="/"><img className="home-logo header-part" src="/static/img/book.png" /></Link>
+          <Link to="/"><img className="home-logo header-part" src="/static/img/BiblioTechLogo.png" /></Link>
           <button>
             <Link to={'/login'}>Login</Link>
           </button>
@@ -37,7 +38,7 @@ const Header = (prop) => {
   }else{
     return (
       <header>
-          <Link to="/"><img className="home-logo header-part" src="/static/img/book.png" /></Link>
+          <Link to="/"><img className="home-logo header-part" src="/static/img/BiblioTechLogo.png" /></Link>
           <SearchBar 
             userId = {prop.userId}
             history={prop.history}
@@ -56,17 +57,33 @@ const App = () => {
   const [userId, setUserId] = React.useState(null);
   const [username, setUsername] = React.useState(null);
 
-  // const logInOutButton = (userId === null) ? 'Login' : 'Logout';
-  // const logInOutUrl = (userId === null) ? '/login' : '/logout';
+  if (userId === null && document.cookie != ""){
+    // check if there is a user_id cookie
+    const cookie_userId = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('user_id='))
+      .split('=')[1];
+
+    if (cookie_userId !== null){
+      const cookie_username = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('username='))
+        .split('=')[1];
+
+        setUserId(cookie_userId)
+        setUsername(cookie_username)
+    }
+  }
 
   return (
     <Router>
-      <div>
+      <div id="main-div">
         <Header 
           userId = {userId}
-          username={username}/>
+          username={username}
+        />
         <footer>
-          <div>Icons made by <a href="" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+          <div>UnicornBread</div>
         </footer>
 
         <Switch>

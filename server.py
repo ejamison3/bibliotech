@@ -1,6 +1,7 @@
 """Server for bibliotech app"""
 
-from flask import Flask, render_template, redirect, request, jsonify, session
+from flask import (Flask, render_template, redirect, request, 
+    jsonify, session, make_response)
 
 from model import connect_to_db
 from crud import get_user, create_user
@@ -30,30 +31,38 @@ def login_in():
     pwd = req['pwd']
     user = get_user(username)
 
-    response = {
+    login_resp = {
         'message': None,
         'error': None,
         'user_id': None,
         'username': None,
     }
 
+    user_id = None
+    username = None
+
     if user is not None:
         # check password
         if pwd == user.password:
-            response['user_id'] = user.id
-            response['username'] = user.username
-            response['message'] = 'OK'
+            login_resp['user_id'] = user.id
+            login_resp['username'] = user.username
+            login_resp['message'] = 'OK'
             status_code = 200
+            user_id = str(user.id)
+            username = user.username
         else:
-            response['error'] = 'Password is incorrect'
-            response['message'] = 'Unauthorized'
+            login_resp['error'] = 'Password is incorrect'
+            login_resp['message'] = 'Unauthorized'
             status_code = 401
     else:
-        response['error'] = 'User does not exists'
-        response['message'] = 'Unauthorized'
+        login_resp['error'] = 'User does not exists'
+        login_resp['message'] = 'Unauthorized'
         status_code = 401
 
-    return (jsonify(response), status_code)
+    resp = make_response(jsonify(login_resp), status_code)
+    resp.set_cookie('user_id', user_id)
+    resp.set_cookie('username', username)
+    return resp
 
 
 @app.route('/createAccount', methods=['POST'])
@@ -100,23 +109,6 @@ def create_account():
     return (jsonify(response), status_code)
 
 
-
-# @app.route('/users', methods=['POST'])
-# def login():
-#     """Create a new user"""
-
-#     username = request.form.get('username')
-#     password = request.form.get('password')
-
-#     user = crud.get_user(username)
-
-#     if user:
-#         flash('Username already exists. Please log in or create different username')
-#     else:
-#         crud.create_user(username, password)
-#         flash('Account created.')
-    
-#     return redirect('/')
 
 if __name__ == '__main__':
     connect_to_db(app)

@@ -126,8 +126,11 @@ const DisplayLogin = (prop) => {
 const DisplayLogout = (prop) => {
   const prev_username = prop.username
 
-  prop.setUserId(null)
-  prop.setUsername(null)
+  prop.setUserId(null);
+  prop.setUsername(null);
+
+  document.cookie = 'user_id=; Max-Age=-9999;';
+  document.cookie = 'username=; Max-Age=-9999;';
 
   return (
     <div>
