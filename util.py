@@ -1,5 +1,7 @@
 """Helper functions"""
 
+from crud import *
+
 
 def turn_books_to_dictionary(book_list):
     """Takes in a list of book records and turns into dictionary list of books"""
@@ -20,6 +22,8 @@ def get_user_booklist_title(user_id, title):
     Return: list of dictionaries - each dictionary represents a book
         If no books found, return None"""
 
+    books = db.session.
+    
     return None
 
 def get_user_booklist_title_author(userid, title, author):
