@@ -228,4 +228,3 @@ if __name__ == "__main__":
     print("Connected to DB.")
 
     db.create_all()
-    

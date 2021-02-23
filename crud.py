@@ -142,6 +142,18 @@ def get_book_by_title(title):
     return Book.query.filter(Book.title == title).first()
 
 
+def get_similar_books_by_title(title):
+    """Get books with similar title"""
+
+    title = f'%{title}%'
+    return Book.query.filter(Book.title.like(title)).all()
+
+def get_similar_books_by_title(title):
+    """Get books with title"""
+
+    return Book.query.filter(Book.title == title).all()
+
+
 def get_user(username):
     """Get user by username"""
     

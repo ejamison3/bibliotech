@@ -1,14 +1,22 @@
 "use strict";
 
 // For components related to user login/logout & create user
+const DisplayAccount = () => {
+  // find way to hide search bar when on /account page
 
+  return (
+    <div>
+      This is the account page placeholder.
+    </div>
+  )
+}
 
 const DisplayCreateUser = () => {
   let history = useHistory();
 
   console.log('in DisplayCreateUser')
 
-  const CreateUser = (evt) => {
+  const createUser = (evt) => {
     evt.preventDefault();
 
     const username = document.getElementById('username').value;
@@ -56,7 +64,7 @@ const DisplayCreateUser = () => {
           <label htmlFor="pwd-dup">Confirm Password: </label>
           <input type="password" id="pwd-dup" name="pwd-dup" maxLength="30" placeholder="***" required />
           <br/>
-          <button onClick={CreateUser} id="user-create">Create Account</button>
+          <button onClick={createUser} id="user-create">Create Account</button>
         </form>
     </div>
   )

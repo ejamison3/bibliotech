@@ -44,6 +44,9 @@ const Header = (prop) => {
             history={prop.history}
           />
           <button>
+            <Link to={'/account'}>Account</Link>
+          </button>
+          <button>
             <Link to={'/logout'}>Logout</Link>
           </button>
         </header>
@@ -56,6 +59,7 @@ const Header = (prop) => {
 const App = () => {
   const [userId, setUserId] = React.useState(null);
   const [username, setUsername] = React.useState(null);
+
 
   if (userId === null && document.cookie != ""){
     // check if there is a user_id cookie
@@ -70,8 +74,8 @@ const App = () => {
         .find(row => row.startsWith('username='))
         .split('=')[1];
 
-        setUserId(cookie_userId)
-        setUsername(cookie_username)
+        setUserId(cookie_userId);
+        setUsername(cookie_username);
     }
   }
 
@@ -112,8 +116,18 @@ const App = () => {
               history={history}
             />
           </Route>
-          <Route exact path="/createUser">
+          <Route path="/createUser">
             <DisplayCreateUser />
+          </Route>
+          <Route path="/account">
+            <DisplayAccount 
+              userId={userId}
+              username={username}
+              history={history}
+            />
+          </Route>
+          <Route path="/searchResults">
+            <DisplaySearchResults />
           </Route>
         </Switch>
       </div>

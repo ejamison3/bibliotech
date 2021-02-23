@@ -16,7 +16,7 @@ footer {
 
 #main-div {
   background-color: black;
-  color: bisque;
+  color: white;
   position: relative;
   min-height: 100vh;
   font-family: 'IBM Plex Mono';
@@ -40,12 +40,18 @@ button {
 
 #search-type-dropdown {
   font-family: 'IBM Plex Mono';
-  font-weight: 100;
+  font-weight: 300;
   color: black;
   background-color: #777777;
   border-radius: 2rem;
-  font-weight: 700;
-  width: 5rem;
+  width: 7rem;
+}
+
+#my-books-checkbox {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  color: white;
+  width: 7rem;
 }
 
 .home-logo {
