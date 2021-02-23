@@ -4,3 +4,4 @@ __pycache__
 env
 test.py
 secret.sh
+troubleshooting_sqlalchemy

@@ -2,16 +2,55 @@
 
 from crud import *
 
+def get_author_data_from_book(book):
+    """Get author names from book record"""
+
+    authors_records = book.authors
+    authors = []        
+    for author in authors_records:
+        authors.append(f'{author.lname}, {author.fname}')
+
+    if len(authors) == 0:
+        authors = None
+
+    return authors
+
+
+def get_tag_data_from_book(book):
+    """Get tag names from book record"""
+
+    tags_records = book.tags
+    tags = []
+    for tag in tags_records:
+        tags.append(tag.tag_name)
+
+    if len(tags) == 0:
+        tags = None
+        
+    return tags
+
 
 def turn_books_to_dictionary(book_list):
     """Takes in a list of book records and turns into dictionary list of books"""
 
-    # output format: {
-    #       title: 'Best Book Ever',
-    #       author_fname: 'Jane',
-    #       author_lname: 'Doe',
-    # }
-    pass
+    list_book_dict = []
+    
+    for book in book_list:
+        author_list = get_author_data_from_book(book)
+        tag_list = get_tag_data_from_book(book)
+
+        temp_book = {
+            'title': book.title,
+            'authors': author_list,
+            'description': book.description,
+            'publisher': book.publisher,
+            'year': book.publication_year,
+            'tag': tag_list,
+        }
+
+        list_book_dict.append(temp_book)
+    
+    return list_book_dict
 
 
 ##############SEARCH (USER)##############
@@ -22,9 +61,10 @@ def get_user_booklist_title(user_id, title):
     Return: list of dictionaries - each dictionary represents a book
         If no books found, return None"""
 
-    books = db.session.
+    books = get_similar_books_by_title(title)
     
     return None
+
 
 def get_user_booklist_title_author(userid, title, author):
     """Get books by title, author, and user ID
@@ -64,6 +104,7 @@ def get_user_booklist_title_author_tag(user_id, title, author, tag):
         'author_fname': 'Joan',
         'publisher': 'Random House',
     }]
+
 
 def get_user_booklist_title_tag(user_id, title, tag):
     """Get books by title, tag, and user ID
@@ -152,7 +193,12 @@ def get_booklist_title(title):
     Return: list of dictionaries - each dictionary represents a book
         If no books found, return None"""
 
-    return None
+    books = get_similar_books_by_title(title)
+    if books == None:
+        return books
+    else:
+        return turn_books_to_dictionary(books)
+
 
 def get_booklist_title_author(title, author):
     """Get books by title and author
@@ -192,6 +238,7 @@ def get_booklist_title_author_tag(title, author, tag):
         'author_fname': 'Joan',
         'publisher': 'Random House',
     }]
+
 
 def get_booklist_title_tag(title, tag):
     """Get books by title and tag

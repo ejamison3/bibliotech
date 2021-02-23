@@ -129,7 +129,7 @@ def perform_search():
         'user_id': user_id,
     }
  
-    if user_id == None:
+    if user_id != None:
         if title_string != None:
             if author_string != None:
                 if tag_string != None:
@@ -204,7 +204,7 @@ def perform_search():
                 response['book_list'] = util.get_booklist_author(
                     author_string)
         else:   #tag string is populated
-            # tag onlyex
+            # tag only
             response['book_list'] = util.get_booklist_tag(tag_string)
     
     status_code = 200

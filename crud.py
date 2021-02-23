@@ -141,6 +141,16 @@ def get_book_by_title(title):
 
     return Book.query.filter(Book.title == title).first()
 
+def get_full_book_by_title(title):
+    """Get book with author, category, and tag by title"""
+
+    book_list = db.session.query(Book.title, 
+                                 Book.publisher,
+                                 Author.fname,
+                                 Author.lname)\
+                    .join(Author).all()
+    
+    return book_list
 
 def get_similar_books_by_title(title):
     """Get books with similar title"""
@@ -148,7 +158,7 @@ def get_similar_books_by_title(title):
     title = f'%{title}%'
     return Book.query.filter(Book.title.like(title)).all()
 
-def get_similar_books_by_title(title):
+def get_books_by_title(title):
     """Get books with title"""
 
     return Book.query.filter(Book.title == title).all()
