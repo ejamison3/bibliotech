@@ -4,7 +4,7 @@ from flask import (Flask, render_template, redirect, request,
     jsonify, session, make_response)
 
 from model import connect_to_db
-from crud import get_user, create_user, get_similar_books_by_title, get_books_by_various
+from crud import get_user, create_user, get_books_by_various
 import util
 
 from jinja2 import StrictUndefined
@@ -119,8 +119,10 @@ def perform_search():
     # strings are None if not considered in search
     title_string = req['titleString']
     author_string = req['authorString']
-    tag_string = req['tagString']
-    user_id = req['userId']   
+    tag_string = req['tagListString']       # comma separated string of tags
+    user_id = req['userId']
+
+    tag_list = util.string_to_list(tag_string) if tag_string != None else None
     
     response = {
         'message': None,
@@ -131,16 +133,14 @@ def perform_search():
  
     books = get_books_by_various(title=title_string, 
                                 author_lname=author_string, 
-                                tag_name=tag_string, 
+                                tag_list=tag_list, 
                                 user_id=user_id)
 
     response['book_list'] = util.books_to_dictionary(books)
     
     status_code = 200
-    if response['book_list'] == None:
+    if response['book_list'] == []:
         status_code = 204
-        # 204 status code will return nothing regardless of what is in response
-        
 
     return (jsonify(response), status_code)
 

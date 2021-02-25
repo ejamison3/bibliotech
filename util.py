@@ -33,10 +33,6 @@ def get_tag_data_from_book(book):
 def books_to_dictionary(book_list):
     '''Takes in a list of book records and turns into dictionary list of books'''
 
-    # if book_list == [] or book_list == None:
-    #     print(f'PINEAPPLE : {book_list}')
-    #     return None
-
     list_book_dict = []
     
     for book in book_list:
@@ -55,3 +51,11 @@ def books_to_dictionary(book_list):
         list_book_dict.append(temp_book)
     
     return list_book_dict
+
+def string_to_list(input_string):
+
+    print(f'INPUT STRING: {input_string}')
+    new_list = input_string.rstrip().split(',')
+
+    print(f'NEW_LIST: {new_list}')
+    return new_list

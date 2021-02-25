@@ -38,20 +38,19 @@ button {
   font-weight: 500;
 }
 
-#search-type-dropdown {
+
+
+
+
+.footer-link {
   font-family: 'IBM Plex Mono';
-  font-weight: 300;
-  color: black;
-  background-color: #777777;
-  border-radius: 2rem;
-  width: 7rem;
+  font-weight: 500;
+  color: #777777;
 }
 
-#my-books-checkbox {
-  font-family: 'IBM Plex Mono';
-  font-weight: 300;
-  color: white;
-  width: 7rem;
+.footer-link:hover {
+  font-weight: 700;
+  color: red;
 }
 
 .home-logo {
@@ -70,3 +69,84 @@ button {
 .center-text {
   text-align: center;
 }
+
+#search-type-dropdown {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  color: black;
+  background-color: #777777;
+  border-radius: 2rem;
+  width: 7rem;
+}
+
+#my-books-checkbox {
+  font-family: 'IBM Plex Mono';
+  font-weight: 300;
+  color: white;
+  width: 7rem;
+}
+
+
+/*  ------------Toggle button ------------*/
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #dddddd;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+/* ball that slides */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: red;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.toggle-off-label {
+  font-weight: 700;
+}
+
+.toggle > .input:checked ~ .toggle-on-label {
+  font-weight: 700;
+}
+
+input:checked + .slider {
+  background-color:rgb(247, 167, 167);
+}
+
+/* input:focus + .slider {
+  box-shadow: 0 0 1px red;
+} */
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(50px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+

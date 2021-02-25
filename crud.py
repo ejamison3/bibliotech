@@ -145,83 +145,36 @@ def get_book_by_title(title):
 
     return Book.query.filter(Book.title == title).first()
 
-
+# may not be using this...check
 def get_books_by_title(title):
     '''Get books with title'''
 
     return Book.query.filter(Book.title == title).all()
 
 
-def get_similar_books_by_title(title):
-    '''Get books with similar title'''
-
-    return Book.query.filter(Book.title.like(f'%{title}%')).all()
-
-
 def get_books_by_various(title=None, 
                         author_lname=None, 
-                        tag_name=None,
+                        tag_list=None,
                         user_id=None):
-    
-    # change tag_name to tag_list
 
     q = Book.query
 
     if title != None:
-        q = q.filter(Book.title.like(f'%{title}%'))
+        q = q.filter(Book.title.ilike(f'%{title}%'))
     
     if author_lname != None:
         q = q.join(BookAuthor).join(Author)
-        q = q.filter(Author.lname == author_lname)
+        q = q.filter(Author.lname.ilike(author_lname))
 
-    if tag_name != None:
+    if tag_list != None:
         q = q.join(BookTag).join(Tag)
-        q = q.filter(Tag.tag_name == tag_name)
+        q = q.filter(Tag.tag_name.in_(tag_list))
 
     if user_id != None:
         q = q.join(UserBook).join(User)
         q = q.filter(User.id == user_id)
     
     return q.all()
-
-    
-
-
-def get_books_by_title_author(title, author_lname):
-    '''Get books by title and author last name'''
-
-    return Book.query\
-        .join(BookAuthor)\
-        .join(Author)\
-        .filter(\
-            (Book.title.like(f'%{title}%'))
-            &(Author.lname == author_lname))\
-            .all()
-
-
-def get_books_by_title_author_tag(title, author_lname, tag_name):
-    '''Get books by title, author, and tag'''
-
-    return Book.query\
-        .join(BookAuthor)\
-        .join(Author)\
-        .join(BookTag)\
-        .join(Tag)\
-        .filter(\
-            (Author.lname == author_lname)\
-            &(Book.title.like(f'%{title}%'))\
-            &(Tag.tag_name.like(f'%{tag_name}%'))).all()
-
-
-def get_books_by_title_tag(title, tag_name):
-    '''Get books by title and tag'''
-
-    return Book.query\
-    .join(BookTag)\
-    .join(Tag)\
-    .filter(\
-        (Book.title.like(f'%{title}%'))\
-        &(Tag.tag_name.like(f'%{tag_name}%'))).all()
 
 ###############FIND OTHER THINGS############
 

@@ -30,8 +30,13 @@ const SearchBar = (prop) => {
           <input id="search-field" type="text" placeholder="Type search phrase" autoFocus/>
           <button onClick={performSimpleSearch}>Search</button>
           <br/>
-          <input type="checkbox" id="my-books-checkbox" name="my-books-checkbox" value="OnlyMyBooks"></input>
-          <label htmlFor="my-books-checkbox">Only search my books</label>
+          <label className="toggle-off-label">All Books</label>
+          <label className="toggle" >
+            <input id="only-my-books" type="checkbox"/>
+            <span className="slider"/>
+          </label>
+          <label className="toggle-on-label">Only my books</label>
+          <br/>
         </form>
       </div>
     )

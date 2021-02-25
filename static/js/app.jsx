@@ -55,13 +55,20 @@ const Header = (prop) => {
 }
 
 
-// const Footer = (prop) => {
-//   return (
-//     <footer>
-//       <Link to={'/about/search'}>Learn about our search methodologies</Link>
-//     </footer>
-//   )
-// }
+const Footer = (prop) => {
+  return (
+    <footer>
+      <div>
+        <h4 className="center">BIBLIOTECH</h4>
+        <br/>
+        <Link to={'/about/search'} className="footer-link">Learn about our search methodologies</Link>
+        <br/>
+        <Link to={'/about'} className="footer-link">Learn about BiblioTech</Link>
+      </div>
+      <p>UnicornBread</p>
+    </footer>
+  )
+}
 
 const App = () => {
   const [userId, setUserId] = React.useState(null);
@@ -93,11 +100,27 @@ const App = () => {
           userId = {userId}
           username={username}
         />
-        <footer>
-          <div>UnicornBread</div>
-        </footer>
+        <Footer/>          
+
 
         <Switch>
+          <Route exact path="/">
+            <Home 
+              userId={userId}
+              username={username}
+              history={history}
+            />
+          </Route>
+          <Route path="/searchResults">
+            <DisplaySearchResults />
+          </Route>
+          <Route path="/account">
+            <DisplayAccount 
+              userId={userId}
+              username={username}
+              history={history}
+            />
+          </Route>
           <Route path="/login">
             <DisplayLogin 
               userId={userId}
@@ -116,25 +139,14 @@ const App = () => {
               history={history}
             />
           </Route>
-          <Route exact path="/">
-            <Home 
-              userId={userId}
-              username={username}
-              history={history}
-            />
+          <Route path='/about/search'>
+            <AboutSearch />
+          </Route>
+          <Route path='/about'>
+            <About />
           </Route>
           <Route path="/createUser">
             <DisplayCreateUser />
-          </Route>
-          <Route path="/account">
-            <DisplayAccount 
-              userId={userId}
-              username={username}
-              history={history}
-            />
-          </Route>
-          <Route path="/searchResults">
-            <DisplaySearchResults />
           </Route>
         </Switch>
       </div>
