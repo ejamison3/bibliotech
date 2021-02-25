@@ -38,10 +38,6 @@ button {
   font-weight: 500;
 }
 
-
-
-
-
 .footer-link {
   font-family: 'IBM Plex Mono';
   font-weight: 500;
@@ -70,7 +66,7 @@ button {
   text-align: center;
 }
 
-#search-type-dropdown {
+#search-type {
   font-family: 'IBM Plex Mono';
   font-weight: 300;
   color: black;

@@ -42,6 +42,8 @@ const Header = (prop) => {
           <SearchBar 
             userId = {prop.userId}
             history={prop.history}
+            searchQuery={prop.searchQuery}
+            setSearchQuery={prop.setSearchQuery}
           />
           <button>
             <Link to={'/account'}>Account</Link>
@@ -73,6 +75,8 @@ const Footer = (prop) => {
 const App = () => {
   const [userId, setUserId] = React.useState(null);
   const [username, setUsername] = React.useState(null);
+  const [searchQuery, setSearchQuery] = React.useState(null);
+  const [searchResponse, setSearchResponse] = React.useState(null);
 
 
   if (userId === null && document.cookie != ""){
@@ -99,6 +103,8 @@ const App = () => {
         <Header 
           userId = {userId}
           username={username}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
         />
         <Footer/>          
 
@@ -108,16 +114,23 @@ const App = () => {
             <Home 
               userId={userId}
               username={username}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
               history={history}
             />
           </Route>
           <Route path="/searchResults">
-            <DisplaySearchResults />
+            <DisplaySearchResults 
+              searchQuery={searchQuery}
+              searchResponse={searchResponse}
+              setSearchResponse={setSearchResponse}
+            />
           </Route>
           <Route path="/account">
             <DisplayAccount 
               userId={userId}
               username={username}
+              
               history={history}
             />
           </Route>
