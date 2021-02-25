@@ -55,6 +55,13 @@ const Header = (prop) => {
 }
 
 
+// const Footer = (prop) => {
+//   return (
+//     <footer>
+//       <Link to={'/about/search'}>Learn about our search methodologies</Link>
+//     </footer>
+//   )
+// }
 
 const App = () => {
   const [userId, setUserId] = React.useState(null);

@@ -1,8 +1,8 @@
-"""File for crud applications
+'''File for crud applications
 
-May split this into multiple files in future"""
+May split this into multiple files in future'''
 
-from model import Book, Category, Author, Tag, User, Rating, db
+from model import *
 
 # CURRENT PROBLEMS
 # 1. No way to set has_read attribute in users_books table
@@ -23,11 +23,11 @@ def create_book(
                 tag_records = None,
                 user_record = None,
                 cat_record = None):
-    """Create new book record and return newly created book
+    '''Create new book record and return newly created book
     
         Any record should be as the record object. 
         Any plural record should be as a list of record objects, even if only one
-        """
+        '''
 
     temp_book = Book(title=title,
                     publisher=pub,
@@ -61,7 +61,7 @@ def create_book(
   
 
 def create_book_category_relationship(book_record, cat_record):
-    """Create books to categories relationship"""
+    '''Create books to categories relationship'''
     
     cat_record.books.append(book_record)
     db.session.commit()
@@ -69,7 +69,7 @@ def create_book_category_relationship(book_record, cat_record):
 
 # not all authors have first names
 def create_author(lname, fname=None):
-    """Create new author record and return newly created author"""
+    '''Create new author record and return newly created author'''
 
     temp_author = Author(fname=fname, lname=lname)
     db.session.add(temp_author)
@@ -79,24 +79,24 @@ def create_author(lname, fname=None):
 
 
 def create_books_authors_relationship(book_record, author_record):
-    """Create relationship between books and authors tables"""
+    '''Create relationship between books and authors tables'''
 
     book_record.authors.append(author_record)
     db.session.commit() # I don't believe I need to add?
 
 
 def create_books_tags_relationship(book_record, tag_record):
-    """Create relationship between books and tags tables
+    '''Create relationship between books and tags tables
     
     arguments are single book and single author record
-        If wanting to add multiple,need to call function multiple times"""
+        If wanting to add multiple,need to call function multiple times'''
     
     book_record.tags.append(tag_record)
     db.session.commit()
 
 
 def create_user(name, pw):
-    """Create new user record and return newly created user"""
+    '''Create new user record and return newly created user'''
 
     # checks to be added here or done at info collection:
     #   username max of 20 chars
@@ -110,21 +110,21 @@ def create_user(name, pw):
 
 
 def create_users_books_relationship(book_record, user_record):
-    """Create relationship between users and books tables"""
+    '''Create relationship between users and books tables'''
 
     user_record.books.append(book_record)
     db.session.commit()
 
 
 def create_users_books_tags_relationship(user_book_record, book_tag_record):
-    """Create relationship between users_books table and books_tags table"""
+    '''Create relationship between users_books table and books_tags table'''
 
     user_book_record.book_tags.append(book_tag_record)
     db.session.commit()
 
 
 def create_rating(score, user_record, book_record, description=None):
-    """Create rating record and tie to users and books tables"""
+    '''Create rating record and tie to users and books tables'''
 
     temp_rating = Rating(score=score, description=description)
     db.session.add(temp_rating)
@@ -136,56 +136,152 @@ def create_rating(score, user_record, book_record, description=None):
 
 ####################### SEARCH FUNCTIONS #######################################
 
+################FIND BOOKS#############
+
 def get_book_by_title(title):
-    """Get book by title"""
+    '''Get book by title
+    
+    Returns list of books'''
 
     return Book.query.filter(Book.title == title).first()
 
-def get_full_book_by_title(title):
-    """Get book with author, category, and tag by title"""
-
-    book_list = db.session.query(Book.title, 
-                                 Book.publisher,
-                                 Author.fname,
-                                 Author.lname)\
-                    .join(Author).all()
-    
-    return book_list
-
-def get_similar_books_by_title(title):
-    """Get books with similar title"""
-
-    title = f'%{title}%'
-    return Book.query.filter(Book.title.like(title)).all()
 
 def get_books_by_title(title):
-    """Get books with title"""
+    '''Get books with title'''
 
     return Book.query.filter(Book.title == title).all()
 
 
+def get_similar_books_by_title(title):
+    '''Get books with similar title'''
+
+    return Book.query.filter(Book.title.like(f'%{title}%')).all()
+
+
+def get_books_by_various(title=None, 
+                        author_lname=None, 
+                        tag_name=None,
+                        user_id=None):
+    
+    # change tag_name to tag_list
+
+    q = Book.query
+
+    if title != None:
+        q = q.filter(Book.title.like(f'%{title}%'))
+    
+    if author_lname != None:
+        q = q.join(BookAuthor).join(Author)
+        q = q.filter(Author.lname == author_lname)
+
+    if tag_name != None:
+        q = q.join(BookTag).join(Tag)
+        q = q.filter(Tag.tag_name == tag_name)
+
+    if user_id != None:
+        q = q.join(UserBook).join(User)
+        q = q.filter(User.id == user_id)
+    
+    return q.all()
+
+    
+
+
+def get_books_by_title_author(title, author_lname):
+    '''Get books by title and author last name'''
+
+    return Book.query\
+        .join(BookAuthor)\
+        .join(Author)\
+        .filter(\
+            (Book.title.like(f'%{title}%'))
+            &(Author.lname == author_lname))\
+            .all()
+
+
+def get_books_by_title_author_tag(title, author_lname, tag_name):
+    '''Get books by title, author, and tag'''
+
+    return Book.query\
+        .join(BookAuthor)\
+        .join(Author)\
+        .join(BookTag)\
+        .join(Tag)\
+        .filter(\
+            (Author.lname == author_lname)\
+            &(Book.title.like(f'%{title}%'))\
+            &(Tag.tag_name.like(f'%{tag_name}%'))).all()
+
+
+def get_books_by_title_tag(title, tag_name):
+    '''Get books by title and tag'''
+
+    return Book.query\
+    .join(BookTag)\
+    .join(Tag)\
+    .filter(\
+        (Book.title.like(f'%{title}%'))\
+        &(Tag.tag_name.like(f'%{tag_name}%'))).all()
+
+###############FIND OTHER THINGS############
+
 def get_user(username):
-    """Get user by username"""
+    '''Get user by username'''
     
     return User.query.filter(User.username == username).first()
 
 
 def get_author(lname, fname=None):
-    """Get author by lname and fname if given"""
+    '''Get author by lname and fname if given'''
 
     return Author.query.filter(Author.lname == lname, Author.fname == fname).first()
 
 
 def get_similar_tags(similar_phrase):
-    """Get all tags with name similar to similar_phrase"""
+    '''Get all tags with name similar to similar_phrase'''
 
     return Tag.query.filter(Tag.tag_name.like(f'%{similar_phrase}%')).all()
 
-    
 
-if __name__ == "__main__":
+########Testing#######
+def get_books_by_various_old(title=None, 
+                        author_lname = None, 
+                        tag_name = None):
+    
+    query_start = 'Book.query'
+    filter_start = '.filter('
+    joins = ''
+
+    if title != None:
+        filter_start = filter_start + f'(Book.title.like(\'%{title}%\'))'
+
+    if author_lname != None:
+        joins = joins + '.join(BookAuthor).join(Author)'
+        if filter_start[-1] == ')':
+            filter_start = filter_start + '&'
+        
+        filter_start = filter_start + '(Author.lname == author_lname)'
+
+    if tag_name != None:
+        joins = joins + '.join(BookTag).join(Tag)'
+        if filter_start[-1] == ')':
+            filter_start = filter_start + '&'
+
+        filter_start = filter_start + f'(Tag.tag_name.like(\'%{tag}%\'))'  # change to variable
+    
+    full_query = query_start + filter_start + ')' + '.all()'
+     
+    print(f'Executing search: {full_query}')
+
+    results = exec(full_query)
+
+    return results
+
+
+
+if __name__ == '__main__':
     from server import app
     from model import connect_to_db
 
     connect_to_db(app)
-    print("Connected to DB.")
+    print('Connected to DB.')

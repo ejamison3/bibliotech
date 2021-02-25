@@ -4,7 +4,7 @@ from flask import (Flask, render_template, redirect, request,
     jsonify, session, make_response)
 
 from model import connect_to_db
-from crud import get_user, create_user, get_similar_books_by_title
+from crud import get_user, create_user, get_similar_books_by_title, get_books_by_various
 import util
 
 from jinja2 import StrictUndefined
@@ -129,88 +129,19 @@ def perform_search():
         'user_id': user_id,
     }
  
-    if user_id != None:
-        if title_string != None:
-            if author_string != None:
-                if tag_string != None:
-                    # title, author & tag
-                    response['book_list'] = util.get_user_booklist_title_author_tag(
-                        user_id,
-                        title_string, 
-                        author_string, 
-                        tag_string)
-                else:  # title and author
-                    response['book_list'] = util.get_user_booklist_title_author(
-                        user_id,
-                        title_string, 
-                        author_string)
-            elif tag_string != None:
-                # title and tag
-                response['book_list'] = util.get_user_booklist_title_tag(
-                        user_id,
-                        title_string, 
-                        tag_string)
-            else:
-                #title only 
-                response['book_list'] = util.get_user_booklist_title(
-                    user_id,
-                    title_string)
-        elif author_string != None:
-            if tag_string != None:
-                # author and tag
-                response['book_list'] = util.get_user_booklist_author_tag(
-                        user_id,
-                        author_string, 
-                        tag_string)
-            else:
-                # author only
-                response['book_list'] = util.get_user_booklist_author(
-                    user_id,
-                    author_string)
-        else:   #tag string is populated
-            # tag onlyex
-            response['book_list'] = util.get_user_booklist_tag(
-                user_id,
-                tag_string)
-    else:
-        if title_string != None:
-            if author_string != None:
-                if tag_string != None:
-                    # title, author & tag
-                    response['book_list'] = util.get_booklist_title_author_tag(
-                        title_string, 
-                        author_string, 
-                        tag_string)
-                else:  # title and author
-                    response['book_list'] = util.get_booklist_title_author(
-                        title_string, 
-                        author_string)
-            elif tag_string != None:
-                # title and tag
-                response['book_list'] = util.get_booklist_title_tag(
-                        title_string, 
-                        tag_string)
-            else:
-                #title only 
-                response['book_list'] = util.get_booklist_title(title_string)
-        elif author_string != None:
-            if tag_string != None:
-                # author and tag
-                response['book_list'] = util.get_booklist_author_tag(
-                        author_string, 
-                        tag_string)
-            else:
-                # author only
-                response['book_list'] = util.get_booklist_author(
-                    author_string)
-        else:   #tag string is populated
-            # tag only
-            response['book_list'] = util.get_booklist_tag(tag_string)
+    books = get_books_by_various(title=title_string, 
+                                author_lname=author_string, 
+                                tag_name=tag_string, 
+                                user_id=user_id)
+
+    response['book_list'] = util.books_to_dictionary(books)
     
     status_code = 200
     if response['book_list'] == None:
         status_code = 204
+        # 204 status code will return nothing regardless of what is in response
         
+
     return (jsonify(response), status_code)
 
 
