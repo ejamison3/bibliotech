@@ -45,7 +45,7 @@ def books_to_dictionary(book_list):
             'description': book.description,
             'publisher': book.publisher,
             'year': book.publication_year,
-            'tag': tag_list,
+            'tags': tag_list,
         }
 
         list_book_dict.append(temp_book)

@@ -78,6 +78,8 @@ const DisplayLogin = (prop) => {
   const LoginUser = (evt) => {
     evt.preventDefault();
 
+    //event.target.value  <- read about using this instead of getElementById
+
     const username = document.getElementById('username').value;
     const pwd = document.getElementById('pwd').value;
   

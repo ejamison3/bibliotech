@@ -74,6 +74,23 @@ const SearchBar = (prop) => {
   }
 }
 
+const Book = (prop) => {
+  return (
+    <div className="book">
+      <h2>{prop.title}</h2>
+      {prop.authorList ? prop.authorList.map(author =>
+        (<div>{author}</div>)) : ''
+      }
+      {prop.description ? (<div>Description: {prop.description} </div>) : ''}
+      {prop.publisher ? (<div>Publisher: {prop.publisher} </div>) : ''}
+      {prop.year ? (<div>Publication Year: {prop.year} </div>) : ''}
+      {prop.tagList ? prop.tagList.map(tag =>
+        (<div>{tag}</div>)) : ''
+      }
+    </div>
+  )
+
+} 
 
 const DisplaySearchResults = (prop) => {
   const query = prop.searchQuery;
@@ -89,30 +106,49 @@ const DisplaySearchResults = (prop) => {
     })
     .then(response => {
       if (response.status !== 200){
-        return(
-          <div>
-            No books found, try again
-          </div>
-        )
+        prop.setSearchResponse(null);
       }
       response.json().then(data => {
-        return(
-          <div>
-            Valid response maybe?
-          </div>
-        )
+          prop.setSearchResponse(data)
       })
     })
-    prop.setSearchResponse('blah');
+    // prop.setSearchResponse('blah');
   }, [query])
 
   console.log(query);
   console.log(prop.searchResponse);
-  return (
-    <div>
-      This is the search results
-      <div>This is query: {JSON.stringify(query)}</div>
-      <div>This is search response: </div>
-    </div>
-  )
+  if (prop.searchResponse === null){
+    return (
+      <div>
+        Your search either failed miserably because of something you did 
+        or it returned no books.
+      </div>
+    )
+  }else{
+    const bookList = prop.searchResponse.book_list;
+    const books = [];
+    for (let book of bookList){
+      books.push(
+        <Book
+          title={book.title}
+          authorList={book.authors}
+          description={book.description}
+          publisher={book.publisher}
+          year={book.year}
+          tagList={book.tags}
+        />
+      )
+    }
+    return (
+      <React.Fragment>
+        {books}
+      </React.Fragment>
+      // <div>
+        
+      //   This is the search results
+      //   <div>This is query: {JSON.stringify(query)}</div>
+      //   <div>This is search response: {JSON.stringify(prop.searchResponse.book_list)}</div>
+      // </div>
+    )
+  }
 }
