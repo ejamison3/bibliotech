@@ -40,6 +40,7 @@ def books_to_dictionary(book_list):
         tag_list = get_tag_data_from_book(book)
 
         temp_book = {
+            'id' : book.id,
             'title': book.title,
             'authors': author_list,
             'description': book.description,

@@ -76,16 +76,18 @@ const SearchBar = (prop) => {
 
 const Book = (prop) => {
   return (
-    <div className="book">
+     <div className="book">
       <h2>{prop.title}</h2>
       {prop.authorList ? prop.authorList.map(author =>
-        (<div>{author}</div>)) : ''
+        (<div key={author}>{author}</div>)) : ''
       }
       {prop.description ? (<div>Description: {prop.description} </div>) : ''}
       {prop.publisher ? (<div>Publisher: {prop.publisher} </div>) : ''}
       {prop.year ? (<div>Publication Year: {prop.year} </div>) : ''}
-      {prop.tagList ? prop.tagList.map(tag =>
-        (<div>{tag}</div>)) : ''
+      {prop.tagList ? (<div>Tags:
+          <ul>{prop.tagList.map(tag =>
+          (<li key={tag}>{tag}</li>))}</ul>
+          </div>) : ''
       }
     </div>
   )
@@ -112,11 +114,8 @@ const DisplaySearchResults = (prop) => {
           prop.setSearchResponse(data)
       })
     })
-    // prop.setSearchResponse('blah');
   }, [query])
 
-  console.log(query);
-  console.log(prop.searchResponse);
   if (prop.searchResponse === null){
     return (
       <div>
@@ -129,6 +128,7 @@ const DisplaySearchResults = (prop) => {
     const books = [];
     for (let book of bookList){
       books.push(
+        <div key={book.id}>
         <Book
           title={book.title}
           authorList={book.authors}
@@ -137,18 +137,16 @@ const DisplaySearchResults = (prop) => {
           year={book.year}
           tagList={book.tags}
         />
+        </div>
       )
     }
     return (
-      <React.Fragment>
-        {books}
-      </React.Fragment>
-      // <div>
-        
-      //   This is the search results
-      //   <div>This is query: {JSON.stringify(query)}</div>
-      //   <div>This is search response: {JSON.stringify(prop.searchResponse.book_list)}</div>
-      // </div>
-    )
+      <div>
+        Put query here
+        <React.Fragment>
+          {books}
+        </React.Fragment>
+       </div>
+    );
   }
 }
