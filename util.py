@@ -53,6 +53,26 @@ def books_to_dictionary(book_list):
     
     return list_book_dict
 
+
+def book_to_dictionary(book):
+    '''Takes in a list of book records and turns into dictionary list of books'''
+    
+    author_list = get_author_data_from_book(book)
+    tag_list = get_tag_data_from_book(book)
+
+    temp_book = {
+        'id' : book.id,
+        'title': book.title,
+        'authors': author_list,
+        'description': book.description,
+        'publisher': book.publisher,
+        'year': book.publication_year,
+        'tags': tag_list,
+    }
+    
+    return temp_book
+
+
 def string_to_list(input_string):
 
     print(f'INPUT STRING: {input_string}')

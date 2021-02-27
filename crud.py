@@ -138,6 +138,11 @@ def create_rating(score, user_record, book_record, description=None):
 
 ################FIND BOOKS#############
 
+def get_book_by_id(id):
+    '''get book record by id'''
+
+    return Book.query.filter(Book.id == id).first()
+
 def get_book_by_title(title):
     '''Get book by title
     
@@ -194,41 +199,6 @@ def get_similar_tags(similar_phrase):
     '''Get all tags with name similar to similar_phrase'''
 
     return Tag.query.filter(Tag.tag_name.like(f'%{similar_phrase}%')).all()
-
-
-########Testing#######
-def get_books_by_various_old(title=None, 
-                        author_lname = None, 
-                        tag_name = None):
-    
-    query_start = 'Book.query'
-    filter_start = '.filter('
-    joins = ''
-
-    if title != None:
-        filter_start = filter_start + f'(Book.title.like(\'%{title}%\'))'
-
-    if author_lname != None:
-        joins = joins + '.join(BookAuthor).join(Author)'
-        if filter_start[-1] == ')':
-            filter_start = filter_start + '&'
-        
-        filter_start = filter_start + '(Author.lname == author_lname)'
-
-    if tag_name != None:
-        joins = joins + '.join(BookTag).join(Tag)'
-        if filter_start[-1] == ')':
-            filter_start = filter_start + '&'
-
-        filter_start = filter_start + f'(Tag.tag_name.like(\'%{tag}%\'))'  # change to variable
-    
-    full_query = query_start + filter_start + ')' + '.all()'
-     
-    print(f'Executing search: {full_query}')
-
-    results = exec(full_query)
-
-    return results
 
 
 

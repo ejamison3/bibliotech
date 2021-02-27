@@ -16,6 +16,14 @@ const SearchBar = (prop) => {
       return;
     }
 
+    if (searchVal == '') {
+      const continueSearch = confirm('Are you sure you want to return all ' + (myBooksOnly ? 'of your ': '') + 
+        'books? \n This search can be time consuming.');
+      if (continueSearch == false){
+        return;
+      }
+    }
+
     //create empty structure
     let query = {
       'titleString': null,
@@ -42,12 +50,13 @@ const SearchBar = (prop) => {
     
     //update searchQuery - call will be made in DisplaySearchResults component
     prop.setSearchQuery(query);
+    prop.setIsLoading(true);
     history.push("/searchResults");
   }
 
   if (prop.userId === null) {
     return;
-  }else{
+  } else{
     return (
       <div>
         <form>
@@ -75,9 +84,13 @@ const SearchBar = (prop) => {
 }
 
 const Book = (prop) => {
+  let id = prop.id;
   return (
      <div className="book">
-      <h2>{prop.title}</h2>
+      <Link to={'/book/' + id}>
+        <h2>{prop.title}</h2>
+      </Link>
+      
       {prop.authorList ? prop.authorList.map(author =>
         (<div key={author}>{author}</div>)) : ''
       }
@@ -95,58 +108,90 @@ const Book = (prop) => {
 } 
 
 const DisplaySearchResults = (prop) => {
-  const query = prop.searchQuery;
+  // const query = prop.searchQuery;
+  let history = useHistory();
 
   React.useEffect(() => {
+    console.log('useEffect started');
     //fetch here
     fetch('api/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(query)
+      body: JSON.stringify(prop.searchQuery)
     })
     .then(response => {
-      if (response.status !== 200){
-        prop.setSearchResponse(null);
+      console.log('response');
+      if (!response.ok){
+        console.log('status not 200');
+        prop.setSearchResponse(0);
       }
       response.json().then(data => {
-          prop.setSearchResponse(data)
+        console.log('data');
+          prop.setSearchResponse(data);
+          prop.setIsLoading(false);
       })
     })
-  }, [query])
+  }, [prop.searchQuery]);
 
-  if (prop.searchResponse === null){
+
+  // React.useEffect(() => {
+  //   history.push('searchResults')
+  // }, [prop.searchResponse]);
+
+
+  //is it appopriate to put BELOW in a useEffect with searchResponse. I feel like it could have some weird side effects
+  if (prop.isLoading){
     return (
-      <div>
-        Your search either failed miserably because of something you did 
-        or it returned no books.
-      </div>
+      <div>Waiting...</div> 
     )
   }else{
-    const bookList = prop.searchResponse.book_list;
-    const books = [];
-    for (let book of bookList){
-      books.push(
-        <div key={book.id}>
-        <Book
-          title={book.title}
-          authorList={book.authors}
-          description={book.description}
-          publisher={book.publisher}
-          year={book.year}
-          tagList={book.tags}
-        />
-        </div>
+    if (prop.searchResponse === null) {
+      return (
+        <div>Your search returned no books.</div>
       )
-    }
-    return (
-      <div>
-        Put query here
-        <React.Fragment>
-          {books}
-        </React.Fragment>
-       </div>
-    );
+    }else{
+      const bookList = prop.searchResponse.book_list;
+      const books = [];
+      for (let book of bookList){
+        books.push(
+          <div key={book.id} value={book.id}>
+          <Book
+            book={book}
+            id={book.id}
+            title={book.title}
+            authorList={book.authors}
+            description={book.description}
+            publisher={book.publisher}
+            year={book.year}
+            tagList={book.tags}
+            bookId={prop.bookId}
+            setBookId={prop.setBookId}
+          />
+          </div>
+        )
+      }
+      return (
+        <div>
+          Put query here
+          <React.Fragment>
+            {books}
+          </React.Fragment>
+        </div>
+      );
+    }  
   }
+}
+
+const DisplayBook = (prop) => {
+  let { bookId } = useParams();
+
+  console.log(bookId);
+
+  return (
+    <div>
+      Here is where book info will be displayed { bookId }
+    </div>
+  )
 }

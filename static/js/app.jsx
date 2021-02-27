@@ -4,6 +4,7 @@ const Link = ReactRouterDOM.Link;
 const Switch = ReactRouterDOM.Switch;
 const Route = ReactRouterDOM.Route;
 const useHistory = ReactRouterDOM.useHistory;
+const useParams = ReactRouterDOM.useParams;
 
 
 const Home = (prop) => {
@@ -44,6 +45,8 @@ const Header = (prop) => {
             history={prop.history}
             searchQuery={prop.searchQuery}
             setSearchQuery={prop.setSearchQuery}
+            isLoading={prop.isLoading}
+            setIsLoading={prop.setIsLoading}
           />
           <button>
             <Link to={'/account'}>Account</Link>
@@ -77,6 +80,8 @@ const App = () => {
   const [username, setUsername] = React.useState(null);
   const [searchQuery, setSearchQuery] = React.useState(null);
   const [searchResponse, setSearchResponse] = React.useState(null);
+  const [bookId, setBookId] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
 
   if (userId === null && document.cookie != ""){
@@ -105,9 +110,10 @@ const App = () => {
           username={username}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
         />
         <Footer/>          
-
 
         <Switch>
           <Route exact path="/">
@@ -117,6 +123,8 @@ const App = () => {
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
               history={history}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
             />
           </Route>
           <Route path="/searchResults">
@@ -124,6 +132,15 @@ const App = () => {
               searchQuery={searchQuery}
               searchResponse={searchResponse}
               setSearchResponse={setSearchResponse}
+              bookId={bookId}
+              setBookId={setBookId}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+            />
+          </Route>
+          <Route path="/book/:bookId">
+            <DisplayBook 
+              bookId={bookId}
             />
           </Route>
           <Route path="/account">

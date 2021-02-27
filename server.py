@@ -4,7 +4,7 @@ from flask import (Flask, render_template, redirect, request,
     jsonify, session, make_response)
 
 from model import connect_to_db
-from crud import get_user, create_user, get_books_by_various
+from crud import get_user, create_user, get_books_by_various, get_book_by_id
 import util
 
 from jinja2 import StrictUndefined
@@ -145,7 +145,29 @@ def perform_search():
     return (jsonify(response), status_code)
 
 
+@app.route('/book', methods=['POST'])
+def get_book():
+    """Get single book data to populate /book/{id} page"""
 
+    req = request.get_json()
+
+    book_id = req['bookId']
+
+    response = {
+        'message': None,
+        'error': None,
+        'book': None,
+    }
+
+    book = get_book_by_id(book_id)
+
+    if book != None:
+        response['book'] = util.book_to_dictionary(book)
+
+    status_code = 204 if book == None else 200
+
+    return (jsonify(response), status_code)
+    
 
 if __name__ == '__main__':
     connect_to_db(app)
