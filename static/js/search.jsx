@@ -108,8 +108,8 @@ const Book = (prop) => {
 } 
 
 const DisplaySearchResults = (prop) => {
-  // const query = prop.searchQuery;
-  let history = useHistory();
+  const query = prop.searchQuery;
+  // let history = useHistory();
 
   React.useEffect(() => {
     console.log('useEffect started');
@@ -119,32 +119,31 @@ const DisplaySearchResults = (prop) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(prop.searchQuery)
+      body: JSON.stringify(query)
     })
     .then(response => {
       console.log('response');
+      console.log('repsonse code: ' + response.status)
       if (!response.ok){
-        console.log('status not 200');
+        console.log('Some sorty of error has occurred');
         prop.setSearchResponse(0);
+        prop.setIsLoading(false);
+      }else if (response.status === 204) {
+        prop.setSearchResponse(null);
+        prop.setIsLoading(false);
       }
       response.json().then(data => {
-        console.log('data');
+        console.log('data: ' + data);
           prop.setSearchResponse(data);
           prop.setIsLoading(false);
       })
     })
-  }, [prop.searchQuery]);
-
-
-  // React.useEffect(() => {
-  //   history.push('searchResults')
-  // }, [prop.searchResponse]);
-
+  }, [query]);
 
   //is it appopriate to put BELOW in a useEffect with searchResponse. I feel like it could have some weird side effects
   if (prop.isLoading){
     return (
-      <div>Waiting...</div> 
+      <div>Loading...</div> 
     )
   }else{
     if (prop.searchResponse === null) {
@@ -188,6 +187,10 @@ const DisplayBook = (prop) => {
   let { bookId } = useParams();
 
   console.log(bookId);
+
+  // React.useEffect(() => {
+
+  // }, bookId)
 
   return (
     <div>

@@ -38,6 +38,17 @@ button {
   font-weight: 500;
 }
 
+a {
+  font-family: 'IBM Plex Mono';
+  font-weight: 500;
+  color: #777777;
+}
+
+a:hover {
+  font-weight: 700;
+  color: red;
+}
+
 .footer-link {
   font-family: 'IBM Plex Mono';
   font-weight: 500;

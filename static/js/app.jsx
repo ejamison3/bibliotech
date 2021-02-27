@@ -80,7 +80,6 @@ const App = () => {
   const [username, setUsername] = React.useState(null);
   const [searchQuery, setSearchQuery] = React.useState(null);
   const [searchResponse, setSearchResponse] = React.useState(null);
-  const [bookId, setBookId] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
 
@@ -132,15 +131,15 @@ const App = () => {
               searchQuery={searchQuery}
               searchResponse={searchResponse}
               setSearchResponse={setSearchResponse}
-              bookId={bookId}
-              setBookId={setBookId}
               isLoading={isLoading}
               setIsLoading={setIsLoading}
             />
           </Route>
           <Route path="/book/:bookId">
             <DisplayBook 
-              bookId={bookId}
+              userId={userId}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
             />
           </Route>
           <Route path="/account">
