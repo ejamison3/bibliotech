@@ -146,13 +146,11 @@ def perform_search():
     return (jsonify(response), status_code)
 
 
-@app.route('/book', methods=['POST'])
-def get_book():
+@app.route('/book/<bookId>')
+def get_book(bookId):
     """Get single book data to populate /book/{id} page"""
 
-    req = request.get_json()
-
-    book_id = req['bookId']
+    book_id = bookId
 
     response = {
         'message': None,
@@ -161,11 +159,14 @@ def get_book():
     }
 
     book = get_book_by_id(book_id)
+    print(f'book: {book}')
 
     if book != None:
         response['book'] = util.book_to_dictionary(book)
 
     status_code = 204 if book == None else 200
+
+    print(f'json reponse: {response}')
 
     return (jsonify(response), status_code)
     

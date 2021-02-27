@@ -81,7 +81,7 @@ const App = () => {
   const [searchQuery, setSearchQuery] = React.useState(null);
   const [searchResponse, setSearchResponse] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
-
+  const [bookResponse, setBookResponse] = React.useState(null);
 
   if (userId === null && document.cookie != ""){
     // check if there is a user_id cookie
@@ -138,8 +138,8 @@ const App = () => {
           <Route path="/book/:bookId">
             <DisplayBook 
               userId={userId}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
+              bookResponse={bookResponse}
+              setBookResponse={setBookResponse}
             />
           </Route>
           <Route path="/account">

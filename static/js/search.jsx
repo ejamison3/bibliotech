@@ -112,8 +112,6 @@ const DisplaySearchResults = (prop) => {
   // let history = useHistory();
 
   React.useEffect(() => {
-    console.log('useEffect started');
-    //fetch here
     fetch('api/search', {
       method: 'POST',
       headers: {
@@ -122,8 +120,6 @@ const DisplaySearchResults = (prop) => {
       body: JSON.stringify(query)
     })
     .then(response => {
-      console.log('response');
-      console.log('repsonse code: ' + response.status)
       if (!response.ok){
         console.log('Some sorty of error has occurred');
         prop.setSearchResponse(0);
@@ -133,9 +129,8 @@ const DisplaySearchResults = (prop) => {
         prop.setIsLoading(false);
       }
       response.json().then(data => {
-        console.log('data: ' + data);
-          prop.setSearchResponse(data);
-          prop.setIsLoading(false);
+        prop.setSearchResponse(data);
+        prop.setIsLoading(false);
       })
     })
   }, [query]);
@@ -155,7 +150,7 @@ const DisplaySearchResults = (prop) => {
       const books = [];
       for (let book of bookList){
         books.push(
-          <div key={book.id} value={book.id}>
+          <div key={book.id}>
           <Book
             book={book}
             id={book.id}
@@ -165,8 +160,6 @@ const DisplaySearchResults = (prop) => {
             publisher={book.publisher}
             year={book.year}
             tagList={book.tags}
-            bookId={prop.bookId}
-            setBookId={prop.setBookId}
           />
           </div>
         )
@@ -186,15 +179,37 @@ const DisplaySearchResults = (prop) => {
 const DisplayBook = (prop) => {
   let { bookId } = useParams();
 
-  console.log(bookId);
+  React.useEffect(() => {
+    // prop.setIsLoading(true);
+    fetch('/book/' + bookId, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      // got rid of inner loop that only went to .then(data) if response populated
+      return response.json()
+    })
+    .then(data => {
+      prop.setBookResponse(data);
+    });
+  }, []);
 
-  // React.useEffect(() => {
-
-  // }, bookId)
-
-  return (
-    <div>
-      Here is where book info will be displayed { bookId }
-    </div>
-  )
+  // was using isLoading but then would never rerender once loaded. Not sure on best practices
+  if (prop.bookResponse == null){
+    return (
+      <div>
+        Error loading book. Please search again and select a different book.
+      </div>
+    )
+  }else{
+    // const book = prop.bookSearchResponse.book;
+    // console.log('BOOOOOOOOOKKKKKKK: ' + book);
+    return (
+      <div>
+        Here is where book info will be displayed { bookId }
+      </div>
+    )
+  }
 }
