@@ -74,9 +74,8 @@ def book_to_dictionary(book):
 
 
 def string_to_list(input_string):
+    """takes comma separated input string and separates into list"""
 
-    print(f'INPUT STRING: {input_string}')
     new_list = input_string.rstrip().split(',')
 
-    print(f'NEW_LIST: {new_list}')
     return new_list

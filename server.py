@@ -4,7 +4,8 @@ from flask import (Flask, render_template, redirect, request,
     jsonify, session, make_response)
 
 from model import connect_to_db
-from crud import get_user, create_user, get_books_by_various, get_book_by_id
+from crud import *
+
 import util
 
 from jinja2 import StrictUndefined
@@ -13,6 +14,7 @@ app = Flask(__name__)
 app.secret_key = "1123513"
 app.jinja_env.undefined = StrictUndefined
 
+# find wildcard to make reload always take you home
 @app.route('/')
 def homepage():
     """View homepage."""
@@ -118,9 +120,11 @@ def perform_search():
 
     # strings are None if not considered in search
     title_string = req['titleString']
-    author_string = req['authorString']
+    author_lname_string = req['authorLnameString']
     tag_string = req['tagListString']       # comma separated string of tags
+    search_type = req['searchType']         # advanced, basic
     user_id = req['userId']
+    
 
     tag_list = util.string_to_list(tag_string) if tag_string != None else None
     
@@ -131,10 +135,31 @@ def perform_search():
         'user_id': user_id,
     }
  
-    books = get_books_by_various(title=title_string, 
-                                author_lname=author_string, 
-                                tag_list=tag_list, 
-                                user_id=user_id)
+    # if advanced search, get fuzzy/exact search booleans 
+    if search_type == 'advanced':
+        # extra fields for advanced search
+        author_fname_string = req['authorFnameString']
+
+        # search specifiers (fuzzy/exact)
+        exact_title = req['exactTitle']
+        exact_fname = req['exactFname']
+        exact_lname = req['exactLname']
+    
+        books = get_books_by_various_advanced(title=title_string, 
+                                            author_fname=author_fname_string,
+                                            author_lname=author_lname_string, 
+                                            tag_list=tag_list, 
+                                            user_id=user_id,
+                                            exact_title=exact_title,
+                                            exact_fname=exact_fname,
+                                            exact_lname=exact_lname)
+
+    # basic search
+    else:
+        books = get_books_by_various(title=title_string, 
+                                    author_lname=author_lname_string, 
+                                    tag_list=tag_list, 
+                                    user_id=user_id)
 
     response['book_list'] = util.books_to_dictionary(books)
     

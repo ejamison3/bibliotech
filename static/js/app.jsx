@@ -37,9 +37,10 @@ const Header = (prop) => {
         </header>
     )
   }else{
-    return (
-      <header>
-          <Link to="/"><img className="home-logo header-part" src="/static/img/BiblioTechLogo.png" /></Link>
+    if (prop.displaySearchBar) {
+      return (
+        <header>
+          <Link to="/" onClick={() => prop.setDisplaySearchBar(true)}><img className="home-logo header-part" src="/static/img/BiblioTechLogo.png" /></Link>
           <SearchBar 
             userId = {prop.userId}
             history={prop.history}
@@ -47,6 +48,8 @@ const Header = (prop) => {
             setSearchQuery={prop.setSearchQuery}
             isLoading={prop.isLoading}
             setIsLoading={prop.setIsLoading}
+            displaySearchBar={prop.displaySearchBar}
+            setDisplaySearchBar={prop.setDisplaySearchBar}
           />
           <button>
             <Link to={'/account'}>Account</Link>
@@ -55,7 +58,20 @@ const Header = (prop) => {
             <Link to={'/logout'}>Logout</Link>
           </button>
         </header>
-    )
+      )
+    } else {
+      return (
+        <header>
+          <Link to="/" onClick={() => prop.setDisplaySearchBar(true)}><img className="home-logo header-part" src="/static/img/BiblioTechLogo.png" /></Link>
+          <button>
+            <Link to={'/account'}>Account</Link>
+          </button>
+          <button>
+            <Link to={'/logout'}>Logout</Link>
+          </button>
+        </header>
+      )
+    }
   }
 }
 
@@ -82,6 +98,8 @@ const App = () => {
   const [searchResponse, setSearchResponse] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [bookResponse, setBookResponse] = React.useState(null);
+  const [isEditable, setIsEditable] = React.useState(false);
+  const [displaySearchBar, setDisplaySearchBar] = React.useState(true);
 
   if (userId === null && document.cookie != ""){
     // check if there is a user_id cookie
@@ -111,6 +129,8 @@ const App = () => {
           setSearchQuery={setSearchQuery}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
+          displaySearchBar={displaySearchBar}
+          setDisplaySearchBar={setDisplaySearchBar}
         />
         <Footer/>          
 
@@ -124,6 +144,8 @@ const App = () => {
               history={history}
               isLoading={isLoading}
               setIsLoading={setIsLoading}
+              displaySearchBar={displaySearchBar}
+              setDisplaySearchBar={setDisplaySearchBar}
             />
           </Route>
           <Route path="/searchResults">
@@ -140,6 +162,19 @@ const App = () => {
               userId={userId}
               bookResponse={bookResponse}
               setBookResponse={setBookResponse}
+              isEditable={isEditable}
+              setIsEditable={setIsEditable}
+            />
+          </Route>
+          <Route path="/search/advanced">
+            <AdvancedSearch 
+              userId={userId}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              displaySearchBar={displaySearchBar}
+              setDisplaySearchBar={setDisplaySearchBar}
             />
           </Route>
           <Route path="/account">

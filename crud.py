@@ -181,6 +181,51 @@ def get_books_by_various(title=None,
     
     return q.all()
 
+
+def get_books_by_various_advanced(title=None, 
+                                author_fname= None,
+                                author_lname=None, 
+                                tag_list=None,
+                                user_id=None,
+                                exact_title=False,
+                                exact_fname=False,
+                                exact_lname=False):
+
+    q = Book.query
+
+    if title != None:
+        if exact_title:
+            q = q.filter(Book.title.ilike(title))       # case insensitive
+        else:
+            q = q.filter(Book.title.ilike(f'%{title}%'))
+    
+    if author_fname != None or author_lname != None:
+        q = q.join(BookAuthor).join(Author)
+
+        # Author First Name
+        if author_fname != None:
+            if exact_fname:
+                q = q.filter(Author.fname.ilike(author_fname))
+            else:
+                q = q.filter(Author.fname.ilike(f'%{author_fname}%'))
+
+        # Author Last Name
+        if author_lname != None:
+            if exact_lname:
+                q = q.filter(Author.lname.ilike(author_lname))
+            else:
+                q = q.filter(Author.lname.ilike(f'%{author_lname}%'))
+
+    if tag_list != None:
+        q = q.join(BookTag).join(Tag)
+        q = q.filter(Tag.tag_name.in_(tag_list))
+
+    if user_id != None:
+        q = q.join(UserBook).join(User)
+        q = q.filter(User.id == user_id)
+    
+    return q.all()
+
 ###############FIND OTHER THINGS############
 
 def get_user(username):

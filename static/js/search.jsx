@@ -26,8 +26,9 @@ const SearchBar = (prop) => {
 
     //create empty structure
     let query = {
+      'searchType': 'basic',
       'titleString': null,
-      'authorString': null,
+      'authorLnameString': null,
       'tagListString': null,
       'userId': null,
     }
@@ -38,7 +39,7 @@ const SearchBar = (prop) => {
         query.titleString = searchVal;
         break;
       case 'Author':
-        query.authorString = searchVal;
+        query.authorLnameString = searchVal;
         break;
       case 'Tags':
         query.tagListString = searchVal;
@@ -69,6 +70,10 @@ const SearchBar = (prop) => {
           <label htmlFor="search-field"></label>
           <input id="search-field" type="text" placeholder="Type search phrase" autoFocus/>
           <button onClick={updateQuery}>Search</button>
+          <Link to={'/search/advanced'} onClick={() => {
+            prop.setDisplaySearchBar(false)
+            }}>
+            Advanced Search</Link>
           <br/>
           <label className="toggle-off-label">All Books</label>
           <label className="toggle" >
@@ -104,8 +109,15 @@ const Book = (prop) => {
       }
     </div>
   )
-
 } 
+
+const EditBook = (prop) => {
+  return (
+    <div>
+      Edit Book
+    </div>
+  )
+}
 
 const DisplaySearchResults = (prop) => {
   const query = prop.searchQuery;
@@ -176,8 +188,122 @@ const DisplaySearchResults = (prop) => {
   }
 }
 
+const AdvancedSearch = (prop) => {
+  let history = useHistory();
+
+  const updateQuery = (evt) => {
+    evt.preventDefault();
+
+    //get values to send in fetch request
+    //Title
+    const titleString = document.getElementById('title').value;
+    const exactTitle = document.getElementById('exactTitle').checked; 
+    // Author
+    const authorFnameString = document.getElementById('fname').value;
+    const exactFname = document.getElementById('exactFname').checked;
+    const authorLnameString = document.getElementById('lname').value;
+    const exactLname = document.getElementById('exactLname').checked;
+    //Tags
+    const tagListString = document.getElementById('tags').value
+    //User
+    const myBooksOnly = document.getElementById('only-my-books').checked;
+
+    //warning alert if no search criteria
+    if (!titleString && !authorFnameString && !authorLnameString && !tagListString){
+      const continueSearch = confirm('Are you sure you want to return all ' + (myBooksOnly ? 'of your ': '') + 
+        'books? \n This search can be time consuming.');
+      if (continueSearch == false){
+        return;
+      }
+    }
+
+    //create & define query structure
+    let query = {
+      'searchType': 'advanced',
+      'titleString': (titleString != '' ? titleString : null),
+      'exactTitle': exactTitle,
+      'authorFnameString': (authorFnameString != '' ? authorFnameString : null),
+      'exactFname': exactFname,
+      'authorLnameString': (authorLnameString != '' ? authorLnameString : null),
+      'exactLname': exactLname,
+      'tagListString': (tagListString != '' ? tagListString : null),
+      'userId': null,
+    }
+
+    //set values in query
+    // query.titleString = titleString != '' ? titleString : null;
+    // set userId if necessary
+    query.userId = myBooksOnly ? prop.userId : null;
+
+    prop.setSearchQuery(query);
+    prop.setIsLoading(true);
+    history.push("/searchResults")
+
+  }
+
+  return (
+    <div>
+      <h2 className="center-text">Advanced Search</h2>
+      <form className="center">
+        <label htmlFor="title"> Title
+          <input type="text" id="title" name="title" autoFocus></input>
+        </label>
+        <label htmlFor="exactTitle">Exact match?
+          <input type="checkbox" id="exactTitle" name="exactTitle"/>
+        </label>
+        <br/>
+        <div>
+          Author:
+          <label htmlFor="fname">
+            <input type="text" 
+                  id="lname" 
+                  name="lname" 
+                  placeholder="Author First Name">
+            </input>
+          </label>
+          <label htmlFor="exactFname">Exact match?
+            <input type="checkbox" id="exactFname" name="exactFname"/>
+          </label>
+          <br/>
+          <label htmlFor="lname">
+            <input type="text" 
+                  id="fname" 
+                  name="fname" 
+                  placeholder="Author Last Name">
+            </input>
+          </label>
+          <label htmlFor="exactLname">Exact match?
+            <input type="checkbox" id="exactLname" name="exactLname"/>
+          </label>
+        </div>
+        <div>
+          Tags:
+          <label htmlFor="tags">
+            <input type="text" id="tags" name="tags"></input>
+          </label>
+        </div>
+        <div>
+          <label htmlFor="only-my-books">Only My Books
+            <input type="checkbox" id="only-my-books" name="only-my-books"></input>
+          </label>
+        </div>
+        <button onClick={updateQuery}>Search</button>
+      </form>
+    </div>
+  )
+}
+
 const DisplayBook = (prop) => {
   let { bookId } = useParams();
+
+  const makeEditable = () => {
+    prop.setIsEditable(true);
+  }
+
+  const saveBookChanges = () => {
+    //make patch request
+
+  }
 
   React.useEffect(() => {
     // prop.setIsLoading(true);
@@ -204,12 +330,32 @@ const DisplayBook = (prop) => {
       </div>
     )
   }else{
-    // const book = prop.bookSearchResponse.book;
-    // console.log('BOOOOOOOOOKKKKKKK: ' + book);
-    return (
-      <div>
-        Here is where book info will be displayed { bookId }
-      </div>
-    )
+    const book = prop.bookResponse.book;
+    if (prop.isEditable) {
+      return (
+        <div>
+          Editable book here
+          <button onClick={saveBookChanges}>Save</button>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <h2>{book.title}</h2>
+          {book.authorList ? book.authorList.map(author =>
+            (<div key={author}>{author}</div>)) : ''
+          }
+          {book.description ? (<div>Description: {book.description} </div>) : ''}
+          {book.publisher ? (<div>Publisher: {book.publisher} </div>) : ''}
+          {book.year ? (<div>Publication Year: {book.year} </div>) : ''}
+          {book.tagList ? (<div>Tags:
+              <ul>{book.tagList.map(tag =>
+              (<li key={tag}>{tag}</li>))}</ul>
+              </div>) : ''
+          }
+          <button onClick={makeEditable}>Edit Book</button>
+        </div>
+      )
+    }
   }
 }
