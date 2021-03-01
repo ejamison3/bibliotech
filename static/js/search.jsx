@@ -89,24 +89,34 @@ const SearchBar = (prop) => {
 }
 
 const Book = (prop) => {
-  let id = prop.id;
+  const book = prop.book;
+  const id = book.id;
+
+  const removeBook = () => {
+    return;
+  }
+
   return (
-     <div className="book">
+    <div className="book">
+        
       <Link to={'/book/' + id}>
-        <h2>{prop.title}</h2>
+        <h2>{book.title}</h2>
       </Link>
       
-      {prop.authorList ? prop.authorList.map(author =>
+      {book.authors ? book.authors.map(author =>
         (<div key={author}>{author}</div>)) : ''
       }
-      {prop.description ? (<div>Description: {prop.description} </div>) : ''}
-      {prop.publisher ? (<div>Publisher: {prop.publisher} </div>) : ''}
-      {prop.year ? (<div>Publication Year: {prop.year} </div>) : ''}
-      {prop.tagList ? (<div>Tags:
-          <ul>{prop.tagList.map(tag =>
+      {book.description ? (<div>Description: {book.description} </div>) : ''}
+      {book.publisher ? (<div>Publisher: {book.publisher} </div>) : ''}
+      {book.year ? (<div>Publication Year: {book.year} </div>) : ''}
+      {book.tags ? (<div>Tags:
+          <ul>{book.tags.map(tag =>
           (<li key={tag}>{tag}</li>))}</ul>
           </div>) : ''
       }
+      <span>
+        {book.isUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button>ADD to my books</button> }
+      </span>
     </div>
   )
 } 
@@ -165,13 +175,6 @@ const DisplaySearchResults = (prop) => {
           <div key={book.id}>
           <Book
             book={book}
-            id={book.id}
-            title={book.title}
-            authorList={book.authors}
-            description={book.description}
-            publisher={book.publisher}
-            year={book.year}
-            tagList={book.tags}
           />
           </div>
         )
@@ -256,8 +259,8 @@ const AdvancedSearch = (prop) => {
           Author:
           <label htmlFor="fname">
             <input type="text" 
-                  id="lname" 
-                  name="lname" 
+                  id="fname" 
+                  name="fname" 
                   placeholder="Author First Name">
             </input>
           </label>
@@ -267,8 +270,8 @@ const AdvancedSearch = (prop) => {
           <br/>
           <label htmlFor="lname">
             <input type="text" 
-                  id="fname" 
-                  name="fname" 
+                  id="lname" 
+                  name="lname" 
                   placeholder="Author Last Name">
             </input>
           </label>
@@ -342,14 +345,14 @@ const DisplayBook = (prop) => {
       return (
         <div>
           <h2>{book.title}</h2>
-          {book.authorList ? book.authorList.map(author =>
+          {book.authors ? book.authors.map(author =>
             (<div key={author}>{author}</div>)) : ''
           }
           {book.description ? (<div>Description: {book.description} </div>) : ''}
           {book.publisher ? (<div>Publisher: {book.publisher} </div>) : ''}
           {book.year ? (<div>Publication Year: {book.year} </div>) : ''}
-          {book.tagList ? (<div>Tags:
-              <ul>{book.tagList.map(tag =>
+          {book.tags ? (<div>Tags:
+              <ul>{book.tags.map(tag =>
               (<li key={tag}>{tag}</li>))}</ul>
               </div>) : ''
           }

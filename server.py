@@ -116,6 +116,12 @@ def create_account():
 def perform_search():
     """Perform simple search and return results as list"""
 
+    # needed to return which books belong to user (if not requesting only their books)
+    try:
+        logged_in_user_id = request.cookies["user_id"]
+    except:
+        logged_in_user_id = 1    # for testing from postman
+
     req = request.get_json()
 
     # strings are None if not considered in search
@@ -153,7 +159,6 @@ def perform_search():
                                             exact_title=exact_title,
                                             exact_fname=exact_fname,
                                             exact_lname=exact_lname)
-
     # basic search
     else:
         books = get_books_by_various(title=title_string, 
@@ -161,7 +166,7 @@ def perform_search():
                                     tag_list=tag_list, 
                                     user_id=user_id)
 
-    response['book_list'] = util.books_to_dictionary(books)
+    response['book_list'] = util.books_to_dictionary(books, logged_in_user_id)
     
     status_code = 200
     if response['book_list'] == []:
@@ -195,6 +200,21 @@ def get_book(bookId):
 
     return (jsonify(response), status_code)
     
+
+@app.route('book/user/<bookId>/<userId>', methods=['DELETE','PATCH'])
+def delete_add_book_user(bookId, userId):
+    """Add or remove a user from a specific book"""
+
+    book_id = bookId
+    userId = userId
+
+    if request.method == 'DELETE':
+        pass
+    elif request.method == 'PATCH':
+        pass
+
+
+
 
 if __name__ == '__main__':
     connect_to_db(app)
