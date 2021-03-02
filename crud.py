@@ -136,7 +136,7 @@ def create_rating(score, user_record, book_record, description=None):
 
 ####################### SEARCH FUNCTIONS #######################################
 
-################FIND BOOKS#############
+###FIND BOOKS##
 
 def get_book_by_id(id):
     '''get book record by id'''
@@ -226,12 +226,18 @@ def get_books_by_various_advanced(title=None,
     
     return q.all()
 
-###############FIND OTHER THINGS############
+###FIND OTHER THINGS##
 
 def get_user(username):
     '''Get user by username'''
     
     return User.query.filter(User.username == username).first()
+
+
+def get_user_by_id(id):
+    """Get user by ID"""
+
+    return User.query.filter(User.id == id).first()
 
 
 def get_author(lname, fname=None):
@@ -245,6 +251,13 @@ def get_similar_tags(similar_phrase):
 
     return Tag.query.filter(Tag.tag_name.like(f'%{similar_phrase}%')).all()
 
+#######################################DELETE#######################################
+
+def remove_users_books_relationship(book_record, user_record):
+    """Removes relationship between user and book"""
+
+    book_record.users.remove(user_record)
+    db.session.commit()
 
 
 if __name__ == '__main__':

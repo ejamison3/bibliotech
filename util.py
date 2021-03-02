@@ -34,7 +34,9 @@ def is_user_book(book, user_id):
 
     users_records = book.users
     for user in users_records:
-        if user.id == user_id:
+        print(f'IS_USER_BOOK    ***** user.id: {user.id}  ********** user_id: {user_id}')
+        if str(user.id) == str(user_id):
+            print(f'TRUETURE  ****TRUE')
             return True
     
     return False
@@ -49,6 +51,7 @@ def books_to_dictionary(book_list, logged_in_user_id):
         author_list = get_author_data_from_book(book)
         tag_list = get_tag_data_from_book(book)
         is_users = is_user_book(book, logged_in_user_id)
+        print(f'title: {book.title}  ****************** is_users: {is_users}')
 
         temp_book = {
             'id' : book.id,

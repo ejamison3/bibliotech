@@ -93,7 +93,19 @@ const Book = (prop) => {
   const id = book.id;
 
   const removeBook = () => {
-    return;
+    
+    fetch('/user/' + id + '/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      return response.json()
+    })
+    .then(data => {
+      book.isUsers = false;
+    })
   }
 
   return (
@@ -115,6 +127,7 @@ const Book = (prop) => {
           </div>) : ''
       }
       <span>
+        <div>TESTING {book.isUsers}</div>
         {book.isUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button>ADD to my books</button> }
       </span>
     </div>

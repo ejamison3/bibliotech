@@ -117,11 +117,8 @@ def perform_search():
     """Perform simple search and return results as list"""
 
     # needed to return which books belong to user (if not requesting only their books)
-    try:
-        logged_in_user_id = request.cookies["user_id"]
-    except:
-        logged_in_user_id = 1    # for testing from postman
-
+    logged_in_user_id = request.cookies["user_id"]
+    
     req = request.get_json()
 
     # strings are None if not considered in search
@@ -201,19 +198,54 @@ def get_book(bookId):
     return (jsonify(response), status_code)
     
 
-@app.route('book/user/<bookId>/<userId>', methods=['DELETE','PATCH'])
-def delete_add_book_user(bookId, userId):
+@app.route('/user/<bookId>/add', methods=['PUT'])
+def add_book_user(bookId):
+    """Add a user from a specific book"""
+
+    book_id = bookId
+
+    # get logged in user
+    logged_in_user_id = request.cookies["user_id"]
+
+    book_record = get_book_by_id(book_id)
+    user_record = get_user_by_id(logged_in_user_id)
+
+    # add in check that user and book exist
+
+    create_users_books_relationship(book_record, user_record)
+
+    response = {
+        'type': 'add',
+        'book_id': book_id,
+        'user_id': logged_in_user_id
+    }
+
+    return (jsonify(response), 200)
+
+
+@app.route('/user/<bookId>/delete', methods=['DELETE'])
+def delete_book_user(bookId):
     """Add or remove a user from a specific book"""
 
     book_id = bookId
-    userId = userId
 
-    if request.method == 'DELETE':
-        pass
-    elif request.method == 'PATCH':
-        pass
+    # get logged in user
+    logged_in_user_id = request.cookies["user_id"]
 
+    book_record = get_book_by_id(book_id)
+    user_record = get_user_by_id(logged_in_user_id)
 
+    # add in check that user and book exist
+
+    remove_users_books_relationship(book_record, user_record)
+
+    response = {
+        'type': 'delete',
+        'book_id': book_id,
+        'user_id': logged_in_user_id
+    }
+
+    return (jsonify(response), 200)
 
 
 if __name__ == '__main__':
