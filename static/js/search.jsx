@@ -89,6 +89,8 @@ const SearchBar = (prop) => {
 }
 
 const Book = (prop) => {
+  const [bookIsUsers, setBookIsUsers] = React.useState(prop.book.isUsers)
+
   const book = prop.book;
   const id = book.id;
 
@@ -105,6 +107,24 @@ const Book = (prop) => {
     })
     .then(data => {
       book.isUsers = false;
+      setBookIsUsers(false)
+    })
+  }
+
+  const addBook = () => {
+    
+    fetch('/user/' + id + '/add', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      return response.json()
+    })
+    .then(data => {
+      book.isUsers = true;
+      setBookIsUsers(true)
     })
   }
 
@@ -128,7 +148,7 @@ const Book = (prop) => {
       }
       <span>
         <div>TESTING {book.isUsers}</div>
-        {book.isUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button>ADD to my books</button> }
+        {bookIsUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button onClick={addBook}>ADD to my books</button> }
       </span>
     </div>
   )
