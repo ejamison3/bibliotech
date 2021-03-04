@@ -45,7 +45,7 @@ categories_list = {
     'reference',
 }
 
-def create_tags():
+def create_initial_tags():
     """creates all records in the tags table"""
 
     for tag in tags_list:
@@ -55,7 +55,7 @@ def create_tags():
     db.session.commit()
 
 
-def create_categories():
+def create_initial_categories():
     """creates all records in the categories table"""
 
     for category in categories_list:

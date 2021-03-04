@@ -16,9 +16,11 @@ from model import *
 def create_book(
                 title, 
                 pub = None, 
+                descr = None,
                 pub_year = None, 
                 pgs = None, 
-                descr = None,
+                isbn = None,
+                image_url = None,
                 author_records = None, 
                 tag_records = None,
                 user_record = None,
@@ -33,7 +35,9 @@ def create_book(
                     publisher=pub,
                     description=descr,
                     publication_year=pub_year,
-                    pages=pgs)
+                    pages=pgs,
+                    isbn=isbn,
+                    image_url=image_url)
     
     # need to add & commit now so that id is created
     db.session.add(temp_book)
@@ -107,6 +111,26 @@ def create_user(name, pw):
     db.session.commit()     # is there reason to not commit as frequently?
 
     return temp_user
+
+
+def create_tags(tag):
+    """creates tag record in tags table"""
+
+    temp_tag = Tag(tag_name=tag)
+    db.session.add(temp_tag)
+    
+    db.session.commit()
+
+    return temp_tag
+
+
+def create_categories(category):
+    """creates category records in the categories table"""
+
+    temp_category = Category(category_name=category)
+    db.session.add(temp_category)
+    
+    db.session.commit()
 
 
 def create_users_books_relationship(book_record, user_record):
@@ -245,6 +269,11 @@ def get_author(lname, fname=None):
 
     return Author.query.filter(Author.lname == lname, Author.fname == fname).first()
 
+
+def get_tag(tag_name):
+    '''Get tag record'''
+
+    return Tag.query.filter(Tag.tag_name == tag_name).first()
 
 def get_similar_tags(similar_phrase):
     '''Get all tags with name similar to similar_phrase'''

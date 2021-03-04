@@ -147,7 +147,6 @@ const Book = (prop) => {
           </div>) : ''
       }
       <span>
-        <div>TESTING {book.isUsers}</div>
         {bookIsUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button onClick={addBook}>ADD to my books</button> }
       </span>
     </div>
@@ -190,7 +189,6 @@ const DisplaySearchResults = (prop) => {
     })
   }, [query]);
 
-  //is it appopriate to put BELOW in a useEffect with searchResponse. I feel like it could have some weird side effects
   if (prop.isLoading){
     return (
       <div>Loading...</div> 

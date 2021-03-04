@@ -1,0 +1,15 @@
+1. get seed users and books. GOAL Users should have reviewed multiple books (some books which should have reviews from other users)
+  a. Get list of reviewerIDs (use get_pipe_reviewId in reviews.py file)
+  b. grep large file for all of reviews for these reviewerIDs (use test.sh script)
+  c. Run to get a list of unique asin. If the following is true, there is overlap: 
+      [# unique asin] < [# reviewerID] * 5
+      This is because there are 5 reviews per reviewerID
+2. Get seed book data from Google API
+  a. Use functions in seed_db.py file to make calls to google api and populate a seed file
+3. Create seed files from 
+    
+
+
+Files:
+unique_asin
+unique_reviewers

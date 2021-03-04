@@ -1,0 +1,77 @@
+{
+  "kind": "books#volumes",
+  "totalItems": 1,
+  "items": [
+      {
+          "kind": "books#volume",
+          "id": "C-sFAQAAIAAJ",
+          "etag": "Zh5mAqQR1PU",
+          "selfLink": "https://www.googleapis.com/books/v1/volumes/C-sFAQAAIAAJ",
+          "volumeInfo": {
+              "title": "The Golden Treasury of Poetry",
+              "authors": [
+                  "Louis Untermeyer"
+              ],
+              "publisher": "HarperCollins",
+              "publishedDate": "1959",
+              "description": "SUMMARY: Over 400 poems ranging through all periods of English literature, simple verses, then progressing through twelve categories including animal poems, portraits and nonsense poems.",
+              "industryIdentifiers": [
+                  {
+                      "type": "OTHER",
+                      "identifier": "STANFORD:36105123080892"
+                  }
+              ],
+              "readingModes": {
+                  "text": false,
+                  "image": false
+              },
+              "pageCount": 324,
+              "printType": "BOOK",
+              "categories": [
+                  "American poetry"
+              ],
+              "averageRating": 4,
+              "ratingsCount": 2,
+              "maturityRating": "NOT_MATURE",
+              "allowAnonLogging": false,
+              "contentVersion": "0.0.2.0.preview.0",
+              "panelizationSummary": {
+                  "containsEpubBubbles": false,
+                  "containsImageBubbles": false
+              },
+              "imageLinks": {
+                  "smallThumbnail": "http://books.google.com/books/content?id=C-sFAQAAIAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+                  "thumbnail": "http://books.google.com/books/content?id=C-sFAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+              },
+              "language": "en",
+              "previewLink": "http://books.google.com/books?id=C-sFAQAAIAAJ&dq=isbn:0001061240&hl=&as_pt=BOOKS&cd=1&source=gbs_api",
+              "infoLink": "http://books.google.com/books?id=C-sFAQAAIAAJ&dq=isbn:0001061240&hl=&as_pt=BOOKS&source=gbs_api",
+              "canonicalVolumeLink": "https://books.google.com/books/about/The_Golden_Treasury_of_Poetry.html?hl=&id=C-sFAQAAIAAJ"
+          },
+          "saleInfo": {
+              "country": "US",
+              "saleability": "NOT_FOR_SALE",
+              "isEbook": false
+          },
+          "accessInfo": {
+              "country": "US",
+              "viewability": "NO_PAGES",
+              "embeddable": false,
+              "publicDomain": false,
+              "textToSpeechPermission": "ALLOWED",
+              "epub": {
+                  "isAvailable": false
+              },
+              "pdf": {
+                  "isAvailable": false
+              },
+              "webReaderLink": "http://play.google.com/books/reader?id=C-sFAQAAIAAJ&hl=&as_pt=BOOKS&printsec=frontcover&source=gbs_api",
+              "accessViewStatus": "NONE",
+              "quoteSharingAllowed": false
+          },
+          "searchInfo": {
+              "textSnippet": "SUMMARY: Over 400 poems ranging through all periods of English literature, simple verses, then progressing through twelve categories including animal poems, portraits and nonsense poems."
+          }
+      }
+  ]
+}

@@ -17,7 +17,9 @@ class Book(db.Model):
     publisher = db.Column(db.String(50))
     description = db.Column(db.Text)
     publication_year = db.Column(db.Integer)    # can this be limited to 4 ints?
-    pages = db.Column(db.Integer)  
+    pages = db.Column(db.Integer) 
+    isbn = db.Column(db.String(13))
+    image_url = db.Column(db.Text)       # google books image url is 113 chars
     avg_rating = db.Column(db.Integer)
     category_id = db.Column(db.Integer,
                             db.ForeignKey('categories.id')) 
