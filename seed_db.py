@@ -7,13 +7,13 @@ import crud
 
 #########################CREATE SEED FILES########################################
 
-def create_google_seed_file(filename):
+def create_google_seed_file(book_id_file, book_seed_file, error_file):
 
-    asin_list = open(filename)
+    asin_list = open(book_id_file)
     # asin is what review data calls isbn
 
-    seed_file = open('seeding_again/book_seed_file.json', 'a')
-    failed_file = open('seeding_again/failed_isbns', 'a')
+    seed_file = open(book_seed_file, 'a')
+    failed_file = open(error_file, 'a')
 
     for isbn in asin_list:
         isbn = isbn.rstrip()
