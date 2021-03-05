@@ -72,8 +72,8 @@ class Author(db.Model):
     id = db.Column(db.Integer, 
                    primary_key=True,
                    autoincrement=True)
-    fname = db.Column(db.String(50))    # not everyone has a first name
-    lname = db.Column(db.String(50), nullable=False)
+    fname = db.Column(db.Text)    # not everyone has a first name
+    lname = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
         return f'<Author id={self.id} lname={self.lname}'
@@ -106,8 +106,8 @@ class Tag(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    tag_name = db.Column(db.String(50), 
-                         nullable=False)   # can this be defined in a variable and then put in here?
+    tag_name = db.Column(db.Text, 
+                         nullable=False)   
     
     def __repr__(self):
         return f'<Tag id={self.id} tag_name={self.tag_name}>'

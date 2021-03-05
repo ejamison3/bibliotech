@@ -29,7 +29,12 @@ def create_google_seed_file(book_id_file, book_seed_file, error_file):
             failed_file.write(f'{isbn}\n')
         else:
             if total_books > 1:
-                failed_file.write(f'{isbn} TOTAL: {total_books}\n')
+                # failed_file.write(f'{isbn} TOTAL: {total_books}\n')
+                volume_info = res_dict['items'][0]['volumeInfo']
+                # isbn is hard to get out of file so add as a separate key
+                volume_info['isbn'] = isbn
+                volume_info_json = json.dumps(volume_info)
+                seed_file.write(f'{volume_info_json}\n')
             else:
                 volume_info = res_dict['items'][0]['volumeInfo']
                 # isbn is hard to get out of file so add as a separate key
@@ -55,7 +60,7 @@ def create_authors(author_list):
         if len(author_names) > 1:
             fname = ' '.join(author_names[0:-1])
         else:
-            None
+            fname = None
 
         # see if author with exact lname and fname exist
         temp_author = crud.get_author(lname, fname)
@@ -119,7 +124,7 @@ def create_book_author(filename):
         tags_list = book_dict.get('categories', None)
 
         # clean up data
-        if len(pub_year) > 4:
+        if pub_year is not None and len(pub_year) > 4:
             pub_year = int(pub_year[:4])
 
 
@@ -139,15 +144,16 @@ def create_book_author(filename):
         temp_book = crud.get_book_by_title(title)
 
         if temp_book == None:
-            if len(author_record_list) == 0:
-                author_record_list = None
+            # if len(author_record_list) == 0:
+            #     author_record_list = None
             temp_book = crud.create_book(title, pub=pub, descr=descr, pub_year=pub_year, pgs=pages, isbn=isbn, image_url=image_url, author_records=author_record_list, tag_records=tags_record_list)
 
         
-        # add rating for google user
-        if g_rating is not None:
-            g_rating = str(int(g_rating))
-            crud.create_rating(g_rating, user, temp_book)
+            # add rating for google user
+            if g_rating is not None:
+                g_rating = str(int(g_rating))
+                crud.create_rating(g_rating, user, temp_book)
+                crud.create_users_books_relationship(temp_book, user)
 
 
 def create_user_rating(filename, error_file):

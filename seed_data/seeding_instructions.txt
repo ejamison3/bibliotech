@@ -1,6 +1,7 @@
 
 HOW TO GET BOOK ID LIST FROM reviews.json TYPE FILE
 1. Run make_book_id_file(reviews.json, book_id_list)
+    - function in reviews.py
 
 HOW TO CREATE BOOK SEED FILE
 1. Using the file created above (book_id_list), run create_google_seed_file(book_id_file, book_seed_file.json, error_file) from the seed_db.py file
@@ -8,5 +9,33 @@ HOW TO CREATE BOOK SEED FILE
 
 HOW TO SEED DATABASE
 1. Load book_seed_file created above using create_book_author('book_seed_file.json') 
-  - function in seed_db.file
-2. Load reviews.json (or reviews_small.json) using create_user_rating('reviews.json', rating_errors)
+  - function in seed_db.py file
+2. Load reviews.json (or reviews_small.json) using create_user_rating('reviews.json', 'rating_errors')
+  - function in seed_db.py file
+
+HOW TO HANDLE ERRORS 
+There are two error files: 
+    - book_error_file which has isbn of books with no or many books returned from google books
+    - rating_errors which has [reviewerID] [asin] for books that DNE in database
+1. Books in book_error_file with multiple books should be looked up with postman and have appropriate book added to book_seed_file
+2. Books without google can be looked up manually or just forgotten
+  a. If several are looked up manually, revisit NYT book seeding functions & create manual seed files
+3. After as many books have been added as desired in step 1 & 2, reload reviews.json file and create a new rating_errors. If there are still a large number of reviews being skipped, go back and add more missing books.
+ADDITIONAL ANALYSIS
+4. Create a loaded_reviews.json file by parsing out unloaded books
+  - Create function to make pipe separated list of unloaded books
+  - egrep -v [pipe separated list] reviews.json > loaded_reviews.json
+
+
+
+
+TRACKING SEEDING
+Loaded book_seed_file_part1 & book_seed_file_part2
+- Blood is the sky had incorrect publishing date. Manually corrected in load file.
+- 621 authors, 799 books, 168 tags, 1 user (googleHivemind), 724 ratings
+Loaded seed_data/reviews.json
+- rating_errors has 1271 failed ratings
+- 182 users, 2803 ratings, no change in authors, books or tags (as expected)
+      only rating records with null description are googleHivemind (as expected)
+
+

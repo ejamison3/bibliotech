@@ -193,3 +193,16 @@ def make_book_id_file(filename, outfile):
 
     for asin in unique_asin_set:
         out_file.write(f'{asin}\n')
+
+
+def save_json_on_single_line(filename, seed_file, idx, isbn):
+
+    f = open(filename)
+    seed_file = open(seed_file, 'a')
+    res_dict = json.load(f)
+    item = res_dict['items'][idx]
+    volume_info = item['volumeInfo']
+    volume_info['isbn'] = isbn
+    volume_info_json = json.dumps(volume_info)
+    seed_file.write(f'{volume_info_json}\n')
+
