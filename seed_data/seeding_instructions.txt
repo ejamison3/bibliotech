@@ -7,5 +7,6 @@ HOW TO CREATE BOOK SEED FILE
     Put in the names you want the book_seed_file and error_file to have
 
 HOW TO SEED DATABASE
-1. Load book_seed_file created above using create_book_author(book_seed_file) function in seed_db.file
-2. TO DO - make function to load reviews.json file
+1. Load book_seed_file created above using create_book_author('book_seed_file.json') 
+  - function in seed_db.file
+2. Load reviews.json (or reviews_small.json) using create_user_rating('reviews.json', rating_errors)

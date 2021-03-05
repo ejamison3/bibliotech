@@ -169,6 +169,12 @@ def get_book_by_id(id):
 
     return Book.query.filter(Book.id == id).first()
 
+
+def get_book_by_isbn(isbn):
+    """Return single book with matching isnb or None"""
+
+    return Book.query.filter(Book.isbn == isbn).first()
+
 def get_book_by_title(title):
     '''Get book by title
     
@@ -181,6 +187,9 @@ def get_books_by_title(title):
     '''Get books with title'''
 
     return Book.query.filter(Book.title == title).all()
+
+
+
 
 
 def get_books_by_various(title=None, 

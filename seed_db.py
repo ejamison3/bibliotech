@@ -150,6 +150,49 @@ def create_book_author(filename):
             crud.create_rating(g_rating, user, temp_book)
 
 
+def create_user_rating(filename, error_file):
+    """Create User and Rating records and tie in accordingly"""
+     
+    f = open(filename)
+
+    # holds reviewerID and isbn of reviews for books not found
+    failed_file = open(error_file, 'a')
+
+    # create google user for additional ratings
+    user = crud.get_user('googleHivemind')
+
+    if user is None:
+        user = crud.create_user('googleHivemind', '1234')
+
+    for line in f:
+        review_dict = json.loads(line)
+        user_name = review_dict['reviewerID']
+        rating_fl = review_dict.get('overall', None)
+        rating_desc = review_dict.get('reviewText', None)
+        isbn = review_dict.get('asin', None)
+    
+        # find or create user
+        temp_user = crud.get_user(user_name)
+        if temp_user is None:
+            temp_user = crud.create_user(user_name, '1234')
+        
+        # find book
+        temp_book = crud.get_book_by_isbn(isbn)
+        if temp_book is not None:
+            # link user & book
+            crud.create_users_books_relationship(temp_book, temp_user)
+
+            # create and link rating to user and book
+            if rating_fl is not None:
+                rating = str(int(rating_fl))
+                crud.create_rating(rating, temp_user, temp_book, rating_desc)
+        else:
+            failed_file.write(f'{user_name} {isbn}\n')
+
+    f.close()
+    failed_file.close()
+
+
 def test(filename):
     """Create book, author"""
 
