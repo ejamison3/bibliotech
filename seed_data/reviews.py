@@ -174,3 +174,22 @@ def get_ids(filename):
             output_string = output_string + f"|{id}"
     
     return output_string
+
+
+def make_book_id_file(filename, outfile):
+    """Create file with unique book id (asin) on each line"""
+
+    reviews_file = open(filename)
+    unique_asin_set = set()
+
+    out_file = open(outfile, 'w')
+
+    for review in reviews_file:
+        review_dict = json.loads(review)
+        asin = review_dict["asin"]
+
+        unique_asin_set.add(asin)
+        # review_asin_dict[asin].append(reviewer_id)
+
+    for asin in unique_asin_set:
+        out_file.write(f'{asin}\n')

@@ -13,8 +13,8 @@ class Book(db.Model):
     id = db.Column(db.Integer, 
                    primary_key=True,
                    autoincrement=True)
-    title = db.Column(db.String(100), nullable=False)
-    publisher = db.Column(db.String(50))
+    title = db.Column(db.Text, nullable=False)
+    publisher = db.Column(db.Text)
     description = db.Column(db.Text)
     publication_year = db.Column(db.Integer)    # can this be limited to 4 ints?
     pages = db.Column(db.Integer) 
@@ -150,7 +150,7 @@ class User(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    username = db.Column(db.String(20), nullable=False)
+    username = db.Column(db.Text, nullable=False)   # unknown size with seed data
     password = db.Column(db.String(30), nullable=False)  
 
     # backref books on Book allows access to user books using 'books' term

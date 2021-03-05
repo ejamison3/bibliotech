@@ -1,0 +1,11 @@
+
+HOW TO GET BOOK ID LIST FROM reviews.json TYPE FILE
+1. Run make_book_id_file(reviews.json, book_id_list)
+
+HOW TO CREATE BOOK SEED FILE
+1. Using the file created above (book_id_list), run create_google_seed_file(book_id_file, book_seed_file.json, error_file) from the seed_db.py file
+    Put in the names you want the book_seed_file and error_file to have
+
+HOW TO SEED DATABASE
+1. Load book_seed_file created above using create_book_author(book_seed_file) function in seed_db.file
+2. TO DO - make function to load reviews.json file

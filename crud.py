@@ -108,7 +108,7 @@ def create_user(name, pw):
     #   user does not already exist (can this be done at DB level?)
     temp_user = User(username=name, password=pw)
     db.session.add(temp_user)
-    db.session.commit()     # is there reason to not commit as frequently?
+    db.session.commit()     
 
     return temp_user
 
@@ -157,6 +157,8 @@ def create_rating(score, user_record, book_record, description=None):
     # create relationships to users and books tables
     user_record.ratings.append(temp_rating)
     book_record.ratings.append(temp_rating)
+
+    db.session.commit()
 
 ####################### SEARCH FUNCTIONS #######################################
 

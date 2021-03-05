@@ -34,7 +34,8 @@ def create_google_seed_file(book_id_file, book_seed_file, error_file):
                 volume_info = res_dict['items'][0]['volumeInfo']
                 # isbn is hard to get out of file so add as a separate key
                 volume_info['isbn'] = isbn
-                seed_file.write(str(volume_info)+'\n')
+                volume_info_json = json.dumps(volume_info)
+                seed_file.write(f'{volume_info_json}\n')
 
         time.sleep(1)
     
@@ -88,6 +89,12 @@ def create_book_author(filename):
 
     f = open(filename)
 
+    # create google user for additional ratings
+    user = crud.get_user('googleHivemind')
+
+    if user is None:
+        user = crud.create_user('googleHivemind', '1234')
+
     for line in f:
         book_dict = json.loads(line)
         title = book_dict.get('title', None)
@@ -97,9 +104,18 @@ def create_book_author(filename):
         pages = book_dict.get('pageCount', None)
         isbn = book_dict.get('isbn', None)
         
-        # do all imageLinks have thumbnails?
-        image_url = book_dict['imageLinks']['thumbnail']  
-        print(f'image url: {image_url')
+        # add in adding google rating to google user
+        g_rating = book_dict.get('averageRating', None)
+
+        
+        # not all imageLinks have thumbnails
+        images = book_dict.get('imageLinks',None)
+        if images is not None:
+            image_url = images.get('thumbnail', None)  
+        else:
+            image_url = None
+        
+        
         tags_list = book_dict.get('categories', None)
 
         # clean up data
@@ -107,8 +123,7 @@ def create_book_author(filename):
             pub_year = int(pub_year[:4])
 
 
-        # add in adding google rating to google user
-        g_rating = book_dict.get('averageRating', None)
+        
 
         author_list = book_dict.get('authors', None)
         author_record_list = None
@@ -126,10 +141,14 @@ def create_book_author(filename):
         if temp_book == None:
             if len(author_record_list) == 0:
                 author_record_list = None
-            temp_book = crud.create_book(title, pub=pub, descr=descr, pub_year=pub_year, pgs=pages, isbn=isbn,author_records=author_record_list, tag_records=tags_record_list)
+            temp_book = crud.create_book(title, pub=pub, descr=descr, pub_year=pub_year, pgs=pages, isbn=isbn, image_url=image_url, author_records=author_record_list, tag_records=tags_record_list)
 
         
-        # add_similar_tags(temp_book, os.path.basename(filename))
+        # add rating for google user
+        if g_rating is not None:
+            g_rating = str(int(g_rating))
+            crud.create_rating(g_rating, user, temp_book)
+
 
 def test(filename):
     """Create book, author"""
@@ -138,9 +157,11 @@ def test(filename):
     # blahs = json.load(f)
 
     # return blahs
-
+    i = 0
     for line in f:
-        return line
+        if i == 1:
+            return line
+        i += 1
 
 if __name__ == "__main__":
     import server 
@@ -149,6 +170,7 @@ if __name__ == "__main__":
 
     app = server.Flask(__name__)
 
+    # only run this if you want to drop DB
     os.system('dropdb books')
     os.system('createdb books')
 
