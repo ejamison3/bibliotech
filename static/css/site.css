@@ -49,6 +49,21 @@ a:hover {
   color: red;
 }
 
+.book {
+  border-radius: 5%;
+  border: 0.1rem solid #777777;
+  padding: 0.5rem;
+  justify-content: center;
+  flex: 0 1 auto;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
 .footer-link {
   font-family: 'IBM Plex Mono';
   font-weight: 500;

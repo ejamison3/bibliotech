@@ -8,7 +8,7 @@ HOW TO CREATE BOOK SEED FILE
     Put in the names you want the book_seed_file and error_file to have
 
 HOW TO SEED DATABASE
-1. Load book_seed_file created above using create_book_author('book_seed_file.json') 
+1. Load book_seed_file created above using create_book_author('data_seed/book_seed_file_part#.json') 
   - function in seed_db.py file
 2. Load reviews.json (or reviews_small.json) using create_user_rating('reviews.json', 'rating_errors')
   - function in seed_db.py file
@@ -17,7 +17,7 @@ HOW TO HANDLE ERRORS
 There are two error files: 
     - book_error_file which has isbn of books with no or many books returned from google books
     - rating_errors which has [reviewerID] [asin] for books that DNE in database
-1. Books in book_error_file with multiple books should be looked up with postman and have appropriate book added to book_seed_file
+1. Books in book_error_file with multiple books have been run again (book_id_list_part3) and the first response chosen. 
 2. Books without google can be looked up manually or just forgotten
   a. If several are looked up manually, revisit NYT book seeding functions & create manual seed files
 3. After as many books have been added as desired in step 1 & 2, reload reviews.json file and create a new rating_errors. If there are still a large number of reviews being skipped, go back and add more missing books.
@@ -37,5 +37,14 @@ Loaded seed_data/reviews.json
 - rating_errors has 1271 failed ratings
 - 182 users, 2803 ratings, no change in authors, books or tags (as expected)
       only rating records with null description are googleHivemind (as expected)
+
+
+AND AGAIN, now with book_id_list_part3
+Loaded book_seed_file_part1, book_seed_file_part2, and book_seed_file_part3
+- 631 authors, 820 books, 172 tags, 1 user (googleHivemind), 745 ratings, 745 users_books, 820 books_tags
+Loaded seed_data/reviews.json
+- rating_errors2 has 1215 failed ratings
+- 182 users, 2880 ratings, 2776 users_books, no change in authors, books, tags, or books_tags (as expected)
+
 
 

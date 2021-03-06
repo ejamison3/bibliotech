@@ -138,7 +138,7 @@ const Book = (prop) => {
       {book.authors ? book.authors.map(author =>
         (<div key={author}>{author}</div>)) : ''
       }
-      {book.description ? (<div>Description: {book.description} </div>) : ''}
+      {book.description ? (<div><b>Description: </b>{book.description} </div>) : ''}
       {book.publisher ? (<div>Publisher: {book.publisher} </div>) : ''}
       {book.year ? (<div>Publication Year: {book.year} </div>) : ''}
       {book.tags ? (<div>Tags:
@@ -146,6 +146,7 @@ const Book = (prop) => {
           (<li key={tag}>{tag}</li>))}</ul>
           </div>) : ''
       }
+      {bookIsUsers ? <div>Your rating: {book.rating}</div> : <div>Average Rating: </div>}
       <span>
         {bookIsUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button onClick={addBook}>ADD to my books</button> }
       </span>
@@ -210,12 +211,21 @@ const DisplaySearchResults = (prop) => {
           </div>
         )
       }
+      console.log(query.titleString)
+      console.log(query)
       return (
         <div>
-          Put query here
-          <React.Fragment>
-            {books}
-          </React.Fragment>
+          <div>
+            <div>Showing results for search</div>
+            {query.titleString ? <li>Title: {query.titleString}</li> : ''}
+            {query.authorLnameString ? <li>Author: {query.authorLnameString}</li> : ''}
+            {query.tagListString ? <li>Tags: {query.tagListString}</li> : ''}
+          </div>
+          <div className="container">
+            <React.Fragment>
+              {books}
+            </React.Fragment>
+          </div>
         </div>
       );
     }  
@@ -271,6 +281,7 @@ const AdvancedSearch = (prop) => {
 
     prop.setSearchQuery(query);
     prop.setIsLoading(true);
+    prop.setDisplaySearchBar(true)
     history.push("/searchResults")
 
   }
