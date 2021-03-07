@@ -120,8 +120,8 @@ select {
   border-radius: 5px;
 }
 
-.button-tag{
-  border-radius: 5px;
+.books-image>img{
+  height: 100px;
 }
 
 .center {
@@ -184,6 +184,10 @@ img.logo:hover {
   display: flex;
   justify-self: center;
   margin: auto;
+}
+
+.tag-button{
+  border-radius: 5px;
 }
 
 .tags {

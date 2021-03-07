@@ -203,20 +203,15 @@ def get_books_by_various(title=None,
         q = q.join(BookAuthor).join(Author)
         q = q.filter(Author.lname.ilike(author_lname))
 
-    # make taglist search use ilike so case insensitive. 
-    # Do filter(or_(Tag.tag_name.ilike(tag), Tag.tag_name.ilike(tag)))
     if tag_list != None:
         q = q.join(BookTag).join(Tag)
-        q = q.filter(Tag.tag_name.in_(tag_list))
-        # print(tag_list[0])
-        # filter_val = Tag.tag_name.ilike(tag_list[0])
-        # q = q.filter(filter_val)
 
-        # variable = Tag.tag_name.ilike(tag_list[0]), Tag.tag_name.ilike(tag_list[1])
-        # q = q.filter(or_(variable)
-        # things
-        # (...things)
-        # use spread operator
+        terms = []
+        for tag in tag_list:
+            tag = tag.strip()
+            terms.append(Tag.tag_name.ilike(tag))
+
+        q = q.filter(db.or_(*terms))
 
 
 
@@ -263,7 +258,13 @@ def get_books_by_various_advanced(title=None,
 
     if tag_list != None:
         q = q.join(BookTag).join(Tag)
-        q = q.filter(Tag.tag_name.in_(tag_list))
+        
+        terms = []
+        for tag in tag_list:
+            tag = tag.strip()
+            terms.append(Tag.tag_name.ilike(tag))
+
+        q = q.filter(db.or_(*terms))
 
     if user_id != None:
         q = q.join(UserBook).join(User)

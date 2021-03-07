@@ -29,14 +29,13 @@ def get_tag_data_from_book(book):
         
     return tags
 
+
 def is_user_book(book, user_id):
     '''Determine if book belongs to user_id'''
 
     users_records = book.users
     for user in users_records:
-        print(f'IS_USER_BOOK    ***** user.id: {user.id}  ********** user_id: {user_id}')
         if str(user.id) == str(user_id):
-            print(f'TRUETURE  ****TRUE')
             return True
     
     return False
@@ -51,7 +50,6 @@ def books_to_dictionary(book_list, logged_in_user_id):
         author_list = get_author_data_from_book(book)
         tag_list = get_tag_data_from_book(book)
         is_users = is_user_book(book, logged_in_user_id)
-        print(f'title: {book.title}  ****************** is_users: {is_users}')
 
         temp_book = {
             'id' : book.id,
@@ -97,6 +95,6 @@ def book_to_dictionary(book):
 def string_to_list(input_string):
     """takes comma separated input string and separates into list"""
 
-    new_list = input_string.rstrip().split(',')
+    new_list = input_string.strip().split(',')
 
     return new_list

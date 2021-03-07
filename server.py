@@ -73,7 +73,6 @@ def create_account():
     """Create Account"""
 
     req = request.get_json()
-    print(req)
 
     username = req['username']
     pwd = req['pwd']
@@ -137,7 +136,7 @@ def perform_search():
         'book_list': None,
         'user_id': user_id,
     }
- 
+
     # if advanced search, get fuzzy/exact search booleans 
     if search_type == 'advanced':
         # extra fields for advanced search
@@ -186,14 +185,11 @@ def get_book(bookId):
     }
 
     book = get_book_by_id(book_id)
-    print(f'book: {book}')
 
     if book != None:
         response['book'] = util.book_to_dictionary(book)
 
     status_code = 204 if book == None else 200
-
-    print(f'json reponse: {response}')
 
     return (jsonify(response), status_code)
     
