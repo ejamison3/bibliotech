@@ -26,58 +26,42 @@ const Home = (prop) => {
 };
 
 const Header = (prop) => {
-
-  // if (prop.userId === null){
-  //   return (
-  //     <div id="header">
-  //       <div className="container">
-  //         <Link to="/" className="column-logo">
-  //           <img className="logo" src="/static/img/BiblioTechLogo.png" />
-  //         </Link>
-  //         <button>
-  //           <Link to={'/login'}>Login</Link>
-  //         </button>
-  //       </div>
-  //     </div>
-  //   )
-  // }else{
-    return (
-      <div id="header">
-        <div className="container">
-          <Link to="/" className="column-logo" 
-            onClick={() => prop.userId != null
-              ? (prop.setDisplaySearchBar(true))
-              : ''}>
-            <img className="logo" src="/static/img/BiblioTechLogo.png" />
-          </Link>
-          {(prop.displaySearchBar == true) && (prop.userId != null)
-            ? <SearchBar 
-                userId = {prop.userId}
-                history={prop.history}
-                searchQuery={prop.searchQuery}
-                setSearchQuery={prop.setSearchQuery}
-                isLoading={prop.isLoading}
-                setIsLoading={prop.setIsLoading}
-                displaySearchBar={prop.displaySearchBar}
-                setDisplaySearchBar={prop.setDisplaySearchBar}
-              /> 
-            : <div className="no-searchbar"></div>
+  return (
+    <div id="header">
+      <div className="container">
+        <Link to="/" className="column-logo" 
+          onClick={() => prop.userId != null
+            ? (prop.setDisplaySearchBar(true))
+            : ''}>
+          <img className="logo" src="/static/img/BiblioTechLogo.png" />
+        </Link>
+        {(prop.displaySearchBar == true) && (prop.userId != null)
+          ? <SearchBar 
+              userId = {prop.userId}
+              history={prop.history}
+              searchQuery={prop.searchQuery}
+              setSearchQuery={prop.setSearchQuery}
+              isLoading={prop.isLoading}
+              setIsLoading={prop.setIsLoading}
+              displaySearchBar={prop.displaySearchBar}
+              setDisplaySearchBar={prop.setDisplaySearchBar}
+            /> 
+          : <div className="no-searchbar"></div>
+        }
+        <div className="user-buttons">
+          {prop.userId != null 
+            ? <button className="user-button"><Link to={'/account'}>Account</Link></button>
+            : ''
           }
-          <div className="user-buttons">
-            {prop.userId != null 
-              ? <button className="user-button"><Link to={'/account'}>Account</Link></button>
-              : ''
-            }
-            {prop.userId != null
-              ? <button className="user-button"><Link to={'/logout'}>Logout</Link></button>
-              : <button className="user-button"><Link to={'/login'}>Login</Link></button>
-            }
-            
-          </div>
+          {prop.userId != null
+            ? <button className="user-button"><Link to={'/logout'}>Logout</Link></button>
+            : <button className="user-button"><Link to={'/login'}>Login</Link></button>
+          }
+          
         </div>
       </div>
-    )
-  // }
+    </div>
+  )
 }
 
 

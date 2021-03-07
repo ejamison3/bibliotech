@@ -133,8 +133,21 @@ const Book = (prop) => {
 
       <div style={{width: '100%'}}>
         {/* add class name */}
-        <div> 
-          {bookIsUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button onClick={addBook}>ADD to my books</button> }
+        <div className="add-remove-container">
+          {bookIsUsers 
+            ? (<label className="remove-book">
+                Remove Book
+                <button onClick={removeBook}>
+                  <i className="fas fa-minus"></i>
+                </button>
+              </label>) 
+            : <label>
+                Add Book
+                <button onClick={addBook}>
+                  <i className="fas fa-plus"></i>
+                </button> 
+              </label>
+          }
         </div>
         <Link to={'/book/' + id}>
           <div className="title">{book.title}</div>

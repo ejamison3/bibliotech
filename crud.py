@@ -189,9 +189,6 @@ def get_books_by_title(title):
     return Book.query.filter(Book.title == title).all()
 
 
-
-
-
 def get_books_by_various(title=None, 
                         author_lname=None, 
                         tag_list=None,
@@ -211,9 +208,17 @@ def get_books_by_various(title=None,
     if tag_list != None:
         q = q.join(BookTag).join(Tag)
         q = q.filter(Tag.tag_name.in_(tag_list))
+        # print(tag_list[0])
+        # filter_val = Tag.tag_name.ilike(tag_list[0])
+        # q = q.filter(filter_val)
+
         # variable = Tag.tag_name.ilike(tag_list[0]), Tag.tag_name.ilike(tag_list[1])
         # q = q.filter(or_(variable)
-        
+        # things
+        # (...things)
+        # use spread operator
+
+
 
     if user_id != None:
         q = q.join(UserBook).join(User)
