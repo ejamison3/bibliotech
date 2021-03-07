@@ -71,7 +71,12 @@ select {
   height: 10px;
   display: flex;
   justify-content: flex-end;
+  /* this means other things can go over it */
+  position: absolute; 
+  right: 5px;
+  top: 5px;
   align-items: center;
+  margin: 1px;
 }
 
 .book {
@@ -82,7 +87,7 @@ select {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  height: 300px;
+  height: 400px;
   justify-content: center;
   position: relative;
   text-align: center;
@@ -96,6 +101,11 @@ select {
     border-radius: 5px;
 }
 
+.book-add-remove {
+  background-color: transparent;
+  border: transparent;
+}
+
 .books {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -107,6 +117,10 @@ select {
   height: 100px;
   margin-top: 8px;
   margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.button-tag{
   border-radius: 5px;
 }
 
@@ -125,6 +139,10 @@ select {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.fa-plus {
+  color: red;
 }
 
 .footer-link {
@@ -168,9 +186,15 @@ img.logo:hover {
   margin: auto;
 }
 
+.tags {
+  border-top: 1px solid #4a4a4a;
+  width: 100%;
+}
+
 .title {
-  font-size: 1.0rem;
+  font-size: 1.4vmin;
   color: #ccc;
+  top: 15px;
 }
 
 .user-button {

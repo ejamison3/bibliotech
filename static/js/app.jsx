@@ -140,6 +140,7 @@ const App = () => {
           <Route path="/searchResults">
             <DisplaySearchResults 
               searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
               searchResponse={searchResponse}
               setSearchResponse={setSearchResponse}
               isLoading={isLoading}

@@ -93,6 +93,7 @@ const Book = (prop) => {
 
   const book = prop.book;
   const id = book.id;
+  let history = useHistory();
 
   const removeBook = () => {
     
@@ -128,6 +129,21 @@ const Book = (prop) => {
     })
   }
 
+  const searchByTag = (curr_tag) => {
+    // update query in state to search by tag clicked
+    let query = {
+      'searchType': 'basic',
+      'titleString': null,
+      'authorLnameString': null,
+      'tagListString': curr_tag,
+      'userId': null,
+    }
+    // go to DisplaySearchResults which does actual post call to search (do this using history)
+    prop.setSearchQuery(query);
+    prop.setIsLoading(true);
+    history.push("/searchResults");
+  }
+
   return (
     <div className={bookIsUsers ? "book myBook" : "book"} style={{width: '100%'}}>
 
@@ -137,34 +153,36 @@ const Book = (prop) => {
           {bookIsUsers 
             ? (<label className="remove-book">
                 Remove Book
-                <button onClick={removeBook}>
+                <button className="book-add-remove" onClick={removeBook}>
                   <i className="fas fa-minus"></i>
                 </button>
               </label>) 
             : <label>
                 Add Book
-                <button onClick={addBook}>
+                <button className="book-add-remove" onClick={addBook}>
                   <i className="fas fa-plus"></i>
                 </button> 
               </label>
           }
         </div>
-        <Link to={'/book/' + id}>
-          <div className="title">{book.title}</div>
+        <Link className="title" to={'/book/' + id}>
+          <div>{book.title}</div>
         </Link>
-        <Link to={'/book/' + id}>
-          <img className="books-image" src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
+        <Link className="books-image" to={'/book/' + id}>
+          <img src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
         </Link>
-        {book.authors ? book.authors.map(author =>
-          (<div key={author}>{author}</div>)) : ''
-        }
+        <div className="authors">
+          {book.authors ? book.authors.map(author =>
+            (<div key={author}>{author}</div>)) : ''
+          }
+        </div>
       </div>
 
       <div className="tags">
-        {book.tags ? (<div>Tags:
-            <ul>{book.tags.map(tag =>
-            (<li key={tag}>{tag}</li>))}</ul>
-            </div>) : ''
+        {book.tags ? (
+            <span>{book.tags.map(tag =>
+            (<button className="tag-button"key={tag} onClick={() => searchByTag(tag)}>{tag}</button>))}</span>
+            ) : ''
         }
       </div>
       
@@ -229,6 +247,10 @@ const DisplaySearchResults = (prop) => {
           <div key={book.id}>
           <Book
             book={book}
+            searchQuery={prop.searchQuery}
+            setSearchQuery={prop.setSearchQuery}
+            isLoading={prop.isLoading}
+            setIsLoading={prop.setIsLoading}
           />
           </div>
         )
