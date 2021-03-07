@@ -206,9 +206,14 @@ def get_books_by_various(title=None,
         q = q.join(BookAuthor).join(Author)
         q = q.filter(Author.lname.ilike(author_lname))
 
+    # make taglist search use ilike so case insensitive. 
+    # Do filter(or_(Tag.tag_name.ilike(tag), Tag.tag_name.ilike(tag)))
     if tag_list != None:
         q = q.join(BookTag).join(Tag)
         q = q.filter(Tag.tag_name.in_(tag_list))
+        # variable = Tag.tag_name.ilike(tag_list[0]), Tag.tag_name.ilike(tag_list[1])
+        # q = q.filter(or_(variable)
+        
 
     if user_id != None:
         q = q.join(UserBook).join(User)

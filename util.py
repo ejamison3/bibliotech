@@ -60,6 +60,9 @@ def books_to_dictionary(book_list, logged_in_user_id):
             'description': book.description,
             'publisher': book.publisher,
             'year': book.publication_year,
+            'isbn': book.isbn,
+            'image': book.image_url,
+            'avgRating': book.avg_rating,
             'tags': tag_list,
             'isUsers': is_users,
         }
@@ -82,6 +85,9 @@ def book_to_dictionary(book):
         'description': book.description,
         'publisher': book.publisher,
         'year': book.publication_year,
+        'isbn': book.isbn,
+        'image': book.image_url,
+        'avgRating': book.avg_rating,
         'tags': tag_list,
     }
     

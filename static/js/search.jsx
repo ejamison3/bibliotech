@@ -59,7 +59,7 @@ const SearchBar = (prop) => {
     return;
   } else{
     return (
-      <div>
+      <div className="search">
         <form>
           <label htmlFor="search-type"></label>
           <select id="search-type" type="dropdown">
@@ -129,27 +129,36 @@ const Book = (prop) => {
   }
 
   return (
-    <div className="book">
-        
-      <Link to={'/book/' + id}>
-        <h2>{book.title}</h2>
-      </Link>
+    <div className={bookIsUsers ? "book myBook" : "book"} style={{width: '100%'}}>
+
+      <div style={{width: '100%'}}>
+        {/* add class name */}
+        <div> 
+          {bookIsUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button onClick={addBook}>ADD to my books</button> }
+        </div>
+        <Link to={'/book/' + id}>
+          <div className="title">{book.title}</div>
+        </Link>
+        <Link to={'/book/' + id}>
+          <img className="books-image" src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
+        </Link>
+        {book.authors ? book.authors.map(author =>
+          (<div key={author}>{author}</div>)) : ''
+        }
+      </div>
+
+      <div className="tags">
+        {book.tags ? (<div>Tags:
+            <ul>{book.tags.map(tag =>
+            (<li key={tag}>{tag}</li>))}</ul>
+            </div>) : ''
+        }
+      </div>
       
-      {book.authors ? book.authors.map(author =>
-        (<div key={author}>{author}</div>)) : ''
-      }
-      {book.description ? (<div><b>Description: </b>{book.description} </div>) : ''}
-      {book.publisher ? (<div>Publisher: {book.publisher} </div>) : ''}
-      {book.year ? (<div>Publication Year: {book.year} </div>) : ''}
-      {book.tags ? (<div>Tags:
-          <ul>{book.tags.map(tag =>
-          (<li key={tag}>{tag}</li>))}</ul>
-          </div>) : ''
-      }
-      {bookIsUsers ? <div>Your rating: {book.rating}</div> : <div>Average Rating: </div>}
-      <span>
-        {bookIsUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button onClick={addBook}>ADD to my books</button> }
-      </span>
+      <div className="rating">
+        {bookIsUsers ? <div>Your rating: {book.rating}</div> : <div>Average Rating: </div>}
+      </div>
+      
     </div>
   )
 } 
@@ -221,7 +230,7 @@ const DisplaySearchResults = (prop) => {
             {query.authorLnameString ? <li>Author: {query.authorLnameString}</li> : ''}
             {query.tagListString ? <li>Tags: {query.tagListString}</li> : ''}
           </div>
-          <div className="container">
+          <div className="books">
             <React.Fragment>
               {books}
             </React.Fragment>
@@ -341,6 +350,8 @@ const AdvancedSearch = (prop) => {
 const DisplayBook = (prop) => {
   let { bookId } = useParams();
 
+  // figure out bookIsUsers set in state in Book component. Need variable value here too...
+
   const makeEditable = () => {
     prop.setIsEditable(true);
   }
@@ -387,17 +398,24 @@ const DisplayBook = (prop) => {
       return (
         <div>
           <h2>{book.title}</h2>
+          {book.image ? (<img src={book.image}/>) : ''}
           {book.authors ? book.authors.map(author =>
             (<div key={author}>{author}</div>)) : ''
           }
-          {book.description ? (<div>Description: {book.description} </div>) : ''}
+          {book.description ? (<div><b>Description: </b>{book.description} </div>) : ''}
           {book.publisher ? (<div>Publisher: {book.publisher} </div>) : ''}
           {book.year ? (<div>Publication Year: {book.year} </div>) : ''}
+          {book.isbn ? (<div>ISBN: {book.isbn}</div>) : ''}
           {book.tags ? (<div>Tags:
               <ul>{book.tags.map(tag =>
               (<li key={tag}>{tag}</li>))}</ul>
               </div>) : ''
           }
+          
+          {/* {bookIsUsers ? <div>Your rating: {book.rating}</div> : <div>Average Rating: </div>} */}
+          {/* <span>
+            {bookIsUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button onClick={addBook}>ADD to my books</button> }
+          </span> */}
           <button onClick={makeEditable}>Edit Book</button>
         </div>
       )
