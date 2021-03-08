@@ -210,6 +210,7 @@ const EditBook = (prop) => {
 const DisplaySearchResults = (prop) => {
   const query = prop.searchQuery;
   // let history = useHistory();
+  prop.setIsEditable(false)
 
   React.useEffect(() => {
     fetch('api/search', {
@@ -227,11 +228,12 @@ const DisplaySearchResults = (prop) => {
       }else if (response.status === 204) {
         prop.setSearchResponse(null);
         prop.setIsLoading(false);
-      }
+      }else{
       response.json().then(data => {
         prop.setSearchResponse(data);
         prop.setIsLoading(false);
       })
+    }
     })
   }, [query]);
 

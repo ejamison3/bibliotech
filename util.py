@@ -20,7 +20,7 @@ def get_book_rating_by_user_id(book, user_id):
 
     book_ratings = book.ratings
     if len(book_ratings) > 0:
-        book_user_ratings = [rating for rating in book_ratings if ratings.user_id == user_id]
+        book_user_ratings = [rating for rating in book_ratings if str(rating.user_id) == user_id]
 
     if len(book_user_ratings) > 0:
         # there should only ever be a single rating per user/book combo
@@ -68,8 +68,8 @@ def books_to_dictionary(book_list, logged_in_user_id):
         # user rating
         if is_users == True:
             user_rating = get_book_rating_by_user_id(book, logged_in_user_id)
-            user_score = user_rating.score
-            user_review = user_rating.review
+            user_score = user_rating.score if user_rating != None else None
+            user_review = user_rating.description if user_rating != None else None
         else:
             user_score = None
             user_review = None
@@ -95,7 +95,7 @@ def books_to_dictionary(book_list, logged_in_user_id):
     return list_book_dict
 
 
-def book_to_dictionary(book):
+def book_to_dictionary(book, logged_in_user_id):
     '''Takes in a list of book records and turns into dictionary list of books'''
     
     author_list = get_author_data_from_book(book)
@@ -105,8 +105,8 @@ def book_to_dictionary(book):
     # user rating
     if is_users == True:
         user_rating = get_book_rating_by_user_id(book, logged_in_user_id)
-        user_score = user_rating.score
-        user_review = user_rating.review
+        user_score = user_rating.score if user_rating != None else None
+        user_review = user_rating.description if user_rating != None else None
     else:
         user_score = None
         user_review = None

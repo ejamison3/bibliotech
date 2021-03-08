@@ -8,6 +8,9 @@ const useParams = ReactRouterDOM.useParams;
 
 
 const Home = (prop) => {
+  // prevent book from still being editable if user clicked away from editable page
+  prop.setIsEditable(false)
+
   if (prop.userId === null) {
     return (
       <div className="center-text">
@@ -151,6 +154,8 @@ const App = () => {
                 setIsLoading={setIsLoading}
                 displaySearchBar={displaySearchBar}
                 setDisplaySearchBar={setDisplaySearchBar}
+                isEditable={isEditable}
+                setIsEditable={setIsEditable}
               />
             </Route>
             <Route path="/searchResults">
@@ -161,6 +166,8 @@ const App = () => {
                 setSearchResponse={setSearchResponse}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
+                isEditable={isEditable}
+                setIsEditable={setIsEditable}
               />
             </Route>
             <Route path="/book/:bookId">

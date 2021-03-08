@@ -115,7 +115,7 @@ def create_account():
 def perform_search():
     """Perform simple search and return results as list"""
 
-    # needed to return which books belong to user (if not requesting only their books)
+    # needed to return which books belong to user 
     logged_in_user_id = request.cookies["user_id"]
     
     req = request.get_json()
@@ -180,6 +180,9 @@ def get_book(bookId):
 
     book_id = bookId
 
+    # needed to return if book belongs to user 
+    logged_in_user_id = request.cookies["user_id"]
+
     response = {
         'message': None,
         'error': None,
@@ -189,7 +192,7 @@ def get_book(bookId):
     book = get_book_by_id(book_id)
 
     if book != None:
-        response['book'] = util.book_to_dictionary(book)
+        response['book'] = util.book_to_dictionary(book, logged_in_user_id)
 
     status_code = 204 if book == None else 200
 
