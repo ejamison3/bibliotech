@@ -30,6 +30,7 @@ const SearchBar = (prop) => {
       'titleString': null,
       'authorLnameString': null,
       'tagListString': null,
+      'isbnString': null,
       'userId': null,
     }
 
@@ -44,6 +45,8 @@ const SearchBar = (prop) => {
       case 'Tags':
         query.tagListString = searchVal;
         break;
+      case 'ISBN':
+        query.isbnString = searchVal;
     }
 
     // set userId if necessary
@@ -66,6 +69,7 @@ const SearchBar = (prop) => {
             <option value="Title"defaultValue>Title</option>
             <option value="Author">Author Last Name</option>
             <option value="Tags">Tag</option>
+            <option value="ISBN">ISBN</option>
           </select>
           <label htmlFor="search-field"></label>
           <input id="search-field" type="text" placeholder="Type search phrase" autoFocus/>
@@ -136,6 +140,7 @@ const Book = (prop) => {
       'titleString': null,
       'authorLnameString': null,
       'tagListString': curr_tag,
+      'isbnString': null,
       'userId': null,
     }
     // go to DisplaySearchResults which does actual post call to search (do this using history)
@@ -187,7 +192,7 @@ const Book = (prop) => {
       </div>
       
       <div className="rating">
-        {bookIsUsers ? <div>Your rating: {book.rating}</div> : <div>Average Rating: </div>}
+        {bookIsUsers ? <div>Your rating: {book.userScore}</div> : <div>Average Rating: {book.avgRating}</div>}
       </div>
       
     </div>
@@ -292,7 +297,8 @@ const AdvancedSearch = (prop) => {
     const authorLnameString = document.getElementById('lname').value;
     const exactLname = document.getElementById('exactLname').checked;
     //Tags
-    const tagListString = document.getElementById('tags').value
+    const tagListString = document.getElementById('tags').value;
+    const isbnString = document.getElementById('isbn').value;
     //User
     const myBooksOnly = document.getElementById('only-my-books').checked;
 
@@ -315,6 +321,7 @@ const AdvancedSearch = (prop) => {
       'authorLnameString': (authorLnameString != '' ? authorLnameString : null),
       'exactLname': exactLname,
       'tagListString': (tagListString != '' ? tagListString : null),
+      'isbnString': isbnString,
       'userId': null,
     }
 
@@ -368,7 +375,13 @@ const AdvancedSearch = (prop) => {
         <div>
           Tags:
           <label htmlFor="tags">
-            <input type="text" id="tags" name="tags"></input>
+            <input type="text" id="tags" name="tags" placeholder="comma separated tags"></input>
+          </label>
+        </div>
+        <div>
+          ISBN:
+          <label htmlFor="isbn">
+            <input type="text" id="isbn" name="isbn" maxlength="13" placeholder="ISBN"></input>
           </label>
         </div>
         <div>

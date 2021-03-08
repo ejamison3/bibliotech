@@ -124,6 +124,7 @@ def perform_search():
     title_string = req['titleString']
     author_lname_string = req['authorLnameString']
     tag_string = req['tagListString']       # comma separated string of tags
+    isbn_string = req['isbnString']
     search_type = req['searchType']         # advanced, basic
     user_id = req['userId']
     
@@ -160,6 +161,7 @@ def perform_search():
         books = get_books_by_various(title=title_string, 
                                     author_lname=author_lname_string, 
                                     tag_list=tag_list, 
+                                    isbn=isbn_string,
                                     user_id=user_id)
 
     response['book_list'] = util.books_to_dictionary(books, logged_in_user_id)

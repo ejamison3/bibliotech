@@ -67,16 +67,33 @@ const Header = (prop) => {
 
 const Footer = (prop) => {
   return (
-    <footer>
-      <div>
-        <h4 className="center">BIBLIOTECH</h4>
-        <br/>
-        <Link to={'/about/search'} className="footer-link">Learn about our search methodologies</Link>
-        <br/>
-        <Link to={'/about'} className="footer-link">Learn about BiblioTech</Link>
+    <div id="footer">
+      <h4 className="center">BIBLIOTECH</h4>
+      <div className="container">
+        <div>
+          About BiblioTech:
+          <li>
+            <Link to={'/about'} className="footer-link">Learn about BiblioTech</Link>
+          </li>
+          <li>
+            <Link to={'/about/search'} className="footer-link">Search methodologies</Link>
+          </li>
+          <li>
+            <Link to={'/about/data'} className="footer-link">Data &amp; Seeding Process</Link>          
+          </li>
+        </div>
+        <div>
+          About Elizabeth:
+          <li>
+            <a href="https://github.com/ejamison3" target="_blank">Github</a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/ejamison3/" target="_blank">LinkedIn</a>
+          </li>
+        </div>
       </div>
-      <p>UnicornBread</p>
-    </footer>
+      <p>Created by: Elizabeth M Jamison</p>
+    </div>
   )
 }
 
@@ -120,89 +137,94 @@ const App = () => {
           setIsLoading={setIsLoading}
           displaySearchBar={displaySearchBar}
           setDisplaySearchBar={setDisplaySearchBar}
-        />
-        <Footer/>          
+        /> 
+        <main>
+          <Switch>
+            <Route exact path="/">
+              <Home 
+                userId={userId}
+                username={username}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                history={history}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                displaySearchBar={displaySearchBar}
+                setDisplaySearchBar={setDisplaySearchBar}
+              />
+            </Route>
+            <Route path="/searchResults">
+              <DisplaySearchResults 
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                searchResponse={searchResponse}
+                setSearchResponse={setSearchResponse}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              />
+            </Route>
+            <Route path="/book/:bookId">
+              <DisplayBook 
+                userId={userId}
+                bookResponse={bookResponse}
+                setBookResponse={setBookResponse}
+                isEditable={isEditable}
+                setIsEditable={setIsEditable}
+              />
+            </Route>
+            <Route path="/search/advanced">
+              <AdvancedSearch 
+                userId={userId}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                displaySearchBar={displaySearchBar}
+                setDisplaySearchBar={setDisplaySearchBar}
+              />
+            </Route>
+            <Route path="/account">
+              <DisplayAccount 
+                userId={userId}
+                username={username}
+                
+                history={history}
+              />
+            </Route>
+            <Route path="/login">
+              <DisplayLogin 
+                userId={userId}
+                setUserId={setUserId}
+                username={username}
+                setUsername={setUsername}
+                history={history}
+              />
+            </Route>
+            <Route path="/logout">
+              <DisplayLogout
+                userId = {userId}
+                setUserId={setUserId}
+                username={username}
+                setUsername={setUsername}
+                history={history}
+              />
+            </Route>
+            <Route path='/about/data'>
+              <AboutData />
+            </Route>
+            <Route path='/about/search'>
+              <AboutSearch />
+            </Route>
+            <Route path='/about'>
+              <About />
+            </Route>
+            <Route path="/createUser">
+              <DisplayCreateUser />
+            </Route>
+          </Switch>
+        </main>
+        <Footer/>  
 
-        <Switch>
-          <Route exact path="/">
-            <Home 
-              userId={userId}
-              username={username}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              history={history}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-              displaySearchBar={displaySearchBar}
-              setDisplaySearchBar={setDisplaySearchBar}
-            />
-          </Route>
-          <Route path="/searchResults">
-            <DisplaySearchResults 
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              searchResponse={searchResponse}
-              setSearchResponse={setSearchResponse}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-            />
-          </Route>
-          <Route path="/book/:bookId">
-            <DisplayBook 
-              userId={userId}
-              bookResponse={bookResponse}
-              setBookResponse={setBookResponse}
-              isEditable={isEditable}
-              setIsEditable={setIsEditable}
-            />
-          </Route>
-          <Route path="/search/advanced">
-            <AdvancedSearch 
-              userId={userId}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-              displaySearchBar={displaySearchBar}
-              setDisplaySearchBar={setDisplaySearchBar}
-            />
-          </Route>
-          <Route path="/account">
-            <DisplayAccount 
-              userId={userId}
-              username={username}
-              
-              history={history}
-            />
-          </Route>
-          <Route path="/login">
-            <DisplayLogin 
-              userId={userId}
-              setUserId={setUserId}
-              username={username}
-              setUsername={setUsername}
-              history={history}
-            />
-          </Route>
-          <Route path="/logout">
-            <DisplayLogout
-              userId = {userId}
-              setUserId={setUserId}
-              username={username}
-              setUsername={setUsername}
-              history={history}
-            />
-          </Route>
-          <Route path='/about/search'>
-            <AboutSearch />
-          </Route>
-          <Route path='/about'>
-            <About />
-          </Route>
-          <Route path="/createUser">
-            <DisplayCreateUser />
-          </Route>
-        </Switch>
       </div>
     </Router>
   )

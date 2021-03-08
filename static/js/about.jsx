@@ -3,11 +3,52 @@
 const About = () => {
   return (
     <div>
-      This is stuff about BiblioTech
+      BiblioTech is a single page web application (SPWA) built over the course of 4 weeks as part of the Hackbright Academy program.
+      <div>
+        BiblioTech was built using the following technologies:
+        <li>
+          Python3, including flask, sqlalchemy
+        </li>
+        <li>
+          Javascript, react &amps; jsx
+        </li>
+      </div>
     </div>
   )
 }
 
+const AboutData = () => {
+  return (
+    <div>
+      <div>
+        <b>Data</b>:
+        The data displayed and used in this project comes from two sources:
+        <li>  
+          A "small" subset of Amazon reviews of Books from 2018. The dataset can be found
+          <a href="https://nijianmo.github.io/amazon/index.html" target="_blank">here.</a> The paper cited below details the methodologies used to compile this data. (The paper can also be found 
+          <a href="http://cseweb.ucsd.edu/~jmcauley/pdfs/emnlp19a.pdf" target="_blank"> here</a>
+          )
+          <div>
+            Citation:
+            <div>
+              <b>
+                Justifying recommendations using distantly-labeled reviews and fined-grained aspects
+              </b>
+                <br/>
+                Jianmo Ni, Jiacheng Li, Julian McAuley
+              <p>
+                <i>Empirical Methods in Natural Language Processing (EMNLP), 2019</i>
+              </p>
+            </div>
+          </div>
+        </li>
+        <li>
+          The Google Books API was utilized to fill in book information (e.g., title, authors, category, description) by querying by ISBN from the review data.
+        </li>
+      </div>
+    </div>
+  )
+}
 
 const AboutSearch = () => {
   return (
@@ -26,7 +67,7 @@ const AboutSearch = () => {
           <b>Tag</b>: comma separated multiple tags (OR). Search will work with or without a space following a comma
         </li>
         <li>
-          <b>ISBN</b>: exact search - will only return a book whose ISBN matches exactly
+          <b>ISBN</b>: exact search - will only return a book whose ISBN matches exactly. Case insensitive.
         </li>
         Additionally, searches can be configured to return only books which belong to the current user.
       </div>

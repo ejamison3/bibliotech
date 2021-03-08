@@ -15,6 +15,20 @@ def get_author_data_from_book(book):
 
     return authors
 
+def get_book_rating_by_user_id(book, user_id):
+    '''Get rating(s) for given book by user_id'''
+
+    book_ratings = book.ratings
+    if len(book_ratings) > 0:
+        book_user_ratings = [rating for rating in book_ratings if ratings.user_id == user_id]
+
+    if len(book_user_ratings) > 0:
+        # there should only ever be a single rating per user/book combo
+        return book_user_ratings[0]
+    else: 
+        print(f'Rating not found for book_id {book.id} and user_id {user_id}')
+        return None
+
 
 def get_tag_data_from_book(book):
     '''Get tag names from book record'''
@@ -51,6 +65,15 @@ def books_to_dictionary(book_list, logged_in_user_id):
         tag_list = get_tag_data_from_book(book)
         is_users = is_user_book(book, logged_in_user_id)
 
+        # user rating
+        if is_users == True:
+            user_rating = get_book_rating_by_user_id(book, logged_in_user_id)
+            user_score = user_rating.score
+            user_review = user_rating.review
+        else:
+            user_score = None
+            user_review = None
+
         temp_book = {
             'id' : book.id,
             'title': book.title,
@@ -63,6 +86,8 @@ def books_to_dictionary(book_list, logged_in_user_id):
             'avgRating': book.avg_rating,
             'tags': tag_list,
             'isUsers': is_users,
+            'userScore': user_score,
+            'userReview': user_review,
         }
 
         list_book_dict.append(temp_book)
@@ -75,6 +100,16 @@ def book_to_dictionary(book):
     
     author_list = get_author_data_from_book(book)
     tag_list = get_tag_data_from_book(book)
+    is_users = is_user_book(book, logged_in_user_id)
+
+    # user rating
+    if is_users == True:
+        user_rating = get_book_rating_by_user_id(book, logged_in_user_id)
+        user_score = user_rating.score
+        user_review = user_rating.review
+    else:
+        user_score = None
+        user_review = None
 
     temp_book = {
         'id' : book.id,
@@ -87,6 +122,9 @@ def book_to_dictionary(book):
         'image': book.image_url,
         'avgRating': book.avg_rating,
         'tags': tag_list,
+        'isUsers': is_users,
+        'userScore': user_score,
+        'userReview': user_review,
     }
     
     return temp_book

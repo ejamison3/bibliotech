@@ -192,6 +192,7 @@ def get_books_by_title(title):
 def get_books_by_various(title=None, 
                         author_lname=None, 
                         tag_list=None,
+                        isbn=None,
                         user_id=None):
 
     q = Book.query
@@ -202,22 +203,28 @@ def get_books_by_various(title=None,
     if author_lname != None:
         q = q.join(BookAuthor).join(Author)
         q = q.filter(Author.lname.ilike(author_lname))
+    else:
+        q = q.options(db.joinedload('authors'))
 
     if tag_list != None:
         q = q.join(BookTag).join(Tag)
-
         terms = []
         for tag in tag_list:
             tag = tag.strip()
             terms.append(Tag.tag_name.ilike(tag))
 
         q = q.filter(db.or_(*terms))
+    else:
+        q = q.options(db.joinedload('tags'))
 
-
+    if isbn != None:
+        q = q.filter(Book.isbn.ilike(isbn))
 
     if user_id != None:
         q = q.join(UserBook).join(User)
         q = q.filter(User.id == user_id)
+    else:
+        q = q.options(db.joinedload('users'))
     
     return q.all()
 
@@ -226,6 +233,7 @@ def get_books_by_various_advanced(title=None,
                                 author_fname= None,
                                 author_lname=None, 
                                 tag_list=None,
+                                isbn=None,
                                 user_id=None,
                                 exact_title=False,
                                 exact_fname=False,
@@ -255,20 +263,28 @@ def get_books_by_various_advanced(title=None,
                 q = q.filter(Author.lname.ilike(author_lname))
             else:
                 q = q.filter(Author.lname.ilike(f'%{author_lname}%'))
+    else:
+        q = q.options(db.joinedload('authors'))
 
     if tag_list != None:
         q = q.join(BookTag).join(Tag)
-        
         terms = []
         for tag in tag_list:
             tag = tag.strip()
             terms.append(Tag.tag_name.ilike(tag))
 
         q = q.filter(db.or_(*terms))
+    else:
+        q = q.options(db.joinedload('tags'))
+    
+    if isbn != None:
+        q = q.filter(Book.isbn.ilike(isbn))
 
     if user_id != None:
         q = q.join(UserBook).join(User)
         q = q.filter(User.id == user_id)
+    else:
+        q = q.options(db.joinedload('users'))
     
     return q.all()
 
@@ -301,6 +317,7 @@ def get_similar_tags(similar_phrase):
     '''Get all tags with name similar to similar_phrase'''
 
     return Tag.query.filter(Tag.tag_name.like(f'%{similar_phrase}%')).all()
+
 
 #######################################DELETE#######################################
 
