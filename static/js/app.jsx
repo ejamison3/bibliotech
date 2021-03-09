@@ -5,7 +5,7 @@ const Switch = ReactRouterDOM.Switch;
 const Route = ReactRouterDOM.Route;
 const useHistory = ReactRouterDOM.useHistory;
 const useParams = ReactRouterDOM.useParams;
-const {Container, Button, Navbar} = ReactBootstrap;
+const {Container, Col, Row, Tabs, Tab, Jumbotron, Button} = ReactBootstrap;
 
 
 const Home = (prop) => {
@@ -35,52 +35,63 @@ const Header = (prop) => {
   }
 
   return (
-    <div id="header">
-      <div className="container">
-        <Link to="/" className="column-logo" 
-          onClick={() => prop.userId != null
-            ? (prop.setDisplaySearchBar(true))
-            : ''}>
-          <img className="logo" src="/static/img/BiblioTechLogo.png" />
-        </Link>
-        {(prop.displaySearchBar == true) && (prop.userId != null)
-          ? <SearchBar 
-              userId = {prop.userId}
-              history={prop.history}
-              searchQuery={prop.searchQuery}
-              setSearchQuery={prop.setSearchQuery}
-              isLoading={prop.isLoading}
-              setIsLoading={prop.setIsLoading}
-              displaySearchBar={prop.displaySearchBar}
-              setDisplaySearchBar={prop.setDisplaySearchBar}
-              isEditable={prop.isEditable}
-              setIsEditable={prop.setIsEditable}
+    // <div id="header">
+    // <Container>
+      <Row>
+        <Col md={3} lg={3}>
+          <Link to="/" className="column-logo" 
+            onClick={() => prop.userId != null
+              ? (prop.setDisplaySearchBar(true))
+              : ''}>
+            <img className="logo" src="/static/img/BiblioTechLogo.png" />
+          </Link>
+        </Col>
+        <Col md={6} lg={6}>
+          {(prop.displaySearchBar == true) && (prop.userId != null)
+            ? <SearchBar 
+            userId = {prop.userId}
+            history={prop.history}
+            searchQuery={prop.searchQuery}
+            setSearchQuery={prop.setSearchQuery}
+            isLoading={prop.isLoading}
+            setIsLoading={prop.setIsLoading}
+            displaySearchBar={prop.displaySearchBar}
+            setDisplaySearchBar={prop.setDisplaySearchBar}
+            isEditable={prop.isEditable}
+            setIsEditable={prop.setIsEditable}
             /> 
-          : <div className="no-searchbar"></div>
-        }
-        <div className="user-buttons">
-          {prop.userId != null 
-            ? <button className="user-button"><Link to={'/account'}>Account</Link></button>
-            : ''
+            : <div className="no-searchbar"></div>
           }
-          {prop.userId != null
-            ? <button className="user-button"><Link to={'/logout'}>Logout</Link></button>
-            : <button className="user-button"><Link to={'/login'}>Login</Link></button>
-          }
-          
-        </div>
-      </div>
-    </div>
+        </Col>
+        <Col md={3} lg={3}>
+          <div className="user-buttons">
+            {prop.userId != null 
+              ? <button className="user-button"><Link to={'/account'}>Account</Link></button>
+              : ''
+            }
+            {prop.userId != null
+              ? <button className="user-button"><Link to={'/logout'}>Logout</Link></button>
+              : <button className="user-button"><Link to={'/login'}>Login</Link></button>
+            }
+          </div>
+        </Col>
+      </Row>
+    // </Container>
+    //  </div>
   )
 }
 
 
 const Footer = (prop) => {
   return (
-    <div id="footer">
-      <h4 className="center">BIBLIOTECH</h4>
-      <div className="container">
-        <div>
+    // <div id="footer">
+    <Container>
+      <Row>
+        <h4 className="center">BIBLIOTECH</h4>
+      </Row>
+      <Row>
+      {/* <div className="container"> */}
+        <Col xs={4}>
           About BiblioTech:
           <li>
             <Link to={'/about'} className="footer-link">Learn about BiblioTech</Link>
@@ -91,8 +102,9 @@ const Footer = (prop) => {
           <li>
             <Link to={'/about/data'} className="footer-link">Data &amp; Seeding Process</Link>          
           </li>
-        </div>
-        <div>
+        {/* <div> */}
+        </Col>
+        <Col xs={4}>
           About Elizabeth:
           <li>
             <a href="https://github.com/ejamison3" target="_blank">Github</a>
@@ -100,10 +112,16 @@ const Footer = (prop) => {
           <li>
             <a href="https://www.linkedin.com/in/ejamison3/" target="_blank">LinkedIn</a>
           </li>
-        </div>
-      </div>
+        </Col>
+        {/* </div> */}
+      {/* </div> */}
+    </Row>
+    <Row>
       <p>Created by: Elizabeth M Jamison</p>
-    </div>
+      <Button variant="secondary">Something</Button>
+    </Row>
+    </Container>
+    // </div>÷
   )
 }
 
@@ -137,7 +155,8 @@ const App = () => {
 
   return (
     <Router>
-      <div id="app">
+      <Container>
+      {/* <div id="app"> */}
         <Header 
           userId = {userId}
           username={username}
@@ -236,8 +255,8 @@ const App = () => {
           </Switch>
         </main>
         <Footer/>  
-
-      </div>
+      </Container>
+      {/* </div> */}
     </Router>
   )
 };

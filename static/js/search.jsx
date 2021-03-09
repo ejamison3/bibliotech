@@ -12,7 +12,7 @@ const SearchBar = (prop) => {
     const searchVal = document.getElementById('search-field').value;
 
     if (searchType == null){
-      alert('Please select a search type');
+      <Alert variant="danger">Please select a search type!</Alert>
       return;
     }
 

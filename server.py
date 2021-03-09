@@ -13,6 +13,7 @@ import util
 from jinja2 import StrictUndefined
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = "1123513"
 app.jinja_env.undefined = StrictUndefined
 

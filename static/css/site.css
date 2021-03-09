@@ -234,25 +234,25 @@ img.logo:hover {
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-#footer>.container{
+/* #footer>.container{
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-}
+} */
 
-#header {
+/* #header {
   border-bottom: 1px solid #4a4a4a;
   /* background-color: #000000; */
-}
+} */
 
-#header>.container{
+/* #header>.container{
   align-items: center;
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.5fr;
   grid-column-gap: 10px;
   /* height: 68px; */
   padding: 0 10px;
-}
+} */
 
 #my-books-checkbox {
   font-family: 'IBM Plex Mono';

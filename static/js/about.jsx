@@ -2,18 +2,28 @@
 
 const About = () => {
   return (
-    <div>
-      BiblioTech is a single page web application (SPWA) built over the course of 4 weeks as part of the Hackbright Academy program.
-      <div>
-        BiblioTech was built using the following technologies:
-        <li>
-          Python3, including flask, sqlalchemy
-        </li>
-        <li>
-          Javascript, react &amps; jsx
-        </li>
-      </div>
-    </div>
+    <Tabs>
+      <Tab eventKey="about" title="About">
+        <div>
+          BiblioTech is a single page web application (SPWA) built over the course of 4 weeks as part of the Hackbright Academy program.
+          <div>
+            BiblioTech was built using the following technologies:
+            <li>
+              Python3, including flask, sqlalchemy
+            </li>
+            <li>
+              Javascript, react &amp; jsx
+            </li>
+          </div>
+        </div>
+      </Tab>
+      <Tab eventKey="data" title="Data">
+        <AboutData/>
+      </Tab>
+      <Tab title="Search">
+        <AboutSearch/>
+      </Tab>
+    </Tabs>
   )
 }
 
