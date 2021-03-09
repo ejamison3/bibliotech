@@ -78,7 +78,6 @@ def create_tags_from_list(tags_list):
     """Create or find tags, return list of tag records"""
 
     tags_record_list = []
-    print(tags_list)
     for tag in tags_list:
         curr_tag = crud.get_tag(tag)
         if curr_tag is None:
@@ -174,7 +173,7 @@ def create_user_rating(filename, error_file):
         review_dict = json.loads(line)
         user_name = review_dict['reviewerID']
         rating_fl = review_dict.get('overall', None)
-        rating_desc = review_dict.get('reviewText', None)
+        review = review_dict.get('reviewText', None)
         isbn = review_dict.get('asin', None)
     
         # find or create user
@@ -190,14 +189,39 @@ def create_user_rating(filename, error_file):
 
             # create and link rating to user and book
             if rating_fl is not None:
-                rating = str(int(rating_fl))
-                crud.create_rating(rating, temp_user, temp_book, rating_desc)
+                rating = int(rating_fl)
+                crud.create_rating(rating, temp_user, temp_book, review)
         else:
             failed_file.write(f'{user_name} {isbn}\n')
 
     f.close()
     failed_file.close()
 
+def create_average_ratings():
+    """Calculate average rating for ever book"""
+
+    # get all books_ids from ratings table
+    book_ids_list = crud.get_all_ratings_book_ids()
+    # loop through book_id list
+    for book_id_tuple in book_ids_list:
+        book_id = book_id_tuple[0]
+        rating_count = crud.get_rating_count_by_book(book_id)
+        rating_sum = crud.get_rating_sum_by_book(book_id)
+        avg_rating = rating_sum/rating_count
+
+        # set avg rating on book record
+        crud.update_book_avg_rating(book_id, avg_rating)
+
+
+def update_average_rating(book_id):
+    rating_count = crud.get_rating_count_by_book(book_id)
+    print(f'rating_count: {rating_count}')
+    rating_sum = crud.get_rating_sum_by_book(book_id)
+    print(f'rating_sum: {rating_sum}')
+    avg_rating = rating_sum/rating_count
+    print(f'avg_rating: {avg_rating}')
+
+    return avg_rating
 
 def test(filename):
     """Create book, author"""

@@ -147,10 +147,10 @@ def create_users_books_tags_relationship(user_book_record, book_tag_record):
     db.session.commit()
 
 
-def create_rating(score, user_record, book_record, description=None):
+def create_rating(score, user_record, book_record, review=None):
     '''Create rating record and tie to users and books tables'''
 
-    temp_rating = Rating(score=score, description=description)
+    temp_rating = Rating(score=score, review=review)
     db.session.add(temp_rating)
     db.session.commit()     # do now to create ratings.id?
 
@@ -175,12 +175,19 @@ def get_book_by_isbn(isbn):
 
     return Book.query.filter(Book.isbn == isbn).first()
 
+
 def get_book_by_title(title):
     '''Get book by title
     
     Returns list of books'''
 
     return Book.query.filter(Book.title == title).first()
+
+
+def get_all_ratings_book_ids():
+    '''Get list of unique book_ids in ratings table'''
+
+    return Rating.query.with_entities(Rating.book_id).group_by(Rating.book_id).all()
 
 # may not be using this...check
 def get_books_by_title(title):
@@ -313,10 +320,32 @@ def get_tag(tag_name):
 
     return Tag.query.filter(Tag.tag_name == tag_name).first()
 
+
+def get_rating_count_by_book(book_id):
+    '''Get total number of ratings by Book ID'''
+
+    return Rating.query.filter(Rating.book_id == book_id).count()
+
+def get_rating_sum_by_book(book_id):
+    '''Get total sum of ratings by Book ID'''
+
+    # this will fail until Rating.score is changed to int
+    return Rating.query.with_entities(db.func.sum(Rating.score)).filter(Rating.book_id == book_id).scalar()
+
 def get_similar_tags(similar_phrase):
     '''Get all tags with name similar to similar_phrase'''
 
     return Tag.query.filter(Tag.tag_name.like(f'%{similar_phrase}%')).all()
+
+####################################### UPDATE #######################################
+
+def update_book_avg_rating(book_id, avg_rating):
+    '''Update average rating by book ID'''
+
+    book_record = get_book_by_id(book_id)
+    book_record.avg_rating = avg_rating
+    db.session.commit()
+
 
 
 #######################################DELETE#######################################

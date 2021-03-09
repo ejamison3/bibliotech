@@ -8,9 +8,9 @@ HOW TO CREATE BOOK SEED FILE
     Put in the names you want the book_seed_file and error_file to have
 
 HOW TO SEED DATABASE
-1. Load book_seed_file created above using create_book_author('data_seed/book_seed_file_part#.json') 
+1. Load book_seed_file created above using create_book_author('seed_data/book_seed_file_part#.json') 
   - function in seed_db.py file
-2. Load reviews.json (or reviews_small.json) using create_user_rating('reviews.json', 'rating_errors')
+2. Load reviews.json (or reviews_small.json) using create_user_rating('seed_data/reviews.json', 'rating_errors')
   - function in seed_db.py file
 
 HOW TO HANDLE ERRORS 

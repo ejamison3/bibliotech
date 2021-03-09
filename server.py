@@ -6,6 +6,8 @@ from flask import (Flask, render_template, redirect, request,
 from model import connect_to_db
 from crud import *
 
+import simplejson as json
+
 import util
 
 from jinja2 import StrictUndefined
@@ -108,7 +110,7 @@ def create_account():
         response['message'] = 'Unauthorized'
         status_code = 422
 
-    return (jsonify(response), status_code)
+    return (json.loads(response), status_code)
 
 
 @app.route('/api/search', methods=['POST'])

@@ -17,17 +17,10 @@ class Book(db.Model):
     publisher = db.Column(db.Text)
     description = db.Column(db.Text)
     publication_year = db.Column(db.Integer)    # can this be limited to 4 ints?
-    pages = db.Column(db.Integer) 
+    pages = db.Column(db.Integer)
     isbn = db.Column(db.String(13))
-    image_url = db.Column(db.Text)       # google books image url is 113 chars
-    avg_rating = db.Column(db.Integer)
-    category_id = db.Column(db.Integer,
-                            db.ForeignKey('categories.id')) 
-    
-    # create relationships
-    # many to one relationship
-    category = db.relationship("Category",
-                               backref="books")
+    image_url = db.Column(db.Text)       
+    avg_rating = db.Column(db.DECIMAL(3, 2))
 
     # association table relationships
     authors = db.relationship("Author",
@@ -45,23 +38,7 @@ class Book(db.Model):
     
     
     def __repr__(self):
-        return f'<Book id={self.id} title={self.title}'  # should I include more attributes?
-
-
-class Category(db.Model):
-    """Data model for Category"""
-
-    __tablename__ = "categories"
-
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   autoincrement=True)
-    category_name = db.Column(db.Enum('fiction', 'non-fiction', 'reference', name="book_categories"), nullable=False)    # What does name mean? 
-
-    # backref on books allows accessing related books via 'books' term
-
-    def __repr__(self):
-        return f'<Category id={self.id} category={self.category_name}>'
+        return f'<Book id={self.id} title={self.title}'  
 
 
 class Author(db.Model):
@@ -195,8 +172,9 @@ class Rating(db.Model):
     id = db.Column(db.Integer, 
                    primary_key=True,
                    autoincrement=True)
-    score = db.Column(db.Enum('1', '2', '3', '4', '5', name="rating_scores"), nullable=False)
-    description = db.Column(db.Text)
+    # score = db.Column(db.Enum('1', '2', '3', '4', '5', name="rating_scores"), nullable=False)
+    score = db.Column(db.SmallInteger)
+    review = db.Column(db.Text)
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'))
     book_id = db.Column(db.Integer,
@@ -213,7 +191,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app"""
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///books'   # if running on a different port, then 'postgres://localhost:5433/books'
-    app.config['SQLALCHEMY_ECHO'] = True
+    app.config['SQLALCHEMY_ECHO'] = False
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)

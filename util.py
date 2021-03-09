@@ -69,7 +69,7 @@ def books_to_dictionary(book_list, logged_in_user_id):
         if is_users == True:
             user_rating = get_book_rating_by_user_id(book, logged_in_user_id)
             user_score = user_rating.score if user_rating != None else None
-            user_review = user_rating.description if user_rating != None else None
+            user_review = user_rating.review if user_rating != None else None
         else:
             user_score = None
             user_review = None
@@ -106,7 +106,7 @@ def book_to_dictionary(book, logged_in_user_id):
     if is_users == True:
         user_rating = get_book_rating_by_user_id(book, logged_in_user_id)
         user_score = user_rating.score if user_rating != None else None
-        user_review = user_rating.description if user_rating != None else None
+        user_review = user_rating.review if user_rating != None else None
     else:
         user_score = None
         user_review = None

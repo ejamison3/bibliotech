@@ -53,6 +53,7 @@ const SearchBar = (prop) => {
     query.userId = myBooksOnly ? prop.userId : null;
     
     //update searchQuery - call will be made in DisplaySearchResults component
+    prop.setIsEditable(false)     // in case user searches from editable screen
     prop.setSearchQuery(query);
     prop.setIsLoading(true);
     history.push("/searchResults");
@@ -209,9 +210,7 @@ const EditBook = (prop) => {
 
 const DisplaySearchResults = (prop) => {
   const query = prop.searchQuery;
-  // let history = useHistory();
-  prop.setIsEditable(false)
-
+  
   React.useEffect(() => {
     fetch('api/search', {
       method: 'POST',
@@ -262,8 +261,6 @@ const DisplaySearchResults = (prop) => {
           </div>
         )
       }
-      console.log(query.titleString)
-      console.log(query)
       return (
         <div>
           <div>
@@ -398,6 +395,7 @@ const AdvancedSearch = (prop) => {
 }
 
 const DisplayBook = (prop) => {
+  // const [bookIsUsers, setBookIsUsers] = React.useState(true)
   let { bookId } = useParams();
 
   // figure out bookIsUsers set in state in Book component. Need variable value here too...
@@ -406,12 +404,7 @@ const DisplayBook = (prop) => {
     prop.setIsEditable(true);
   }
 
-  const saveBookChanges = () => {
-    //make patch request
-
-  }
-
-  React.useEffect(() => {
+  const updateBook = () => {
     // prop.setIsLoading(true);
     fetch('/book/' + bookId, {
       method: 'GET',
@@ -425,7 +418,48 @@ const DisplayBook = (prop) => {
     })
     .then(data => {
       prop.setBookResponse(data);
-    });
+    })
+  }
+
+  const saveBookChanges = () => {
+    //make patch request
+
+  }
+
+  const removeBook = () => {
+    
+    fetch('/user/' + bookId + '/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      return response.json()
+    })
+    .then(data => {
+      updateBook()
+    })
+  }
+
+  const addBook = () => {
+    
+    fetch('/user/' + bookId + '/add', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      return response.json()
+    })
+    .then(data => {
+      updateBook()
+    })
+  }
+
+  React.useEffect(() => {
+    updateBook()
   }, []);
 
   // was using isLoading but then would never rerender once loaded. Not sure on best practices
@@ -437,6 +471,7 @@ const DisplayBook = (prop) => {
     )
   }else{
     const book = prop.bookResponse.book;
+    const bookIsUsers = book.isUsers
     if (prop.isEditable) {
       return (
         <div>
@@ -445,29 +480,77 @@ const DisplayBook = (prop) => {
         </div>
       )
     } else {
+      // id = book.id
       return (
-        <div>
-          <h2>{book.title}</h2>
-          {book.image ? (<img src={book.image}/>) : ''}
-          {book.authors ? book.authors.map(author =>
-            (<div key={author}>{author}</div>)) : ''
-          }
-          {book.description ? (<div><b>Description: </b>{book.description} </div>) : ''}
-          {book.publisher ? (<div>Publisher: {book.publisher} </div>) : ''}
-          {book.year ? (<div>Publication Year: {book.year} </div>) : ''}
-          {book.isbn ? (<div>ISBN: {book.isbn}</div>) : ''}
-          {book.tags ? (<div>Tags:
-              <ul>{book.tags.map(tag =>
-              (<li key={tag}>{tag}</li>))}</ul>
-              </div>) : ''
-          }
+        <div className={bookIsUsers ? "book myBook" : "book"} style={{width: '100%'}}>
+          <div style={{width: '100%'}}>
+            {/* add class name */}
+            <div className="add-remove-container">
+              {bookIsUsers 
+                ? (<label className="remove-book">
+                    Remove Book
+                    <button className="book-add-remove" onClick={removeBook}>
+                      <i className="fas fa-minus"></i>
+                    </button>
+                  </label>) 
+                : <label>
+                    Add Book
+                    <button className="book-add-remove" onClick={addBook}>
+                      <i className="fas fa-plus"></i>
+                    </button> 
+                  </label>
+              }
+            </div>
+            <div className="title">
+              {book.title}
+            </div>
+            <div>
+              <img src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
+            </div>
+            <div className="authors">
+              {book.authors ? book.authors.map(author =>
+                (<div key={author}>{author}</div>)) : ''
+              }
+            </div>
+          </div>
+
+          <div className="tags">
+            {book.tags ? (
+                <span>{book.tags.map(tag =>
+                (<button className="tag-button"key={tag} onClick={() => searchByTag(tag)}>{tag}</button>))}</span>
+                ) : ''
+            }
+          </div>
           
-          {/* {bookIsUsers ? <div>Your rating: {book.rating}</div> : <div>Average Rating: </div>} */}
-          {/* <span>
-            {bookIsUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button onClick={addBook}>ADD to my books</button> }
-          </span> */}
-          <button onClick={makeEditable}>Edit Book</button>
+          <div className="rating">
+            {bookIsUsers ? <div>Your rating: {book.userScore}</div> : <div>Average Rating: {book.avgRating}</div>}
+          </div>
+          <div>
+            <button onClick={makeEditable}>Edit Book</button>
+          </div>
         </div>
+        // <div>
+        //   <h2>{book.title}</h2>
+        //   {book.image ? (<img src={book.image}/>) : ''}
+        //   {book.authors ? book.authors.map(author =>
+        //     (<div key={author}>{author}</div>)) : ''
+        //   }
+        //   {book.description ? (<div><b>Description: </b>{book.description} </div>) : ''}
+        //   {book.publisher ? (<div>Publisher: {book.publisher} </div>) : ''}
+        //   {book.year ? (<div>Publication Year: {book.year} </div>) : ''}
+        //   {book.isbn ? (<div>ISBN: {book.isbn}</div>) : ''}
+        //   {book.tags ? (<div>Tags:
+        //       <ul>{book.tags.map(tag =>
+        //       (<li key={tag}>{tag}</li>))}</ul>
+        //       </div>) : ''
+        //   }
+          
+        //   {/* {bookIsUsers ? <div>Your rating: {book.rating}</div> : <div>Average Rating: </div>} */}
+        //   {/* <span>
+        //     {bookIsUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button onClick={addBook}>ADD to my books</button> }
+        //   </span> */}
+        //   <button onClick={makeEditable}>Edit Book</button>
+        // </div>
       )
     }
   }

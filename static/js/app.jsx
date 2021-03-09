@@ -5,11 +5,11 @@ const Switch = ReactRouterDOM.Switch;
 const Route = ReactRouterDOM.Route;
 const useHistory = ReactRouterDOM.useHistory;
 const useParams = ReactRouterDOM.useParams;
+const {Container, Button, Navbar} = ReactBootstrap;
 
 
 const Home = (prop) => {
   // prevent book from still being editable if user clicked away from editable page
-  prop.setIsEditable(false)
 
   if (prop.userId === null) {
     return (
@@ -29,6 +29,11 @@ const Home = (prop) => {
 };
 
 const Header = (prop) => {
+  const onLogoClick = () => {
+    prop.userId != null ? (prop.setDisplaySearchBar(true)) : ''
+    prop.setIsEditable(false)
+  }
+
   return (
     <div id="header">
       <div className="container">
@@ -48,6 +53,8 @@ const Header = (prop) => {
               setIsLoading={prop.setIsLoading}
               displaySearchBar={prop.displaySearchBar}
               setDisplaySearchBar={prop.setDisplaySearchBar}
+              isEditable={prop.isEditable}
+              setIsEditable={prop.setIsEditable}
             /> 
           : <div className="no-searchbar"></div>
         }
@@ -140,6 +147,8 @@ const App = () => {
           setIsLoading={setIsLoading}
           displaySearchBar={displaySearchBar}
           setDisplaySearchBar={setDisplaySearchBar}
+          isEditable={isEditable}
+          setIsEditable={setIsEditable}
         /> 
         <main>
           <Switch>
@@ -154,8 +163,6 @@ const App = () => {
                 setIsLoading={setIsLoading}
                 displaySearchBar={displaySearchBar}
                 setDisplaySearchBar={setDisplaySearchBar}
-                isEditable={isEditable}
-                setIsEditable={setIsEditable}
               />
             </Route>
             <Route path="/searchResults">
@@ -166,8 +173,6 @@ const App = () => {
                 setSearchResponse={setSearchResponse}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                isEditable={isEditable}
-                setIsEditable={setIsEditable}
               />
             </Route>
             <Route path="/book/:bookId">
