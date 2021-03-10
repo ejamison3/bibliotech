@@ -321,6 +321,12 @@ def get_tag(tag_name):
     return Tag.query.filter(Tag.tag_name == tag_name).first()
 
 
+def get_rating_by_user_book(book_id, user_id):
+    '''Get rating record by user ID and book ID)'''
+
+    return Rating.query.filter(Rating.book_id == book_id, Rating.user_id == user_id).first()
+
+
 def get_rating_count_by_book(book_id):
     '''Get total number of ratings by Book ID'''
 
@@ -345,6 +351,27 @@ def update_book_avg_rating(book_id, avg_rating):
     book_record = get_book_by_id(book_id)
     book_record.avg_rating = avg_rating
     db.session.commit()
+
+def update_book_user_score(book_id, user_id, score):
+    '''Update score in ratings table by book_id/user_id combo'''
+
+    rating_record = get_rating_by_user_book(book_id, user_id)
+    if rating_record != None:
+        rating_record.score = score
+    else:
+        # create record
+        user_record = get_user_by_id(user_id)
+        book_record = get_book_by_id(book_id)
+        create_rating(score, user_record, book_record, review=None)
+
+def update_book_user_review(book_id, user_id, review):
+    '''Update review in ratings table by book ID/user ID combo'''
+
+    rating_record = get_rating_by_user_book(book_id, user_id)
+    if rating_record != None:
+        rating_record.review = review
+    else:
+        return "failure"
 
 
 

@@ -391,7 +391,7 @@ const AdvancedSearch = (prop) => {
         <div>
           ISBN:
           <label htmlFor="isbn">
-            <input type="text" id="isbn" name="isbn" maxlength="13" placeholder="ISBN"></input>
+            <input type="text" id="isbn" name="isbn" maxLength="13" placeholder="ISBN"></input>
           </label>
         </div>
         <div>
@@ -410,11 +410,8 @@ const DisplayBook = (prop) => {
   let { bookId } = useParams();
   const [show, setShow] = React.useState(false)
 
-  // figure out bookIsUsers set in state in Book component. Need variable value here too...
-
-  const makeEditable = () => {
-    prop.setIsEditable(true);
-  }
+  const handleShow = () => setShow(true);
+  const handleCancel = () => setShow(false)
 
   const updateBook = () => {
     // prop.setIsLoading(true);
@@ -431,11 +428,6 @@ const DisplayBook = (prop) => {
     .then(data => {
       prop.setBookResponse(data);
     })
-  }
-
-  const saveBookChanges = () => {
-    //make patch request
-
   }
 
   const addBook = () => {
@@ -470,16 +462,29 @@ const DisplayBook = (prop) => {
     })
   }
 
-  const handleShow = () => setShow(true);
-  
-
   const handleSaveRating = () => {
-    console.log('running handleSaveRating')
-    setShow(false)
-  }
-
-  const handleCancel = () => {
-    console.log('running handleCancel')
+    const rating = document.getElementById('rating').value;
+    const review = document.getElementById('review').value;
+    const query = {
+      'rating': rating,
+      'review': review,
+      'bookId': bookId,
+      'userId': prop.userId,
+    }
+    fetch('api/rating', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(query)
+    })
+    .then(response => {
+      // got rid of inner loop that only went to .then(data) if response populated
+      return response.json()
+    })
+    .then(data => {
+      prop.setBookResponse(data);
+    })
     setShow(false)
   }
 
@@ -508,7 +513,7 @@ const DisplayBook = (prop) => {
       // id = book.id
       return (
         <Container>
-          <Row>
+          <Row className="justify-content-center">
             <Col md={8} className={bookIsUsers ? "book myBook w-100" : "book w-100"}>
               <div className="add-remove-container">
                 {bookIsUsers 
@@ -546,13 +551,41 @@ const DisplayBook = (prop) => {
 
               {book.isbn ? (<div className="text-left">ISBN: {book.isbn}</div>) : ''}
 
-              <div className="tags">
-                {book.tags ? (
-                  <span>{book.tags.map(tag =>
-                    (<Badge pill variant="info" className="tag-button"key={tag}>{tag}</Badge>))}</span>
-                    ) : ''
-                  }
-              </div>
+              <Container>
+                <Row>
+                  <Col sm={6}>
+                    <div className="tags w-100">
+                      <div className="center-text">General Tags:</div>
+                      {book.tags ? (
+                        <span>{book.tags.map(tag =>
+                          (<Badge pill variant="info" className="tag-button"key={tag}>{tag}</Badge>))}</span>
+                          ) : ''
+                        }
+                    </div>
+                  </Col>
+                  <Col sm={6}>
+                    <div className="tags w-100">
+                      <div className="center-text">Your Tags:</div>
+                      {book.tags ? (
+                        <span>{book.tags.map(tag =>
+                          (<Badge pill variant="info" className="tag-button"key={tag}>{tag}</Badge>))}</span>
+                          ) : ''
+                        }
+                      <div>
+                        {/* update to use json to populate */}
+                      <label htmlFor="tag-type"></label>
+                      <select id="tag-type" type="dropdown">
+                        <option value="Opt1"defaultValue>Opt1</option>
+                        <option value="Opt2">Opt2</option>
+                        <option value="Opt3">Opt3</option>
+                        <option value="Opt4">Opt4</option>
+                      </select>
+                      <button>Add Tag</button>
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+              </Container>
               
               <div className="rating">Average Rating: {book.avgRating}</div>
 
@@ -576,9 +609,6 @@ const DisplayBook = (prop) => {
               }
             </Col>
         </Row>
-          <Row>
-            <button onClick={makeEditable}>Edit Book</button>
-          </Row>
           <Modal
             show={show}
             backdrop="static"
@@ -589,6 +619,18 @@ const DisplayBook = (prop) => {
             </Modal.Header>
             <Modal.Body>
               Put a form here to update info
+              <label htmlFor="review">New Review:
+                <textarea rows="5" cols="30" id="review" name="review" placeholder="Enter your review"/>
+              </label>
+              <br/>
+              <label htmlFor="rating">Rating: </label>
+              <select id="rating" type="dropdown">
+                <option value="1"defaultValue>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
             </Modal.Body>
             <Modal.Footer>
               <Button className="user-button" onClick={handleSaveRating}>

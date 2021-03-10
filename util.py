@@ -136,3 +136,13 @@ def string_to_list(input_string):
     new_list = input_string.strip().split(',')
 
     return new_list
+
+def calculate_update_avg_rating(book_id):
+    """Calculate the average rating of a book by book ID"""
+
+    rating_count = get_rating_count_by_book(book_id)
+    rating_sum = get_rating_sum_by_book(book_id)
+    avg_rating = rating_sum/rating_count
+
+    # set avg rating on book record
+    update_book_avg_rating(book_id, avg_rating)

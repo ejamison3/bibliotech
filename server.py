@@ -252,6 +252,37 @@ def delete_book_user(bookId):
     return (jsonify(response), 200)
 
 
+@app.route('/book/api/rating', methods=['POST'])
+def update_rating():
+    """Update Rating.score and Rating.review based on request"""
+
+    req = request.get_json()
+
+    new_score = req['rating']   
+    new_review = req['review']
+    book_id = req['bookId']        
+    user_id = req['userId']
+
+    update_book_user_score(book_id, user_id, new_score)
+    update_book_user_review(book_id, user_id, new_review)
+
+    util.calculate_update_avg_rating(book_id)
+
+    book = get_book_by_id(book_id)
+
+    response = {
+        'message': None,
+        'error': None,
+        'book': None,
+    }
+
+    if book != None:
+        response['book'] = util.book_to_dictionary(book, user_id)
+
+    status_code = 204 if book == None else 200
+
+    return (jsonify(response), status_code)
+
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)
