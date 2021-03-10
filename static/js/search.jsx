@@ -154,8 +154,6 @@ const Book = (prop) => {
     <div className={bookIsUsers ? "myBook book" : "book"} style={{width: '100%'}}>
 
       <div style={{width: '100%'}}>
-        {/* add class name */}
-        {/* add-remove-container */}
         <div className="add-remove-container ">
           {bookIsUsers 
             ? (<label className="remove-book">
@@ -185,8 +183,6 @@ const Book = (prop) => {
         </div>
       </div>
 
-        {/* use badge will pill modifier class */}
-        {/* removed class tags */}
       <div className="tags">
         {book.tags ? (
           <span>{book.tags.map(tag =>
@@ -270,7 +266,7 @@ const DisplaySearchResults = (prop) => {
         )
       }
       return (
-        <Container className="container-small-margin">
+        <Container className="container-small-margin justify-content-center">
           <div>
             <div>Showing results for search</div>
             {query.titleString ? <li>Title: {query.titleString}</li> : ''}

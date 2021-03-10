@@ -29,14 +29,13 @@ const Home = (prop) => {
 };
 
 const Header = (prop) => {
-  const onLogoClick = () => {
-    prop.userId != null ? (prop.setDisplaySearchBar(true)) : ''
-    prop.setIsEditable(false)
-  }
+  // const onLogoClick = () => {
+  //   prop.userId != null ? (prop.setDisplaySearchBar(true)) : ''
+  //   prop.setIsEditable(false)
+  // }
 
   return (
-    // <div id="header">
-      <Navbar sticky="top">
+      <Navbar className="header" sticky="top">
         <Col md={2}>
           <Link to="/" className="column-logo" 
             onClick={() => prop.userId != null
@@ -75,7 +74,6 @@ const Header = (prop) => {
           </div>
         </Col>
       </Navbar>
-    //  </div>
   )
 }
 

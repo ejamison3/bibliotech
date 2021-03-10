@@ -197,6 +197,7 @@ def create_user_rating(filename, error_file):
     f.close()
     failed_file.close()
 
+
 def create_average_ratings():
     """Calculate average rating for ever book"""
 
@@ -222,6 +223,7 @@ def update_average_rating(book_id):
     print(f'avg_rating: {avg_rating}')
 
     return avg_rating
+
 
 def test(filename):
     """Create book, author"""
