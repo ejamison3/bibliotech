@@ -156,7 +156,7 @@ const Book = (prop) => {
       <div style={{width: '100%'}}>
         {/* add class name */}
         {/* add-remove-container */}
-        <div className="card-header">
+        <div className="add-remove-container ">
           {bookIsUsers 
             ? (<label className="remove-book">
                 Remove Book
@@ -173,7 +173,7 @@ const Book = (prop) => {
           }
         </div>
         <Link className="title" to={'/book/' + id}>
-          <h4 className="card-title text-truncate">{book.title}</h4>
+          <div className="card-title text-truncate">{book.title}</div>
         </Link>
         <Link className="books-image" to={'/book/' + id}>
           <img src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
@@ -187,10 +187,10 @@ const Book = (prop) => {
 
         {/* use badge will pill modifier class */}
         {/* removed class tags */}
-      <div className="card-footer">
+      <div className="tags">
         {book.tags ? (
           <span>{book.tags.map(tag =>
-            (<button className="tag-button"key={tag} onClick={() => searchByTag(tag)}>{tag}</button>))}</span>
+            (<Badge pill variant="info" className="tag-button"key={tag} onClick={() => searchByTag(tag)}>{tag}</Badge>))}</span>
             ) : ''
           }
       </div>
@@ -408,6 +408,7 @@ const AdvancedSearch = (prop) => {
 const DisplayBook = (prop) => {
   // const [bookIsUsers, setBookIsUsers] = React.useState(true)
   let { bookId } = useParams();
+  const [show, setShow] = React.useState(false)
 
   // figure out bookIsUsers set in state in Book component. Need variable value here too...
 
@@ -437,6 +438,22 @@ const DisplayBook = (prop) => {
 
   }
 
+  const addBook = () => {
+    
+    fetch('/user/' + bookId + '/add', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      return response.json()
+    })
+    .then(data => {
+      updateBook()
+    })
+  }
+
   const removeBook = () => {
     
     fetch('/user/' + bookId + '/delete', {
@@ -453,20 +470,17 @@ const DisplayBook = (prop) => {
     })
   }
 
-  const addBook = () => {
-    
-    fetch('/user/' + bookId + '/add', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => {
-      return response.json()
-    })
-    .then(data => {
-      updateBook()
-    })
+  const handleShow = () => setShow(true);
+  
+
+  const handleSaveRating = () => {
+    console.log('running handleSaveRating')
+    setShow(false)
+  }
+
+  const handleCancel = () => {
+    console.log('running handleCancel')
+    setShow(false)
   }
 
   React.useEffect(() => {
@@ -493,75 +507,99 @@ const DisplayBook = (prop) => {
     } else {
       // id = book.id
       return (
-        <div className={bookIsUsers ? "book myBook" : "book"} style={{width: '100%'}}>
-          <div style={{width: '100%'}}>
-            {/* add class name */}
-            <div className="add-remove-container">
-              {bookIsUsers 
-                ? (<label className="remove-book">
-                    Remove Book
-                    <button className="book-add-remove" onClick={removeBook}>
-                      <i className="fas fa-minus"></i>
-                    </button>
-                  </label>) 
-                : <label>
-                    Add Book
-                    <button className="book-add-remove" onClick={addBook}>
-                      <i className="fas fa-plus"></i>
-                    </button> 
-                  </label>
-              }
-            </div>
-            <div className="title">
-              {book.title}
-            </div>
-            <div>
-              <img src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
-            </div>
-            <div className="authors">
-              {book.authors ? book.authors.map(author =>
-                (<div key={author}>{author}</div>)) : ''
-              }
-            </div>
-          </div>
+        <Container>
+          <Row>
+            <Col md={8} className={bookIsUsers ? "book myBook w-100" : "book w-100"}>
+              <div className="add-remove-container">
+                {bookIsUsers 
+                  ? (<label className="remove-book">
+                      Remove Book
+                      <button className="book-add-remove" onClick={removeBook}>
+                        <i className="fas fa-minus"></i>
+                      </button>
+                    </label>) 
+                  : <label>
+                      Add Book
+                      <button className="book-add-remove" onClick={addBook}>
+                        <i className="fas fa-plus"></i>
+                      </button> 
+                    </label>
+                }
+              </div>
+              <div className="title">
+                {book.title}
+              </div>
+              <div>
+                <img src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
+              </div>
+              <div className="authors">
+                {book.authors ? book.authors.map(author =>
+                  (<div key={author}>{author}</div>)) : ''
+                }
+              </div>
 
-          <div className="tags">
-            {book.tags ? (
-                <span>{book.tags.map(tag =>
-                (<button className="tag-button"key={tag} onClick={() => searchByTag(tag)}>{tag}</button>))}</span>
-                ) : ''
-            }
-          </div>
-          
-          <div className="rating">
-            {bookIsUsers ? <div>Your rating: {book.userScore}</div> : <div>Average Rating: {book.avgRating}</div>}
-          </div>
-          <div>
+              {book.description ? (<div className="text-left book-desc"><b>Description: </b>{book.description} </div>) : ''}
+
+              {book.publisher ? (<div className="text-left">Publisher: {book.publisher} </div>) : ''}
+
+              {book.year ? (<div className="text-left">Publication Year: {book.year} </div>) : ''}
+
+              {book.isbn ? (<div className="text-left">ISBN: {book.isbn}</div>) : ''}
+
+              <div className="tags">
+                {book.tags ? (
+                  <span>{book.tags.map(tag =>
+                    (<Badge pill variant="info" className="tag-button"key={tag}>{tag}</Badge>))}</span>
+                    ) : ''
+                  }
+              </div>
+              
+              <div className="rating">Average Rating: {book.avgRating}</div>
+
+            
+              {bookIsUsers 
+                ? <Container className="rating-user">
+                    <Row> 
+                      Your rating: {book.userScore}
+                    </Row>
+                    <Row className="text-left">
+                      Your review: {book.userReview}
+                    </Row>
+                    <Row>
+                      {/* MAKE THIS BUTTON OPEN A MODAL FOR EDITING */}
+                      <Button onClick={handleShow}>
+                        {book.userScore ? "Update rating/review" : "Add rating/review"}
+                      </Button>
+                    </Row>
+                  </Container>
+                : ''
+              }
+            </Col>
+        </Row>
+          <Row>
             <button onClick={makeEditable}>Edit Book</button>
-          </div>
-        </div>
-        // <div>
-        //   <h2>{book.title}</h2>
-        //   {book.image ? (<img src={book.image}/>) : ''}
-        //   {book.authors ? book.authors.map(author =>
-        //     (<div key={author}>{author}</div>)) : ''
-        //   }
-        //   {book.description ? (<div><b>Description: </b>{book.description} </div>) : ''}
-        //   {book.publisher ? (<div>Publisher: {book.publisher} </div>) : ''}
-        //   {book.year ? (<div>Publication Year: {book.year} </div>) : ''}
-        //   {book.isbn ? (<div>ISBN: {book.isbn}</div>) : ''}
-        //   {book.tags ? (<div>Tags:
-        //       <ul>{book.tags.map(tag =>
-        //       (<li key={tag}>{tag}</li>))}</ul>
-        //       </div>) : ''
-        //   }
-          
-        //   {/* {bookIsUsers ? <div>Your rating: {book.rating}</div> : <div>Average Rating: </div>} */}
-        //   {/* <span>
-        //     {bookIsUsers ? <button onClick={removeBook}>REMOVE from my books</button> : <button onClick={addBook}>ADD to my books</button> }
-        //   </span> */}
-        //   <button onClick={makeEditable}>Edit Book</button>
-        // </div>
+          </Row>
+          <Modal
+            show={show}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header>
+              <Modal.Title>Update Rating &amp; Review</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Put a form here to update info
+            </Modal.Body>
+            <Modal.Footer>
+              <Button className="user-button" onClick={handleSaveRating}>
+                  Save - update class name
+              </Button>
+              <Button className="user-button" onClick={handleCancel}>
+                Cancel
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Container>
       )
     }
   }
