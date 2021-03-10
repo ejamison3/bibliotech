@@ -5,7 +5,7 @@ const Switch = ReactRouterDOM.Switch;
 const Route = ReactRouterDOM.Route;
 const useHistory = ReactRouterDOM.useHistory;
 const useParams = ReactRouterDOM.useParams;
-const {Container, Col, Row, Tabs, Tab, Jumbotron, Button} = ReactBootstrap;
+const {Container, Card, CardDeck, Col, Row, Tabs, Tab, Navbar, Button, Spinner} = ReactBootstrap;
 
 
 const Home = (prop) => {
@@ -36,9 +36,8 @@ const Header = (prop) => {
 
   return (
     // <div id="header">
-    // <Container>
-      <Row>
-        <Col md={3} lg={3}>
+      <Navbar sticky="top">
+        <Col md={2}>
           <Link to="/" className="column-logo" 
             onClick={() => prop.userId != null
               ? (prop.setDisplaySearchBar(true))
@@ -46,7 +45,7 @@ const Header = (prop) => {
             <img className="logo" src="/static/img/BiblioTechLogo.png" />
           </Link>
         </Col>
-        <Col md={6} lg={6}>
+        <Col md={8}>
           {(prop.displaySearchBar == true) && (prop.userId != null)
             ? <SearchBar 
             userId = {prop.userId}
@@ -63,7 +62,7 @@ const Header = (prop) => {
             : <div className="no-searchbar"></div>
           }
         </Col>
-        <Col md={3} lg={3}>
+        <Col md={2}>
           <div className="user-buttons">
             {prop.userId != null 
               ? <button className="user-button"><Link to={'/account'}>Account</Link></button>
@@ -75,23 +74,21 @@ const Header = (prop) => {
             }
           </div>
         </Col>
-      </Row>
-    // </Container>
+      </Navbar>
     //  </div>
   )
 }
 
-
 const Footer = (prop) => {
   return (
-    // <div id="footer">
     <Container>
-      <Row>
-        <h4 className="center">BIBLIOTECH</h4>
+      <Row className="justify-content-center">
+        <Col className="align-self-center center-text">
+            BIBLIOTECH
+        </Col>
       </Row>
       <Row>
-      {/* <div className="container"> */}
-        <Col xs={4}>
+        <Col className="align-self-center">
           About BiblioTech:
           <li>
             <Link to={'/about'} className="footer-link">Learn about BiblioTech</Link>
@@ -102,9 +99,8 @@ const Footer = (prop) => {
           <li>
             <Link to={'/about/data'} className="footer-link">Data &amp; Seeding Process</Link>          
           </li>
-        {/* <div> */}
         </Col>
-        <Col xs={4}>
+        <Col>
           About Elizabeth:
           <li>
             <a href="https://github.com/ejamison3" target="_blank">Github</a>
@@ -113,15 +109,11 @@ const Footer = (prop) => {
             <a href="https://www.linkedin.com/in/ejamison3/" target="_blank">LinkedIn</a>
           </li>
         </Col>
-        {/* </div> */}
-      {/* </div> */}
-    </Row>
-    <Row>
-      <p>Created by: Elizabeth M Jamison</p>
-      <Button variant="secondary">Something</Button>
-    </Row>
+      </Row>
+      <Row>
+        <p>Created by: Elizabeth M Jamison</p>
+      </Row>
     </Container>
-    // </div>÷
   )
 }
 
@@ -155,7 +147,7 @@ const App = () => {
 
   return (
     <Router>
-      <Container>
+      
       {/* <div id="app"> */}
         <Header 
           userId = {userId}
@@ -169,7 +161,8 @@ const App = () => {
           isEditable={isEditable}
           setIsEditable={setIsEditable}
         /> 
-        <main>
+        {/* <main> */}
+        <Container fluid className="main-container">
           <Switch>
             <Route exact path="/">
               <Home 
@@ -253,9 +246,9 @@ const App = () => {
               <DisplayCreateUser />
             </Route>
           </Switch>
-        </main>
+        {/* </main> */}
+        </Container>
         <Footer/>  
-      </Container>
       {/* </div> */}
     </Router>
   )

@@ -151,11 +151,12 @@ const Book = (prop) => {
   }
 
   return (
-    <div className={bookIsUsers ? "book myBook" : "book"} style={{width: '100%'}}>
+    <div className={bookIsUsers ? "myBook book" : "book"} style={{width: '100%'}}>
 
       <div style={{width: '100%'}}>
         {/* add class name */}
-        <div className="add-remove-container">
+        {/* add-remove-container */}
+        <div className="card-header">
           {bookIsUsers 
             ? (<label className="remove-book">
                 Remove Book
@@ -172,7 +173,7 @@ const Book = (prop) => {
           }
         </div>
         <Link className="title" to={'/book/' + id}>
-          <div>{book.title}</div>
+          <h4 className="card-title text-truncate">{book.title}</h4>
         </Link>
         <Link className="books-image" to={'/book/' + id}>
           <img src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
@@ -184,18 +185,19 @@ const Book = (prop) => {
         </div>
       </div>
 
-      <div className="tags">
+        {/* use badge will pill modifier class */}
+        {/* removed class tags */}
+      <div className="card-footer">
         {book.tags ? (
-            <span>{book.tags.map(tag =>
+          <span>{book.tags.map(tag =>
             (<button className="tag-button"key={tag} onClick={() => searchByTag(tag)}>{tag}</button>))}</span>
             ) : ''
-        }
+          }
       </div>
       
       <div className="rating">
         {bookIsUsers ? <div>Your rating: {book.userScore}</div> : <div>Average Rating: {book.avgRating}</div>}
       </div>
-      
     </div>
   )
 } 
@@ -238,43 +240,52 @@ const DisplaySearchResults = (prop) => {
 
   if (prop.isLoading){
     return (
-      <div>Loading...</div> 
+      <div className="center-text">
+        <Spinner animation="border" variant="light" role="status" size="lg">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
     )
   }else{
     if (prop.searchResponse === null) {
       return (
-        <div>Your search returned no books.</div>
+        <div className="center-text">
+          Your search returned no books.
+        </div>
       )
     }else{
       const bookList = prop.searchResponse.book_list;
       const books = [];
       for (let book of bookList){
         books.push(
-          <div key={book.id}>
-          <Book
-            book={book}
-            searchQuery={prop.searchQuery}
-            setSearchQuery={prop.setSearchQuery}
-            isLoading={prop.isLoading}
-            setIsLoading={prop.setIsLoading}
-          />
-          </div>
+          <Card key={book.id} className="w-100">
+            <Book
+              book={book}
+              searchQuery={prop.searchQuery}
+              setSearchQuery={prop.setSearchQuery}
+              isLoading={prop.isLoading}
+              setIsLoading={prop.setIsLoading}
+            />
+          </Card>
         )
       }
       return (
-        <div>
+        <Container className="container-small-margin">
           <div>
             <div>Showing results for search</div>
             {query.titleString ? <li>Title: {query.titleString}</li> : ''}
             {query.authorLnameString ? <li>Author: {query.authorLnameString}</li> : ''}
             {query.tagListString ? <li>Tags: {query.tagListString}</li> : ''}
           </div>
+          {/* <div className="books"> */}
           <div className="books">
             <React.Fragment>
+            {/* <Col className="container-fluid mt-4"> */}
               {books}
             </React.Fragment>
           </div>
-        </div>
+          {/* </div> */}
+        </Container>
       );
     }  
   }
