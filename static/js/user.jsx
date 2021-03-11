@@ -117,7 +117,7 @@ const DisplayLogin = (prop) => {
           <label htmlFor="pwd">Password: </label>
           <input type="password" id="pwd" name="pwd" maxLength="30" required />
           <br/>
-          <button onClick={LoginUser} id="user-login">Login</button>
+          <button className="button-login" onClick={LoginUser} id="user-login">Login</button>
         </form>
         <Link to="/createUser" className="center-text">
           <p className="center-text">Create Account</p>

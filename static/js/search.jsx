@@ -605,11 +605,10 @@ const DisplayBook = (prop) => {
             backdrop="static"
             keyboard={false}
           >
-            <Modal.Header>
-              <Modal.Title>Update Rating &amp; Review</Modal.Title>
+            <Modal.Header className="modal-rating-header">
+              <Modal.Title className="text-center w-100">Update Rating &amp; Review</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-              Put a form here to update info
+            <Modal.Body className="modal-rating">
               <label htmlFor="review">New Review:
                 <textarea rows="5" cols="30" id="review" name="review" placeholder="Enter your review"/>
               </label>
@@ -623,13 +622,23 @@ const DisplayBook = (prop) => {
                 <option value="5">5</option>
               </select>
             </Modal.Body>
-            <Modal.Footer>
-              <Button className="user-button" onClick={handleSaveRating}>
-                  Save - update class name
-              </Button>
-              <Button className="user-button" onClick={handleCancel}>
-                Cancel
-              </Button>
+            <Modal.Footer className="modal-rating-footer w-100">
+              <Container>
+                <Row>
+                  <Col sm={3}>
+                  </Col>
+                  <Col sm={6}>
+                    <Button className="modal-rating-button" onClick={handleSaveRating}>
+                        Save changes
+                    </Button>
+                  </Col>
+                  <Col sm={3}>
+                    <Button className="modal-rating-button" onClick={handleCancel}>
+                      Cancel
+                    </Button>
+                  </Col>
+                </Row>
+              </Container>
             </Modal.Footer>
           </Modal>
         </Container>
