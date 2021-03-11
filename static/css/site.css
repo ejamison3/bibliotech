@@ -16,7 +16,8 @@
   --accent-color: #C29250;
   --background-color: #232734;
   --white-color: #D0BEA4;
-  --whiter-color: #F7F4F0;
+  --whiter-color: #EFE9E1;
+  /* --whiter-color: #F7F4F0; */
   --dark-contrast: #353A4E;
   --med-contrast: #30616B;
   --light-contrast: #D6B6AB;
@@ -54,6 +55,11 @@ html body{
 input {
   font-family: 'IBM Plex Mono';
   font-weight: 100;
+  background-color: var(--whiter-color);
+}
+
+input:focus, textarea:focus, select:focus{
+  outline: none;
 }
 
 select {
@@ -238,6 +244,22 @@ select {
   align-items: center;
 }
 
+/* bootstrap toggle background color checked*/
+.custom-control-input:checked~.custom-control-label::before {
+  border-color: var(--accent-color);
+  background-color: var(--accent-color);
+}
+
+/* bootstrap toggle slider */
+.custom-switch .custom-control-label::after {
+  background-color: var(--dark-contrast);
+}
+
+/* bootstrap toggle outline */
+.custom-control-label::before {
+  border: var(--dark-contrast);
+}
+
 .fa-plus {
   color: var(--accent-color);
 }
@@ -247,6 +269,11 @@ select {
   font-size: medium;
 }
 
+/* bootstrap class */
+.form-control {
+  background-color: var(--whiter-color);
+  color: var(--dark-contrast)
+}
 
 .header {
   min-height: 10vh;
@@ -386,14 +413,13 @@ input[type=checkbox] {
   visibility: hidden;
 }
 
-#only-my-books {
-  /* background-color: var(--background-color); */
+/* #only-my-books {
   margin: 0.2rem;
-}
+} */
 
-#only-my-books:checked {
+/* #only-my-books:checked {
   background-color: var(--background-color);
-}
+} */
 
 #root {
   font-size: 100%;
@@ -407,4 +433,8 @@ input[type=checkbox] {
   background-color: var(--light-contrast);
   border-radius: 2rem;
   width: 7rem;
+}
+
+input:focus, textarea:focus, select:focus{
+  outline: none;
 }

@@ -342,14 +342,19 @@ const AdvancedSearch = (prop) => {
   return (
     <div>
       <h2 className="center-text">Advanced Search</h2>
-      <form className="center">
-        <label htmlFor="title"> Title
-          <input type="text" id="title" name="title" autoFocus></input>
-        </label>
-        <label htmlFor="exactTitle">Exact match?
-          <input type="checkbox" id="exactTitle" name="exactTitle"/>
-        </label>
-        <br/>
+      <Form className="center">
+        <Form.Group>
+          <Form.Label>Title</Form.Label>
+          <Form.Control as="input" type="text" placeholder="Enter book title" id="title" name="title" autoFocus></Form.Control>
+            {/* <input type="text" id="title" name="title" autoFocus></input> */}
+          <Form.Check type="switch" id="exactTitle" label="Exact match?">
+
+          </Form.Check>
+          {/* <label htmlFor="exactTitle">Exact match?
+            <input type="checkbox" id="exactTitle" name="exactTitle"/>
+          </label> */}
+        </Form.Group>
+
         <div>
           Author:
           <label htmlFor="fname">
@@ -392,7 +397,7 @@ const AdvancedSearch = (prop) => {
           </label>
         </div>
         <button onClick={updateQuery}>Search</button>
-      </form>
+      </Form>
     </div>
   )
 }
