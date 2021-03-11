@@ -155,38 +155,38 @@ const Book = (prop) => {
 
       <div style={{width: '100%'}}>
         <div className="add-remove-container ">
-          {bookIsUsers 
+          {bookIsUsers
             ? (<label className="remove-book">
                 Remove Book
                 <button className="book-add-remove" onClick={removeBook}>
                   <i className="fas fa-minus"></i>
                 </button>
-              </label>) 
+              </label>)
             : <label>
                 Add Book
                 <button className="book-add-remove" onClick={addBook}>
                   <i className="fas fa-plus"></i>
-                </button> 
+                </button>
               </label>
           }
         </div>
         <Link className="title" to={'/book/' + id}>
-          <div className="card-title text-truncate">{book.title}</div>
+          <div className="text-truncate">{book.title}</div>
         </Link>
         <Link className="books-image" to={'/book/' + id}>
           <img src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
         </Link>
         <div className="authors">
-          {book.authors ? book.authors.map(author =>
-            (<div key={author}>{author}</div>)) : ''
-          }
+            {book.authors ? book.authors.map(author =>
+              (<div key={author}>{author}</div>)) : ''
+            }
         </div>
       </div>
 
       <div className="tags">
         {book.tags ? (
-          <span>{book.tags.map(tag =>
-            (<Badge pill variant="info" className="tag-button"key={tag} onClick={() => searchByTag(tag)}>{tag}</Badge>))}</span>
+          <div>{book.tags.map(tag =>
+            (<Badge pill variant="light" className="tag-button"key={tag} onClick={() => searchByTag(tag)}>{tag}</Badge>))}</div>
             ) : ''
           }
       </div>
@@ -273,14 +273,11 @@ const DisplaySearchResults = (prop) => {
             {query.authorLnameString ? <li>Author: {query.authorLnameString}</li> : ''}
             {query.tagListString ? <li>Tags: {query.tagListString}</li> : ''}
           </div>
-          {/* <div className="books"> */}
           <div className="books">
             <React.Fragment>
-            {/* <Col className="container-fluid mt-4"> */}
               {books}
             </React.Fragment>
           </div>
-          {/* </div> */}
         </Container>
       );
     }  
