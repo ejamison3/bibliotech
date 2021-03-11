@@ -16,14 +16,14 @@ const Home = (prop) => {
       <div className="center-text">
         <h1>Welcome to BiblioTech!</h1>
         <p>Please login to use the site</p>
-        <img src="/static/img/Typewriter.png"/>
+        <img className="img-home" src="/static/img/Typewriter.png"/>
       </div>
     )
   }else{
     return (
       <div className="center-text">
         <h1>Welcome to BiblioTech {prop.username}!</h1>
-        <img src="/static/img/Typewriter.png"/>
+        <img className="img-home" src="/static/img/Typewriter.png"/>
       </div>
     )
   }

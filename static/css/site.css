@@ -1,13 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100;300;400;500;700&display=swap');
 
-
-/* colors I like */
-/* Black: 2b2b2b
-Red: a31621
-Dark Teal:  0e3a58
-Green: 00FF33
-*/
-
 /* COLORS */
 
 /* :root {
@@ -59,10 +51,6 @@ html body{
   font-size: 16 rem;
 }
 
-img:hover {
-    opacity: 0.3;
-}
-
 input {
   font-family: 'IBM Plex Mono';
   font-weight: 100;
@@ -78,7 +66,6 @@ select {
   height: 1rem;
   display: flex;
   justify-content: flex-end;
-  /* this means other things can go over it */
   right: 5px;
   top: 5px;
   align-items: center;
@@ -119,7 +106,41 @@ select {
 }
 
 .book-big {
+  align-items: center;
+  background-color: var(--dark-contrast);
+  border: 3px solid var(--dark-contrast);
+  border-radius: 5px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  height: 100%;
+}
+
+.book-big.myBook {
+  background-image: linear-gradient(
+    181deg, var(--accent-color), var(--dark-contrast));
+    border: 3px solid var(--accent-color);
+    border-radius: 5px;
+}
+
+.book-big>.add-remove-container {
+  width: 100%;
+}
+
+.book-big-container {
   padding-top: 1rem;
+}
+
+.book-big>.authors {
+  font-size: 1rem;
+}
+
+.book-big>.title {
+  height: 7rem;
+  font-size: 2rem;
 }
 
 .book-desc {
@@ -145,6 +166,10 @@ select {
   border-radius: 5px; */
 }
 
+.books-image>img:hover {
+  opacity: 0.3;
+}
+
 .books-image>img{
   height: 100px;
 }
@@ -168,7 +193,6 @@ select {
 
 .button-search:hover {
   color: var(--dark-contrast);
-  font-size: larger;
 }
 
 .center {
@@ -205,7 +229,7 @@ select {
 
 
 .header {
-  min-height: 15vh;
+  min-height: 10vh;
   background-color: var(--med-contrast);
 }
 
@@ -218,9 +242,15 @@ img.logo:hover {
   opacity: 0.8;
 }
 
+.img-home {
+  max-height: 50vh;
+}
+
 /* This forces footer to bottom */
 .main-container {
   min-height: 65vh;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .rating {
@@ -262,7 +292,6 @@ img.logo:hover {
   height: 15rem;
   font-size: 1rem;
   color: #ccc;
-  /* top: 15px; */
 }
 
 /* .query{
@@ -318,62 +347,3 @@ img.logo:hover {
   border-radius: 2rem;
   width: 7rem;
 }
-
-/*  ------------Toggle button ------------*/
-/* .toggle {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.toggle input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #dddddd;
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-/* ball that slides */
-/* .slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: red;
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-.toggle-off-label {
-  font-weight: 700;
-}
-
-.toggle > .input:checked ~ .toggle-on-label {
-  font-weight: 700;
-}
-
-input:checked + .slider {
-  background-color:rgb(247, 167, 167);
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(50px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-} */ 

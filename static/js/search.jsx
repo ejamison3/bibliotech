@@ -503,9 +503,9 @@ const DisplayBook = (prop) => {
     } else {
       // id = book.id
       return (
-        <Container>
+        <Container className="book-big-container">
           <Row className="justify-content-center">
-            <Col md={8} className={bookIsUsers ? "book myBook w-100" : "book w-100"}>
+            <Col md={8} className={bookIsUsers ? "book-big myBook w-100" : "book-big w-100"}>
               <div className="add-remove-container">
                 {bookIsUsers 
                   ? (<label className="remove-book">
@@ -584,13 +584,12 @@ const DisplayBook = (prop) => {
               {bookIsUsers 
                 ? <Container className="rating-user">
                     <Row> 
-                      Your rating: {book.userScore}
+                      <b>Your rating:</b> {book.userScore}
                     </Row>
                     <Row className="text-left">
-                      Your review: {book.userReview}
+                      <b>Your review:</b> {book.userReview}
                     </Row>
                     <Row>
-                      {/* MAKE THIS BUTTON OPEN A MODAL FOR EDITING */}
                       <Button onClick={handleShow}>
                         {book.userScore ? "Update rating/review" : "Add rating/review"}
                       </Button>

@@ -8,7 +8,7 @@ def get_author_data_from_book(book):
     authors_records = book.authors
     authors = []        
     for author in authors_records:
-        authors.append(f'{author.lname}, {author.fname}')
+        authors.append(f'{author.fname} {author.lname}')
 
     if len(authors) == 0:
         authors = None
