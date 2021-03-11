@@ -16,13 +16,14 @@ const Home = (prop) => {
       <div className="center-text">
         <h1>Welcome to BiblioTech!</h1>
         <p>Please login to use the site</p>
+        <img src="/static/img/Typewriter.png"/>
       </div>
     )
   }else{
     return (
       <div className="center-text">
         <h1>Welcome to BiblioTech {prop.username}!</h1>
-        <p>You are on the home screen</p>
+        <img src="/static/img/Typewriter.png"/>
       </div>
     )
   }
@@ -41,7 +42,7 @@ const Header = (prop) => {
             onClick={() => prop.userId != null
               ? (prop.setDisplaySearchBar(true))
               : ''}>
-            <img className="logo" src="/static/img/BiblioTechLogo.png" />
+            <img className="logo" src="/static/img/LogoArtDeco.png" />
           </Link>
         </Col>
         <Col md={8}>
@@ -79,7 +80,7 @@ const Header = (prop) => {
 
 const Footer = (prop) => {
   return (
-    <Container>
+    <Container className="footer">
       <Row className="justify-content-center">
         <Col className="align-self-center center-text">
             BIBLIOTECH

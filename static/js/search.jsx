@@ -74,18 +74,16 @@ const SearchBar = (prop) => {
           </select>
           <label htmlFor="search-field"></label>
           <input id="search-field" type="text" placeholder="Type search phrase" autoFocus/>
-          <button onClick={updateQuery}>Search</button>
+          <button className="button-search" onClick={updateQuery}>Search</button>
           <Link to={'/search/advanced'} onClick={() => {
             prop.setDisplaySearchBar(false)
             }}>
             Advanced Search</Link>
           <br/>
-          <label className="toggle-off-label">All Books</label>
-          <label className="toggle" >
+          <label htmlFor="only-my-books">
+            Only my books
             <input id="only-my-books" type="checkbox"/>
-            <span className="slider"/>
           </label>
-          <label className="toggle-on-label">Only my books</label>
           <br/>
         </form>
       </div>
@@ -267,7 +265,7 @@ const DisplaySearchResults = (prop) => {
       }
       return (
         <Container className="container-small-margin justify-content-center">
-          <div>
+          <div className="query">
             <div>Showing results for search</div>
             {query.titleString ? <li>Title: {query.titleString}</li> : ''}
             {query.authorLnameString ? <li>Author: {query.authorLnameString}</li> : ''}
@@ -528,7 +526,7 @@ const DisplayBook = (prop) => {
                 {book.title}
               </div>
               <div>
-                <img src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
+                <img className="book-image-big" src={book.image ? book.image : '/static/img/BookPlaceholder.png'}/>
               </div>
               <div className="authors">
                 {book.authors ? book.authors.map(author =>
