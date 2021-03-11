@@ -591,9 +591,11 @@ const DisplayBook = (prop) => {
                       <b>Your review:</b> {book.userReview}
                     </Row>
                     <Row>
-                      <Button onClick={handleShow}>
-                        {book.userScore ? "Update rating/review" : "Add rating/review"}
-                      </Button>
+                      <Col sm={{span: 6, offset: 6}}>
+                        <button className="button-rating-add" onClick={handleShow}>
+                          {book.userScore ? "Update rating/review" : "Add rating/review"}
+                        </button>
+                      </Col>
                     </Row>
                   </Container>
                 : ''
