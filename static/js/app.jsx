@@ -5,8 +5,9 @@ const Switch = ReactRouterDOM.Switch;
 const Route = ReactRouterDOM.Route;
 const useHistory = ReactRouterDOM.useHistory;
 const useParams = ReactRouterDOM.useParams;
-const {Container, Badge, Button, Card, CardDeck, Col, Modal, Navbar, Row, Spinner, Tabs, Tab} = ReactBootstrap;
+const {Container, Badge, Button, Card, Col, Form, Modal, Navbar, Row, Spinner, Tabs, Tab} = ReactBootstrap;
 
+// Removed CardDeck
 
 const Home = (prop) => {
   // prevent book from still being editable if user clicked away from editable page

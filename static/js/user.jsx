@@ -6,7 +6,7 @@ const DisplayAccount = () => {
 
   return (
     <div>
-      This is the account page placeholder.
+      This is your account page.
     </div>
   )
 }

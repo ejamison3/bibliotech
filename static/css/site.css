@@ -231,6 +231,7 @@ select {
 .header {
   min-height: 10vh;
   background-color: var(--med-contrast);
+  border-radius: 10px;
 }
 
 img.logo {
@@ -332,6 +333,19 @@ img.logo:hover {
   font-weight: 300;
   color: var(--white-color);
   width: 7rem;
+}
+
+input[type=checkbox] {
+  visibility: hidden;
+}
+
+#only-my-books {
+  /* background-color: var(--background-color); */
+  margin: 0.2rem;
+}
+
+#only-my-books:checked {
+  background-color: var(--background-color);
 }
 
 #root {

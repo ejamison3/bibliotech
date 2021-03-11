@@ -2,6 +2,11 @@
 
 const SearchBar = (prop) => {
   let history = useHistory();
+  const [onlyMyBooksChecked, setOnlyMyBooksChecked] = React.useState(false);
+
+  const toggleCheckbox = () => {
+    setOnlyMyBooksChecked(!onlyMyBooksChecked)
+  }
 
   const updateQuery = (evt) => {
     evt.preventDefault();
@@ -82,7 +87,11 @@ const SearchBar = (prop) => {
           <br/>
           <label htmlFor="only-my-books">
             Only my books
-            <input id="only-my-books" type="checkbox"/>
+            <input id="only-my-books" type="checkbox" onClick={toggleCheckbox}/>
+              {onlyMyBooksChecked 
+                ? <i className="far fa-check-square"></i>
+                : <i className="far fa-square"></i>
+              }
           </label>
           <br/>
         </form>
@@ -195,14 +204,6 @@ const Book = (prop) => {
     </div>
   )
 } 
-
-const EditBook = (prop) => {
-  return (
-    <div>
-      Edit Book
-    </div>
-  )
-}
 
 const DisplaySearchResults = (prop) => {
   const query = prop.searchQuery;

@@ -6,6 +6,7 @@ from flask import (Flask, render_template, redirect, request,
 from model import connect_to_db
 from crud import *
 
+# was using this to parse decimal but now it's not there anymore....maybe only in seed_db file
 import simplejson as json
 
 import util
@@ -111,7 +112,7 @@ def create_account():
         response['message'] = 'Unauthorized'
         status_code = 422
 
-    return (json.loads(response), status_code)
+    return (jsonify(response), status_code)
 
 
 @app.route('/api/search', methods=['POST'])
