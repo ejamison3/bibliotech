@@ -265,7 +265,7 @@ const DisplaySearchResults = (prop) => {
         )
       }
       return (
-        <Container className="container-small-margin justify-content-center">
+        <Container fluid className="container-small-margin justify-content-center">
           <div className="query">
             <div>Showing results for search</div>
             {query.titleString ? <li>Title: {query.titleString}</li> : ''}
@@ -285,6 +285,12 @@ const DisplaySearchResults = (prop) => {
 
 const AdvancedSearch = (prop) => {
   let history = useHistory();
+  const [onlyMyBooksChecked, setOnlyMyBooksChecked] = React.useState(false);
+
+  const toggleCheckbox = () => {
+    setOnlyMyBooksChecked(!onlyMyBooksChecked);
+    console.log('onlyMyBooks: ' + onlyMyBooksChecked)
+  }
 
   const updateQuery = (evt) => {
     evt.preventDefault();
@@ -344,59 +350,47 @@ const AdvancedSearch = (prop) => {
       <h2 className="center-text">Advanced Search</h2>
       <Form className="center">
         <Form.Group>
-          <Form.Label>Title</Form.Label>
-          <Form.Control as="input" type="text" placeholder="Enter book title" id="title" name="title" autoFocus></Form.Control>
-            {/* <input type="text" id="title" name="title" autoFocus></input> */}
-          <Form.Check type="switch" id="exactTitle" label="Exact match?">
-
-          </Form.Check>
-          {/* <label htmlFor="exactTitle">Exact match?
-            <input type="checkbox" id="exactTitle" name="exactTitle"/>
-          </label> */}
+          <Form.Label>Title:</Form.Label>
+          <Form.Control as="input" type="text" placeholder="Enter Book Title" id="title" name="title" autoFocus />
+          <Form.Check className="toggle-text" type="switch" id="exactTitle" label="Exact match?" />
         </Form.Group>
 
-        <div>
-          Author:
-          <label htmlFor="fname">
-            <input type="text" 
-                  id="fname" 
-                  name="fname" 
-                  placeholder="Author First Name">
-            </input>
+        <Form.Row>
+          <Form.Group>
+            <Form.Label>Author First Name:</Form.Label>
+            <Form.Control as="input" type="text" id="fname" name="fname" placeholder="Author First Name" />
+            <Form.Check className="toggle-text" type="switch" id="exactFname" label="Exact match?" />
+          </Form.Group>
+            
+          <Form.Group>
+            <Form.Label>Author Last Name:</Form.Label>
+            <Form.Control as="input" type="text" id="lname" name="lname" placeholder="Author Last Name" />
+            <Form.Check className="toggle-text" type="switch" id="exactLname" label="Exact match?" />
+          </Form.Group>
+        </Form.Row>
+        
+        <Form.Group>
+          <Form.Label>Tags</Form.Label>
+          <Form.Control as="input" type="text" id="tags" name="tags" placeholder="Comma Separated Tags" />
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label>ISBN</Form.Label>
+          <Form.Control as="input" type="text" id="isbn" name="isbn" placeholder="ISBN" />
+        </Form.Group>
+
+        <span>
+          <label>
+            Only My Books
+            <input type="checkbox" id="only-my-books" name="only-my-books" onClick={toggleCheckbox} /> 
+              {onlyMyBooksChecked 
+                ? <i className="far fa-check-square"></i>
+                : <i className="far fa-square"></i>
+              }
           </label>
-          <label htmlFor="exactFname">Exact match?
-            <input type="checkbox" id="exactFname" name="exactFname"/>
-          </label>
-          <br/>
-          <label htmlFor="lname">
-            <input type="text" 
-                  id="lname" 
-                  name="lname" 
-                  placeholder="Author Last Name">
-            </input>
-          </label>
-          <label htmlFor="exactLname">Exact match?
-            <input type="checkbox" id="exactLname" name="exactLname"/>
-          </label>
-        </div>
-        <div>
-          Tags:
-          <label htmlFor="tags">
-            <input type="text" id="tags" name="tags" placeholder="comma separated tags"></input>
-          </label>
-        </div>
-        <div>
-          ISBN:
-          <label htmlFor="isbn">
-            <input type="text" id="isbn" name="isbn" maxLength="13" placeholder="ISBN"></input>
-          </label>
-        </div>
-        <div>
-          <label htmlFor="only-my-books">Only My Books
-            <input type="checkbox" id="only-my-books" name="only-my-books"></input>
-          </label>
-        </div>
-        <button onClick={updateQuery}>Search</button>
+        </span>
+            
+        <button className="button-advanced-search" onClick={updateQuery}>Search</button>
       </Form>
     </div>
   )

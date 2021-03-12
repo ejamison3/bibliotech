@@ -3,6 +3,7 @@ import os
 import time
 import requests
 import crud
+import re
 
 
 #########################CREATE SEED FILES########################################
@@ -47,6 +48,48 @@ def create_google_seed_file(book_id_file, book_seed_file, error_file):
     seed_file.close()
     failed_file.close()
         
+
+def create_usernames (old_review_file, new_review_file, long_username_error_file):
+    """create new reviews file with updated usernames"""
+
+    f = open(old_review_file)
+    username_dict = dict()
+    new_file = open(new_review_file, 'a')
+    error_file = open(long_username_error_file, 'a')
+
+
+    for line in f:
+        review_dict = json.loads(line)
+        user_id = review_dict['reviewerID']
+        reviewer_name = review_dict['reviewerName']
+        username = re.sub('[^a-zA-Z]+','',reviewer_name)
+        existing_user_id = username_dict.get(username, None)
+
+        # username is new
+        if existing_user_id == None:
+            username_dict[username] = user_id
+            review_dict['username'] = username
+        # username exists with matching user_id
+        elif existing_user_id == user_id:
+            review_dict['username'] = username
+        # username exists with DIFFERENT user_id
+        else:
+            username = username + user_id[-4]
+            username_dict[username] = user_id
+            review_dict['username'] = username
+
+        if len(username) > 20:
+            error_file.write(f'{username}: {len(username)}\n')
+
+        review_dict_json = json.dumps(review_dict)
+        new_file.write(f'{review_dict_json}\n')
+
+    f.close()
+    new_file.close()
+    error_file.close()
+
+
+
 
 ######################### - POPULATE DATABASE - #################################
 def create_authors(author_list):
@@ -171,7 +214,7 @@ def create_user_rating(filename, error_file):
 
     for line in f:
         review_dict = json.loads(line)
-        user_name = review_dict['reviewerID']
+        user_name = review_dict['username']         # prev reviewerID
         rating_fl = review_dict.get('overall', None)
         review = review_dict.get('reviewText', None)
         isbn = review_dict.get('asin', None)
@@ -246,8 +289,8 @@ if __name__ == "__main__":
     app = server.Flask(__name__)
 
     # only run this if you want to drop DB
-    # os.system('dropdb books')
-    # os.system('createdb books')
+    os.system('dropdb books')
+    os.system('createdb books')
 
     connect_to_db(app)
     print("connected to db.")

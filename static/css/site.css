@@ -180,6 +180,16 @@ select {
   height: 100px;
 }
 
+.button-advanced-search {
+  background-image: linear-gradient(to bottom, #ffffff, var(--accent-color));
+   /* background-color: var(--accent-color); */
+   border: 1px solid var(--dark-contrast);
+   border-radius: 10px;
+   padding: 5px 10px;
+   margin: 5px;
+   font-size: small;
+}
+
 .button-login {
    background-image: linear-gradient(to bottom, #ffffff, var(--light-contrast));
    /* background-color: var(--accent-color); */
@@ -252,7 +262,7 @@ select {
 
 /* bootstrap toggle slider */
 .custom-switch .custom-control-label::after {
-  background-color: var(--dark-contrast);
+  background-color: var(--accent-color);
 }
 
 /* bootstrap toggle outline */
@@ -367,6 +377,10 @@ textarea {
   height: 15rem;
   font-size: 1rem;
   color: var(--whiter-color);
+}
+
+.toggle-text {
+  color: var(--accent-color)
 }
 
 /* .query{

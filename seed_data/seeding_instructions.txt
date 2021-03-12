@@ -1,4 +1,10 @@
 
+HOW TO ADD USERNAMES TO REVIEWS FILE
+1. Run create_usernames('seed_data/reviews.json', 'seed_data/reviews_names.json', 'seed_data/long_names') 
+    This creates reviews_names.json which adds username values to json
+2. Look through long_names file and substitute usernames so that they are under 20 chars (max limit per DB design)
+    There were 4 substitutions required. Since the file is a one time create, I did this substitution manually.
+
 HOW TO GET BOOK ID LIST FROM reviews.json TYPE FILE
 1. Run make_book_id_file(reviews.json, book_id_list)
     - function in reviews.py
@@ -10,7 +16,7 @@ HOW TO CREATE BOOK SEED FILE
 HOW TO SEED DATABASE
 1. Load book_seed_file created above using create_book_author('seed_data/book_seed_file_part#.json') 
   - function in seed_db.py file
-2. Load reviews.json (or reviews_small.json) using create_user_rating('seed_data/reviews.json', 'rating_errors')
+2. Load reviews_names.json using create_user_rating('seed_data/reviews_names.json', 'rating_errors')
   - function in seed_db.py file
 
 HOW TO HANDLE ERRORS 
@@ -48,3 +54,11 @@ Loaded seed_data/reviews.json
 
 
 
+EXPECTED COUNTS AFTER LOAD:
+  -books: 820
+  -authors: 631
+  -tags: 172
+  -users: 182
+  -ratings: 2880
+  -users_books: 2776
+  -books_tags: 820
