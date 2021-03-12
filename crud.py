@@ -295,6 +295,49 @@ def get_books_by_various_advanced(title=None,
     
     return q.all()
 
+
+###FIND RATINGS##
+def get_rating_by_user_book(book_id, user_id):
+    '''Get rating record by user ID and book ID)'''
+
+    return Rating.query.filter(Rating.book_id == book_id, Rating.user_id == user_id).first()
+
+
+def get_rating_count_by_book(book_id):
+    '''Get total number of ratings by Book ID'''
+
+    return Rating.query.filter(Rating.book_id == book_id).count()
+
+
+def get_rating_sum_by_book(book_id):
+    '''Get total sum of ratings by Book ID'''
+
+    # this will fail until Rating.score is changed to int
+    return Rating.query.with_entities(db.func.sum(Rating.score)).filter(Rating.book_id == book_id).scalar()
+
+
+def get_ratings_by_book_id_list(book_id_list):
+    """Output rating records with book_id"""
+
+    return Rating.query.filter(Rating.book_id.in_(book_id_list)).all()
+
+
+def get_ratings_by_user_id(user_id):
+    """return ratings records based on user_id"""
+
+    return Rating.query.filter(Rating.user_id == user_id).all()
+
+
+def get_ratings_by_user_ids_not_book_id(user_id_list, book_id_list):
+    """Return ratings with users in list whose books are not in list"""
+
+    # only include users in user_id_list
+    q = Rating.query.filter(Rating.user_id.in_(user_id_list))
+    # exclude ratings with books in book_id_list
+    q = q.filter(db.not_(Rating.book_id.in_(book_id_list)))
+
+    return q.all()
+
 ###FIND OTHER THINGS##
 
 def get_user(username):
@@ -321,29 +364,13 @@ def get_tag(tag_name):
     return Tag.query.filter(Tag.tag_name == tag_name).first()
 
 
-def get_rating_by_user_book(book_id, user_id):
-    '''Get rating record by user ID and book ID)'''
-
-    return Rating.query.filter(Rating.book_id == book_id, Rating.user_id == user_id).first()
-
-
-def get_rating_count_by_book(book_id):
-    '''Get total number of ratings by Book ID'''
-
-    return Rating.query.filter(Rating.book_id == book_id).count()
-
-def get_rating_sum_by_book(book_id):
-    '''Get total sum of ratings by Book ID'''
-
-    # this will fail until Rating.score is changed to int
-    return Rating.query.with_entities(db.func.sum(Rating.score)).filter(Rating.book_id == book_id).scalar()
 
 def get_similar_tags(similar_phrase):
     '''Get all tags with name similar to similar_phrase'''
 
     return Tag.query.filter(Tag.tag_name.like(f'%{similar_phrase}%')).all()
 
-####################################### UPDATE #######################################
+########################### UPDATE ##################################
 
 def update_book_avg_rating(book_id, avg_rating):
     '''Update average rating by book ID'''
@@ -351,6 +378,7 @@ def update_book_avg_rating(book_id, avg_rating):
     book_record = get_book_by_id(book_id)
     book_record.avg_rating = avg_rating
     db.session.commit()
+
 
 def update_book_user_score(book_id, user_id, score):
     '''Update score in ratings table by book_id/user_id combo'''
@@ -363,6 +391,7 @@ def update_book_user_score(book_id, user_id, score):
         user_record = get_user_by_id(user_id)
         book_record = get_book_by_id(book_id)
         create_rating(score, user_record, book_record, review=None)
+
 
 def update_book_user_review(book_id, user_id, review):
     '''Update review in ratings table by book ID/user ID combo'''

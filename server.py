@@ -284,6 +284,43 @@ def update_rating():
 
     return (jsonify(response), status_code)
 
+
+@app.route('/api/recommend', methods=['POST'])
+def get_recommendation():
+    """Given a userid, return a single book recommendation"""
+
+    req = request.get_json()
+    
+    user_id = req['userId']
+
+    response = {
+        'message': None,
+        'error': None,
+        'book': None,
+    }
+
+    book_id = util.get_book_recommendation(user_id)
+    book = None
+    # book_id is string if error returned
+    if isinstance(book_id, str) == True:
+        response['error'] = book_id
+    else:
+        book = get_book_by_id(book_id)
+
+        if book != None:
+            response['book'] = util.book_to_dictionary(book, user_id)
+
+    if book == None: 
+        if response['error'] == None:
+            status_code = 204
+        else:
+            status_code = 404
+    else:
+        status_code = 200
+
+    return (jsonify(response), status_code)
+
+
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)
