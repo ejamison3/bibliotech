@@ -33,7 +33,6 @@ const Home = (prop) => {
 const Header = (prop) => {
   // const onLogoClick = () => {
   //   prop.userId != null ? (prop.setDisplaySearchBar(true)) : ''
-  //   prop.setIsEditable(false)
   // }
 
   return (
@@ -57,8 +56,6 @@ const Header = (prop) => {
             setIsLoading={prop.setIsLoading}
             displaySearchBar={prop.displaySearchBar}
             setDisplaySearchBar={prop.setDisplaySearchBar}
-            isEditable={prop.isEditable}
-            setIsEditable={prop.setIsEditable}
             /> 
             : <div className="no-searchbar"></div>
           }
@@ -133,7 +130,6 @@ const App = () => {
   const [searchResponse, setSearchResponse] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [bookResponse, setBookResponse] = React.useState(null);
-  const [isEditable, setIsEditable] = React.useState(false);
   const [displaySearchBar, setDisplaySearchBar] = React.useState(true);
 
   if (userId === null && document.cookie != ""){
@@ -157,7 +153,6 @@ const App = () => {
   return (
     <Router>
       
-      {/* <div id="app"> */}
         <Header 
           userId = {userId}
           username={username}
@@ -167,10 +162,7 @@ const App = () => {
           setIsLoading={setIsLoading}
           displaySearchBar={displaySearchBar}
           setDisplaySearchBar={setDisplaySearchBar}
-          isEditable={isEditable}
-          setIsEditable={setIsEditable}
         /> 
-        {/* <main> */}
         <Container fluid className="main-container">
           <Switch>
             <Route exact path="/">
@@ -201,8 +193,6 @@ const App = () => {
                 userId={userId}
                 bookResponse={bookResponse}
                 setBookResponse={setBookResponse}
-                isEditable={isEditable}
-                setIsEditable={setIsEditable}
               />
             </Route>
             <Route path="/search/advanced">
@@ -262,10 +252,8 @@ const App = () => {
               <DisplayCreateUser />
             </Route>
           </Switch>
-        {/* </main> */}
         </Container>
         <Footer/>  
-      {/* </div> */}
     </Router>
   )
 };
