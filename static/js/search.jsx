@@ -265,13 +265,22 @@ const DisplaySearchResults = (prop) => {
         )
       }
       return (
-        <Container fluid className="container-small-margin justify-content-center">
-          <div className="query">
-            <div>Showing results for search</div>
-            {query.titleString ? <li>Title: {query.titleString}</li> : ''}
-            {query.authorLnameString ? <li>Author: {query.authorLnameString}</li> : ''}
-            {query.tagListString ? <li>Tags: {query.tagListString}</li> : ''}
-          </div>
+        <Container fluid className="justify-content-center">
+          <Row>
+            <Col md={{span: 6, offset: 3}} className="query">
+              <div className="text-center">Showing results for the following {query.searchType} query</div>
+              {query.titleString ? <li>Title: {query.titleString}</li> : ''}
+              {query.searchType 
+                ? (query.authorFnameString 
+                  ? <li>Author First Name: {query.authorFnameString}</li>
+                  : '')
+                  : ''
+                }
+              {query.authorLnameString ? <li>Author Last Name: {query.authorLnameString}</li> : ''}
+              {query.tagListString ? <li>Tags: {query.tagListString}</li> : ''}
+              {query.isbnString ? <li>ISBN: {query.isbnString}</li> : ''}
+            </Col>
+          </Row>
           <div className="books">
             <React.Fragment>
               {books}
@@ -289,7 +298,6 @@ const AdvancedSearch = (prop) => {
 
   const toggleCheckbox = () => {
     setOnlyMyBooksChecked(!onlyMyBooksChecked);
-    console.log('onlyMyBooks: ' + onlyMyBooksChecked)
   }
 
   const updateQuery = (evt) => {
@@ -356,17 +364,21 @@ const AdvancedSearch = (prop) => {
         </Form.Group>
 
         <Form.Row>
-          <Form.Group>
-            <Form.Label>Author First Name:</Form.Label>
-            <Form.Control as="input" type="text" id="fname" name="fname" placeholder="Author First Name" />
-            <Form.Check className="toggle-text" type="switch" id="exactFname" label="Exact match?" />
-          </Form.Group>
-            
-          <Form.Group>
-            <Form.Label>Author Last Name:</Form.Label>
-            <Form.Control as="input" type="text" id="lname" name="lname" placeholder="Author Last Name" />
-            <Form.Check className="toggle-text" type="switch" id="exactLname" label="Exact match?" />
-          </Form.Group>
+          <Col>
+            <Form.Group>
+              <Form.Label>Author First Name:</Form.Label>
+              <Form.Control as="input" type="text" id="fname" name="fname" placeholder="Author First Name" />
+              <Form.Check className="toggle-text" type="switch" id="exactFname" label="Exact match?" />
+            </Form.Group>
+          </Col>
+
+          <Col>
+            <Form.Group>
+              <Form.Label>Author Last Name:</Form.Label>
+              <Form.Control as="input" type="text" id="lname" name="lname" placeholder="Author Last Name" />
+              <Form.Check className="toggle-text" type="switch" id="exactLname" label="Exact match?" />
+            </Form.Group>
+          </Col>  
         </Form.Row>
         
         <Form.Group>
@@ -380,7 +392,7 @@ const AdvancedSearch = (prop) => {
         </Form.Group>
 
         <span>
-          <label>
+          <label className="font-weight-bold">
             Only My Books
             <input type="checkbox" id="only-my-books" name="only-my-books" onClick={toggleCheckbox} /> 
               {onlyMyBooksChecked 
@@ -483,7 +495,6 @@ const DisplayBook = (prop) => {
     updateBook()
   }, []);
 
-  // was using isLoading but then would never rerender once loaded. Not sure on best practices
   if (prop.bookResponse == null){
     return (
       <div>
@@ -542,45 +553,17 @@ const DisplayBook = (prop) => {
 
               {book.isbn ? (<div className="text-left">ISBN: {book.isbn}</div>) : ''}
 
-              <Container>
-                <Row>
-                  <Col sm={6}>
-                    <div className="tags w-100">
-                      <div className="center-text">General Tags:</div>
-                      {book.tags ? (
-                        <span>{book.tags.map(tag =>
-                          (<Badge pill variant="info" className="tag-button"key={tag}>{tag}</Badge>))}</span>
-                          ) : ''
-                        }
-                    </div>
-                  </Col>
-                  <Col sm={6}>
-                    <div className="tags w-100">
-                      <div className="center-text">Your Tags:</div>
-                      {book.tags ? (
-                        <span>{book.tags.map(tag =>
-                          (<Badge pill variant="info" className="tag-button"key={tag}>{tag}</Badge>))}</span>
-                          ) : ''
-                        }
-                      <div>
-                        {/* update to use json to populate */}
-                      <label htmlFor="tag-type"></label>
-                      <select id="tag-type" type="dropdown">
-                        <option value="Opt1"defaultValue>Opt1</option>
-                        <option value="Opt2">Opt2</option>
-                        <option value="Opt3">Opt3</option>
-                        <option value="Opt4">Opt4</option>
-                      </select>
-                      <button>Add Tag</button>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-              </Container>
+              <div className="tags w-100">
+                <div className="center-text">General Tags:</div>
+                {book.tags 
+                  ? (<span>{book.tags.map(tag =>
+                      (<Badge pill variant="info" className="tag-button"key={tag}>{tag}</Badge>))}</span>) 
+                  : ''
+                }
+              </div>
               
               <div className="rating">Average Rating: {book.avgRating}</div>
 
-            
               {bookIsUsers 
                 ? <Container className="rating-user">
                     <Row> 
@@ -600,7 +583,7 @@ const DisplayBook = (prop) => {
                 : ''
               }
             </Col>
-        </Row>
+          </Row>
           <Modal
             show={show}
             backdrop="static"
