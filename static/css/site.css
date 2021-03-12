@@ -209,6 +209,15 @@ select {
   font-size: small;
 }
 
+.button-recommend {
+  background-image: linear-gradient(to top, var(--accent-color), var(--light-contrast));
+  border: 1px solid var(--dark-contrast);
+  border-radius: 10px;
+  padding: 5px, 15px;
+  margin: 1px;
+  font-size: small;
+}
+
 .button-search {
   /* background-image: linear-gradient(to bottom, var(--accent-color), var(--white-color)); */
   background-color: var(--accent-color);

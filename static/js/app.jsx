@@ -46,7 +46,7 @@ const Header = (prop) => {
             <img className="logo" src="/static/img/LogoArtDeco.png" />
           </Link>
         </Col>
-        <Col md={8}>
+        <Col md={6}>
           {(prop.displaySearchBar == true) && (prop.userId != null)
             ? <SearchBar 
             userId = {prop.userId}
@@ -64,9 +64,18 @@ const Header = (prop) => {
           }
         </Col>
         <Col md={2}>
+          <button className="button-recommend">
+            <Link to={"/recommendation"}>
+              Get Book Recommendation
+            </Link>
+          </button>
+        </Col>
+        <Col md={2}>
           <div className="user-buttons">
             {prop.userId != null 
-              ? <button className="user-button"><Link to={'/account'}>Account</Link></button>
+              ? <button className="user-button">
+                  <Link to={'/account'}>Account</Link>
+                </button>
               : ''
             }
             {prop.userId != null
@@ -205,6 +214,13 @@ const App = () => {
                 setIsLoading={setIsLoading}
                 displaySearchBar={displaySearchBar}
                 setDisplaySearchBar={setDisplaySearchBar}
+              />
+            </Route>
+            <Route path="/recommendation">
+              <Recommendation 
+                userId={userId}
+                bookResponse={bookResponse}
+                setBookResponse={setBookResponse}
               />
             </Route>
             <Route path="/account">

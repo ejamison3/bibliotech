@@ -150,21 +150,23 @@ def calculate_update_avg_rating(book_id):
     update_book_avg_rating(book_id, avg_rating)
 
 
-def get_common_users(user_id):
-    """return common users"""
+def find_user_book_id_list(user_id):
+    """Return a list of books user has rated"""
 
     # get all ratings for this user
     ratings_by_primary_user_list = get_ratings_by_user_id(user_id)
     print(f'USER HAS RATED {len(ratings_by_primary_user_list)} BOOKS')
 
     # get all books rated by this user (user_book_id_list)
-    user_book_id_list = []                       # should only be one user rating per book_id
+    user_book_id_list = []                   
     for rating_record in ratings_by_primary_user_list:
         user_book_id_list.append(rating_record.book_id)
-    
-    # if user has not rated any books, there are no common users
-    if len(user_book_id_list) == 0:
-        return []
+
+    return user_book_id_list
+
+
+def find_common_users(user_book_id_list):
+    """return common users"""
 
     # get all rating records with book_id in book_id_list
     ratings_by_book_id_list = get_ratings_by_book_id_list(user_book_id_list)
@@ -186,44 +188,22 @@ def get_book_recommendation(user_id):
     """Return random other book rated by user who has rated same book
     
     Error messages are: 
-        no_rated_books
+        no rated books
         no common users
         same books rated
     """
 
-    # get all ratings for this user
-    ratings_by_primary_user_list = get_ratings_by_user_id(user_id)
-    print(f'USER HAS RATED {len(ratings_by_primary_user_list)} BOOKS')
-
     # get all books rated by this user (user_book_id_list)
-    user_book_id_list = []                       # should only be one user rating per book_id
-    for rating_record in ratings_by_primary_user_list:
-        user_book_id_list.append(rating_record.book_id)
-    
+    user_book_id_list = find_user_book_id_list(user_id)  
     if len(user_book_id_list) == 0:
-        return 'no_rated_books'
+        return 'no rated books'
 
-    # get all rating records with book_id in book_id_list
-    ratings_by_book_id_list = get_ratings_by_book_id_list(user_book_id_list)
-    print(f'THERE ARE {len(ratings_by_book_id_list)} RATINGS FOR THE BOOKS USER HAS READ')
-    if len(ratings_by_book_id_list) == 0:
+    common_users_list = find_common_users(user_book_id_list)
+    if len(common_users_list) == 0:
         return 'no common users'
 
-    # get users who also rated these books (similar_users_set)
-    common_users_set = set()                # using set bc there will be duplicate users
-    for rating_record in ratings_by_book_id_list:
-        common_users_set.add(rating_record.user_id)
-    
-    # remove google books user bc they have rating for ALL books
-    common_users_set.remove(1)
-    print(f'COMMON USERS ARE {common_users_set}')
-    # enhancement - find most similar user using Pearson correlation
-
-
-    common_users_list = get_common_users(user_id)
     # get ratings from these users where books not in user_book_id_list
     ratings_by_other_users = get_ratings_by_user_ids_not_book_id(common_users_list, user_book_id_list)
-
     if len(ratings_by_other_users) == 0:
         return 'same books rated'
 
