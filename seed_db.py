@@ -289,8 +289,8 @@ if __name__ == "__main__":
     app = server.Flask(__name__)
 
     # only run this if you want to drop DB
-    os.system('dropdb books')
-    os.system('createdb books')
+    # os.system('dropdb books')
+    # os.system('createdb books')
 
     connect_to_db(app)
     print("connected to db.")

@@ -199,7 +199,9 @@ const Book = (prop) => {
       </div>
       
       <div className="rating">
-        {bookIsUsers ? <div>Your rating: {book.userScore}</div> : <div>Average Rating: {book.avgRating}</div>}
+        {bookIsUsers 
+          ? <div>Your rating: {book.userScore}</div> 
+          : <div>Average Rating: {book.avgRating}</div>}
       </div>
     </div>
   )
@@ -267,7 +269,7 @@ const DisplaySearchResults = (prop) => {
       return (
         <Container fluid className="justify-content-center">
           <Row>
-            <Col md={{span: 6, offset: 3}} className="query">
+            <Col md={{span: 4, offset: 4}} className="query">
               <div className="text-center">Showing results for the following {query.searchType} query</div>
               {query.titleString ? <li>Title: {query.titleString}</li> : ''}
               {query.searchType 
@@ -363,7 +365,7 @@ const AdvancedSearch = (prop) => {
           <Form.Check className="toggle-text" type="switch" id="exactTitle" label="Exact match?" />
         </Form.Group>
 
-        <Form.Row>
+        <Row>
           <Col>
             <Form.Group>
               <Form.Label>Author First Name:</Form.Label>
@@ -379,7 +381,7 @@ const AdvancedSearch = (prop) => {
               <Form.Check className="toggle-text" type="switch" id="exactLname" label="Exact match?" />
             </Form.Group>
           </Col>  
-        </Form.Row>
+        </Row>
         
         <Form.Group>
           <Form.Label>Tags</Form.Label>
@@ -504,7 +506,7 @@ const DisplayBook = (prop) => {
   }else{
     const book = prop.bookResponse.book;
     const bookIsUsers = book.isUsers
-    
+
     return (
       <Container className="book-big-container">
         <Row className="justify-content-center">
@@ -539,14 +541,13 @@ const DisplayBook = (prop) => {
 
             {book.description ? (<div className="text-left book-desc"><b>Description: </b>{book.description} </div>) : ''}
 
-            {book.publisher ? (<div className="text-left">Publisher: {book.publisher} </div>) : ''}
+            {book.publisher ? (<div className="text-left w-100"><b>Publisher: </b>{book.publisher} </div>) : ''}
 
-            {book.year ? (<div className="text-left">Publication Year: {book.year} </div>) : ''}
+            {book.year ? (<div className="text-left w-100"><b>Publication Year: </b>{book.year} </div>) : ''}
 
-            {book.isbn ? (<div className="text-left">ISBN: {book.isbn}</div>) : ''}
+            {book.isbn ? (<div className="text-left w-100"><b>ISBN: </b>{book.isbn}</div>) : ''}
 
             <div className="tags w-100">
-              <div className="center-text">General Tags:</div>
               {book.tags 
                 ? (<span>{book.tags.map(tag =>
                     (<Badge pill variant="info" className="tag-button"key={tag}>{tag}</Badge>))}</span>) 
@@ -558,14 +559,18 @@ const DisplayBook = (prop) => {
 
             {bookIsUsers 
               ? <Container className="rating-user">
-                  <Row> 
-                    <b>Your rating:</b> {book.userScore}
-                  </Row>
-                  <Row className="text-left">
-                    <b>Your review:</b> {book.userReview}
-                  </Row>
+                  {book.userScore 
+                    ? (<Row className="text-left w-100"> 
+                        <b>Your rating: </b> {book.userScore}
+                      </Row>)
+                    : ''}
+                  {book.userReview 
+                    ? (<Row className="text-left w-100">
+                        <b>Your review: </b>{book.userReview}
+                      </Row>)
+                    : ''}
                   <Row>
-                    <Col sm={{span: 6, offset: 6}}>
+                    <Col sm={{span: 6, offset: 3}}>
                       <button className="button-rating-add" onClick={handleShow}>
                         {book.userScore ? "Update rating/review" : "Add rating/review"}
                       </button>
