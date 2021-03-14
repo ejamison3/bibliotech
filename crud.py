@@ -412,6 +412,12 @@ def remove_users_books_relationship(book_record, user_record):
     book_record.users.remove(user_record)
     db.session.commit()
 
+def remove_users_books_rating(book_id, user_id):
+    """Removes rating from ratings table and relationship"""
+
+    Rating.query.filter(Rating.book_id == book_id, Rating.user_id == user_id).delete()
+    db.session.commit()
+
 
 if __name__ == '__main__':
     from server import app

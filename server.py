@@ -243,6 +243,10 @@ def delete_book_user(bookId):
     # add in check that user and book exist
 
     remove_users_books_relationship(book_record, user_record)
+    remove_users_books_rating(book_id, logged_in_user_id)
+
+    # update avg_rating
+    util.calculate_update_avg_rating(book_id)
 
     response = {
         'type': 'delete',

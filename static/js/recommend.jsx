@@ -150,26 +150,6 @@ const Recommendation = (prop) => {
               </Container>
               
               <div className="rating">Average Rating: {book.avgRating}</div>
-
-            
-              {bookIsUsers 
-                ? <Container className="rating-user">
-                    <Row> 
-                      <b>Your rating:</b> {book.userScore}
-                    </Row>
-                    <Row className="text-left">
-                      <b>Your review:</b> {book.userReview}
-                    </Row>
-                    <Row>
-                      <Col sm={{span: 6, offset: 6}}>
-                        <button className="button-rating-add">
-                          {book.userScore ? "Update rating/review" : "Add rating/review"}
-                        </button>
-                      </Col>
-                    </Row>
-                  </Container>
-                : ''
-              }
             </Col>
         </Row>
       </Container>
