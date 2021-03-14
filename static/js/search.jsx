@@ -359,13 +359,14 @@ const AdvancedSearch = (prop) => {
     <div>
       <h2 className="center-text">Advanced Search</h2>
       <Form className="center">
-        <Form.Group>
+
+        <Form.Group controlId="formTitle">
           <Form.Label>Title:</Form.Label>
           <Form.Control as="input" type="text" placeholder="Enter Book Title" id="title" name="title" autoFocus />
           <Form.Check className="toggle-text" type="switch" id="exactTitle" label="Exact match?" />
-        </Form.Group>
+        </Form.Group>        
 
-        <Row>
+        <Form.Row>
           <Col>
             <Form.Group>
               <Form.Label>Author First Name:</Form.Label>
@@ -381,7 +382,7 @@ const AdvancedSearch = (prop) => {
               <Form.Check className="toggle-text" type="switch" id="exactLname" label="Exact match?" />
             </Form.Group>
           </Col>  
-        </Row>
+        </Form.Row>
         
         <Form.Group>
           <Form.Label>Tags</Form.Label>

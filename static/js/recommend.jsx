@@ -2,7 +2,7 @@
 
 const Recommendation = (prop) => {
   // const [bookIsUsers, setBookIsUsers] = React.useState(true)
-  let { bookId } = useParams();
+  // let { bookId } = useParams();
   const [show, setShow] = React.useState(false)
   let query = {
     'userId': prop.userId,
@@ -25,7 +25,24 @@ const Recommendation = (prop) => {
     })
   }
 
-  const addBook = () => {
+  const updateBook = (bookId) => {
+    // prop.setIsLoading(true);
+    fetch('/book/' + bookId, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      // got rid of inner loop that only went to .then(data) if response populated
+      return response.json()
+    })
+    .then(data => {
+      prop.setBookResponse(data);
+    })
+  }
+
+  const addBook = (bookId) => {
     
     fetch('/user/' + bookId + '/add', {
       method: 'PUT',
@@ -37,11 +54,11 @@ const Recommendation = (prop) => {
       return response.json()
     })
     .then(data => {
-      updateBook()
+      updateBook(bookId)
     })
   }
 
-  const removeBook = () => {
+  const removeBook = (bookId) => {
     
     fetch('/user/' + bookId + '/delete', {
       method: 'DELETE',
@@ -53,7 +70,7 @@ const Recommendation = (prop) => {
       return response.json()
     })
     .then(data => {
-      updateBook()
+      updateBook(bookId)
     })
   }
 
@@ -86,13 +103,13 @@ const Recommendation = (prop) => {
                 {bookIsUsers 
                   ? (<label className="remove-book">
                       Remove Book
-                      <button className="book-add-remove" onClick={removeBook}>
+                      <button className="book-add-remove" onClick={() => removeBook(book.id)}>
                         <i className="fas fa-minus"></i>
                       </button>
                     </label>) 
                   : <label>
                       Add Book
-                      <button className="book-add-remove" onClick={addBook}>
+                      <button className="book-add-remove" onClick={() => addBook(book.id)}>
                         <i className="fas fa-plus"></i>
                       </button> 
                     </label>
@@ -120,19 +137,8 @@ const Recommendation = (prop) => {
 
               <Container>
                 <Row>
-                  <Col sm={6}>
+                  <Col sm={{span: 6, offset: 3}}>
                     <div className="tags w-100">
-                      <div className="center-text">General Tags:</div>
-                      {book.tags ? (
-                        <span>{book.tags.map(tag =>
-                          (<Badge pill variant="info" className="tag-button"key={tag}>{tag}</Badge>))}</span>
-                          ) : ''
-                        }
-                    </div>
-                  </Col>
-                  <Col sm={6}>
-                    <div className="tags w-100">
-                      <div className="center-text">Your Tags:</div>
                       {book.tags ? (
                         <span>{book.tags.map(tag =>
                           (<Badge pill variant="info" className="tag-button"key={tag}>{tag}</Badge>))}</span>
@@ -156,7 +162,7 @@ const Recommendation = (prop) => {
                     </Row>
                     <Row>
                       <Col sm={{span: 6, offset: 6}}>
-                        <button className="button-rating-add" onClick={handleShow}>
+                        <button className="button-rating-add">
                           {book.userScore ? "Update rating/review" : "Add rating/review"}
                         </button>
                       </Col>

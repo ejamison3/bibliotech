@@ -2,16 +2,6 @@
 
 /* COLORS */
 
-/* :root {
-  --accent-color: #a31621;
-  --background-color: #1d1d1d;
-  --white-color: #ccc;
-  --dark-contrast: #2b2b2b;
-  --med-contrast: #4a4a4a;
-  
-  --light-contrast: #777777;
-} */
-
 :root {
   --accent-color: #C29250;
   --background-color: #232734;
@@ -22,7 +12,6 @@
   --med-contrast: #30616B;
   --light-contrast: #D6B6AB;
 }
-
 
 /* components */
 
@@ -405,10 +394,6 @@ textarea {
 .toggle-text {
   color: var(--accent-color)
 }
-
-/* .query{
-  
-} */
 
 .user-button {
   background-image: linear-gradient(to bottom, var(--med-contrast), var(--dark-contrast));
