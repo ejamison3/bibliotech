@@ -93,7 +93,7 @@ const Footer = (prop) => {
             BIBLIOTECH
         </Col>
       </Row>
-      <Row>
+      <Row className="justify-content-around">
         <Col className="align-self-center">
           About BiblioTech:
           <li>
