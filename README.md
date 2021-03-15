@@ -1,9 +1,9 @@
 # BiblioTech
 
 ### Table of Contents
-  [Why BiblioTech] (#why)
-  [Data Seeding] (#data)
-  Resources (#resources)
+  [Why BiblioTech](#why)
+  [Data Seeding](#data)
+  [Resources](#resources)
 
 ## <a name="why"></a>Why BiblioTech?
 BiblioTech was chosen because it's awesome
