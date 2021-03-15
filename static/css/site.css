@@ -342,6 +342,13 @@ textarea {
   background-color: var(--med-contrast);
 }
 
+/* bootstrap override */
+.nav-tabs .nav-link.active{
+  background-color: var(--light-contrast);
+  color: var(--dark-contrast);
+  border-color: var(--whiter-color);
+}
+
 .query {
   background-color: var(--light-contrast);
   text-align: left;
