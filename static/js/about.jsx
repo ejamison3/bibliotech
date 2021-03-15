@@ -1,8 +1,11 @@
 "use strict"
 
-const About = () => {
+const About = (prop) => {
   return (
-    <Tabs>
+    <Tabs
+      activeKey={prop.tabKey}
+      onSelect={(k) => prop.setTabKey(k)}
+    >
       <Tab eventKey="about" title="About">
         <div>
           BiblioTech is a single page web application (SPWA) built over the course of 4 weeks as part of the Hackbright Academy program.
@@ -20,7 +23,7 @@ const About = () => {
       <Tab eventKey="data" title="Data">
         <AboutData/>
       </Tab>
-      <Tab title="Search">
+      <Tab eventKey="search" title="Search">
         <AboutSearch/>
       </Tab>
     </Tabs>
@@ -28,6 +31,8 @@ const About = () => {
 }
 
 const AboutData = () => {
+  const dataModelToDisplay = 0;
+
   return (
     <div>
       <div>
@@ -55,6 +60,36 @@ const AboutData = () => {
         <li>
           The Google Books API was utilized to fill in book information (e.g., title, authors, category, description) by querying by ISBN from the review data.
         </li>
+        <Carousel>
+          <Carousel.Item>
+            <img 
+              className="d-block w-100"
+              src="/static/img/DataModel.png"
+              alt="InitialDataModel"
+            />
+          </Carousel.Item>
+          <Carousel.Item>
+            <img 
+              className="d-block w-100"
+              src="/static/img/GoogleDataModel.png"
+              alt="InitialDataModel"
+            />
+          </Carousel.Item>
+          <Carousel.Item>
+            <img 
+              className="d-block w-100"
+              src="/static/img/AmazonDataModel.png"
+              alt="InitialDataModel"
+            />
+          </Carousel.Item>
+          <Carousel.Item>
+            <img 
+              className="d-block w-100"
+              src="/static/img/AvgRatingDataModel.png"
+              alt="InitialDataModel"
+            />
+          </Carousel.Item>
+        </Carousel>
       </div>
     </div>
   )

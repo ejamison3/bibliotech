@@ -5,7 +5,7 @@ const Switch = ReactRouterDOM.Switch;
 const Route = ReactRouterDOM.Route;
 const useHistory = ReactRouterDOM.useHistory;
 const useParams = ReactRouterDOM.useParams;
-const {Container, Badge, Button, Card, Col, Form, Modal, Navbar, Row, Spinner, Tabs, Tab} = ReactBootstrap;
+const {Container, Badge, Button, Card, Carousel, Col, Form, Modal, Navbar, Row, Spinner, Tabs, Tab} = ReactBootstrap;
 
 // Removed CardDeck
 
@@ -97,13 +97,25 @@ const Footer = (prop) => {
         <Col className="align-self-center">
           About BiblioTech:
           <li>
-            <Link to={'/about'} className="footer-link">Learn about BiblioTech</Link>
+            <Link to={'/about'} className="footer-link" onClick={() => {
+              prop.setTabKey('about')
+              }}>
+              Learn about BiblioTech
+            </Link>
           </li>
           <li>
-            <Link to={'/about/search'} className="footer-link">Search methodologies</Link>
+            <Link to={'/about'} className="footer-link" onClick={() => {
+              prop.setTabKey('data')
+              }}>
+              Data &amp; Seeding Process
+            </Link>          
           </li>
           <li>
-            <Link to={'/about/data'} className="footer-link">Data &amp; Seeding Process</Link>          
+            <Link to={'/about'} className="footer-link" onClick={() => {
+              prop.setTabKey('search')
+              }}>
+              Search methodologies
+            </Link>
           </li>
         </Col>
         <Col>
@@ -131,6 +143,7 @@ const App = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [bookResponse, setBookResponse] = React.useState(null);
   const [displaySearchBar, setDisplaySearchBar] = React.useState(true);
+  const [tabKey, setTabKey] = React.useState('about')
 
   if (userId === null && document.cookie != ""){
     // check if there is a user_id cookie
@@ -239,21 +252,27 @@ const App = () => {
                 history={history}
               />
             </Route>
-            <Route path='/about/data'>
-              <AboutData />
+            {/* <Route path='/about/data'>
+              <About />
             </Route>
             <Route path='/about/search'>
               <AboutSearch />
-            </Route>
+            </Route> */}
             <Route path='/about'>
-              <About />
+              <About 
+                tabKey={tabKey}
+                setTabKey={setTabKey}
+              />
             </Route>
             <Route path="/createUser">
               <DisplayCreateUser />
             </Route>
           </Switch>
         </Container>
-        <Footer/>  
+        <Footer
+          tabKey={tabKey}
+          setTabKey={setTabKey}
+        />  
     </Router>
   )
 };
