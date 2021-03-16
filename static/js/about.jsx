@@ -7,18 +7,7 @@ const About = (prop) => {
       onSelect={(k) => prop.setTabKey(k)}
     >
       <Tab eventKey="about" title="About">
-        <div>
-          BiblioTech is a single page web application (SPWA) built over the course of 4 weeks as part of the Hackbright Academy program.
-          <div>
-            BiblioTech was built using the following technologies:
-            <li>
-              Python3, including flask, sqlalchemy
-            </li>
-            <li>
-              Javascript, react &amp; jsx
-            </li>
-          </div>
-        </div>
+        <AboutBasic/>
       </Tab>
       <Tab eventKey="tech" title="Tech Stack">
         <AboutTech/>
@@ -36,11 +25,26 @@ const About = (prop) => {
   )
 }
 
+const AboutBasic = () => {
+  return (
+    <div>
+      BiblioTech is a single page web application (SPWA) built over the course of 4 weeks as part of the Hackbright Academy program.
+      <div>
+      BiblioTech allows users to search, rate, and track books as well as get book recommendations. Initially motivated by a desire to build a digital catalog of Elizabeth's physical books, BiblioTech has evolved to provide enhanced search functionality and a recommendation engine. Appropriate seed data for the recommendation algorithm was parsed out of an available subset of Amazon Reviews using an iterable, repeatable process developed using command line scripting and python. In future iterations, Elizabeth hopes to incorporate additional fuzzy search functionality and explore additional recommendation options in future iterations.
+      </div>
+    </div>
+  )
+}
+
 const AboutTech = () => {
   return(
     <Row>
-      <Col>
-        TEsting
+      <Col md={{span:6, offset:3}}>
+      <img 
+        className="d-block w-100"
+        src="/static/img/SystemDiagram.png"
+        alt="DataModel"
+      />
       </Col>
     </Row>
   )
@@ -92,9 +96,9 @@ const AboutData = () => {
           <Row>
             <Col md={{span: 8, offset:2}}>
               <img 
-                className="d-block w-1"
+                className="d-block w-100"
                 src={dataModelToDisplay}
-                alt="InitialDataModel"
+                alt="DataModel"
                 />
             </Col>
           </Row>
