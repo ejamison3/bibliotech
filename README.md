@@ -1,12 +1,14 @@
 # BiblioTech
 
 ### Table of Contents
-  [About BiblioTech](#about)  
-  [How to Install](#install)
-  [Data](#data)
-  [Search Functionality](#search)
-  [Recommendations](#recommend)
-  [Resources](#resources)
+  [About BiblioTech](#about)    
+    [Tech Stack](#tech)  
+    [Why](#why)  
+  [How to Install](#install)  
+  [Data](#data)  
+  [Search Functionality](#search)  
+  [Recommendations](#recommend)  
+  [Resources](#resources)  
 
 ## <a name="about"></a>About BiblioTech
 [Tech Stack](#tech)

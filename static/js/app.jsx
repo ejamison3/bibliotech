@@ -94,7 +94,7 @@ const Footer = (prop) => {
         </Col>
       </Row>
       <Row className="justify-content-around">
-        <Col className="align-self-center">
+        <Col className="align-self-center" md={4}>
           About BiblioTech:
           <li>
             <Link to={'/about'} className="footer-link" onClick={() => {
@@ -102,6 +102,13 @@ const Footer = (prop) => {
               }}>
               Learn about BiblioTech
             </Link>
+          </li>
+          <li>
+            <Link to={'/about'} className="footer-link" onClick={() => {
+              prop.setTabKey('tech')
+              }}>
+              Tech Used
+            </Link>          
           </li>
           <li>
             <Link to={'/about'} className="footer-link" onClick={() => {
@@ -117,8 +124,15 @@ const Footer = (prop) => {
               Search methodologies
             </Link>
           </li>
+          <li>
+            <Link to={'/about'} className="footer-link" onClick={() => {
+              prop.setTabKey('recommend')
+              }}>
+              Recommendation
+            </Link>
+          </li>
         </Col>
-        <Col>
+        <Col md={4}>
           About Elizabeth:
           <li>
             <a href="https://github.com/ejamison3" target="_blank">Github</a>
@@ -129,7 +143,9 @@ const Footer = (prop) => {
         </Col>
       </Row>
       <Row>
-        <p>Created by: Elizabeth M Jamison</p>
+        <Col md={{span: 4, offset: 4}}>
+          Created by: Elizabeth M Jamison
+        </Col>
       </Row>
     </Container>
   )

@@ -196,6 +196,46 @@ select {
    font-size: small;
 }
 
+.button-data-beige {
+  background-image: linear-gradient(to bottom, var(--white-color), var(--light-contrast));
+  /* background-color: var(--accent-color); */
+  border: 1px solid var(--dark-contrast);
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 5px;
+  font-size: small;
+}
+
+.button-data-green {
+  background-image: linear-gradient(to bottom, var(--white-color), var(--med-contrast));
+  /* background-color: var(--accent-color); */
+  border: 1px solid var(--dark-contrast);
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 5px;
+  font-size: small;
+}
+
+.button-data-pink {
+  background-image: linear-gradient(to bottom, var(--white-color), var(--light-contrast));
+  /* background-color: var(--accent-color); */
+  border: 1px solid var(--dark-contrast);
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 5px;
+  font-size: small;
+}
+
+.button-data-yellow {
+  background-image: linear-gradient(to bottom, var(--white-color), var(--accent-color));
+  /* background-color: var(--accent-color); */
+  border: 1px solid var(--dark-contrast);
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 5px;
+  font-size: small;
+}
+
 .button-rating-add {
   background-image: linear-gradient(to top, var(--accent-color), var(--white-color));
   border: 1px solid var(--dark-contrast);
@@ -310,7 +350,7 @@ img.logo:hover {
 
 /* This forces footer to bottom */
 .main-container {
-  min-height: 65vh;
+  min-height: 60vh;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
@@ -375,6 +415,10 @@ textarea {
   /* max-width: 150px; */
   display: flex;
   justify-self: center;
+}
+
+.tab {
+  margin-left: 5rem;
 }
 
 .tag-button{

@@ -20,76 +20,107 @@ const About = (prop) => {
           </div>
         </div>
       </Tab>
+      <Tab eventKey="tech" title="Tech Stack">
+        <AboutTech/>
+      </Tab>
       <Tab eventKey="data" title="Data">
         <AboutData/>
       </Tab>
       <Tab eventKey="search" title="Search">
         <AboutSearch/>
       </Tab>
+      <Tab eventKey="recommend" title="Recommendation">
+        <AboutRecommend/>
+      </Tab>
     </Tabs>
   )
 }
 
+const AboutTech = () => {
+  return(
+    <Row>
+      <Col>
+        TEsting
+      </Col>
+    </Row>
+  )
+}
+
 const AboutData = () => {
-  const dataModelToDisplay = 0;
+  const [dataModelNum, setDataModelNum] = React.useState(0);
+  // const dataModelNum = 0;
+  const dataModelToDisplay = "/static/img/DataModel" + dataModelNum + ".png";
 
   return (
     <div>
       <div>
-        <b>Data</b>:
-        The data displayed and used in this project comes from two sources:
-        <li>  
-          A "small" subset of Amazon reviews of Books from 2018. The dataset can be found
-          <a href="https://nijianmo.github.io/amazon/index.html" target="_blank">here.</a> The paper cited below details the methodologies used to compile this data. (The paper can also be found 
-          <a href="http://cseweb.ucsd.edu/~jmcauley/pdfs/emnlp19a.pdf" target="_blank"> here</a>
-          )
-          <div>
-            Citation:
-            <div>
-              <b>
-                Justifying recommendations using distantly-labeled reviews and fined-grained aspects
-              </b>
-                <br/>
-                Jianmo Ni, Jiacheng Li, Julian McAuley
-              <p>
-                <i>Empirical Methods in Natural Language Processing (EMNLP), 2019</i>
-              </p>
+        <div>
+          <Row>
+            <Col>
+              <button className="button-data-beige" onClick={() => {
+                  setDataModelNum(0)
+                }}
+              >
+                Basic Data Model
+              </button>
+            </Col>
+            <Col>
+              <button className="button-data-green" onClick={() => {
+                    setDataModelNum(1)
+                  }}
+                >
+                Add Google Books API Data
+              </button>
+            </Col>
+            <Col>
+              <button className="button-data-yellow" onClick={() => {
+                    setDataModelNum(2)
+                  }}
+                >
+                Add Amazon Review Data
+              </button>
+            </Col>
+            <Col>
+              <button className="button-data-pink" onClick={() => {
+                    setDataModelNum(3)
+                  }}
+                >
+                Add Amazon Review Data
+              </button>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={{span: 8, offset:2}}>
+              <img 
+                className="d-block w-1"
+                src={dataModelToDisplay}
+                alt="InitialDataModel"
+                />
+            </Col>
+          </Row>
+        </div>
+        <div>
+          <b>Data displayed and used in this project comes from two sources:</b>
+          <li>  
+            A "small" subset of Amazon reviews of Books from 2018. The dataset can be found&nbsp;
+            <a href="https://nijianmo.github.io/amazon/index.html" target="_blank">here.</a> The paper cited below details the methodologies used to compile this data. (The paper can also be found 
+            <a href="http://cseweb.ucsd.edu/~jmcauley/pdfs/emnlp19a.pdf" target="_blank"> here</a>
+            )
+            <div className="tab">
+                <b>
+                  Justifying recommendations using distantly-labeled reviews and fined-grained aspects
+                </b>
+                  <br/>
+                  Jianmo Ni, Jiacheng Li, Julian McAuley
+                <p>
+                  <i>Empirical Methods in Natural Language Processing (EMNLP), 2019</i>
+                </p>
             </div>
-          </div>
-        </li>
-        <li>
-          The Google Books API was utilized to fill in book information (e.g., title, authors, category, description) by querying by ISBN from the review data.
-        </li>
-        <Carousel>
-          <Carousel.Item>
-            <img 
-              className="d-block w-100"
-              src="/static/img/DataModel.png"
-              alt="InitialDataModel"
-            />
-          </Carousel.Item>
-          <Carousel.Item>
-            <img 
-              className="d-block w-100"
-              src="/static/img/GoogleDataModel.png"
-              alt="InitialDataModel"
-            />
-          </Carousel.Item>
-          <Carousel.Item>
-            <img 
-              className="d-block w-100"
-              src="/static/img/AmazonDataModel.png"
-              alt="InitialDataModel"
-            />
-          </Carousel.Item>
-          <Carousel.Item>
-            <img 
-              className="d-block w-100"
-              src="/static/img/AvgRatingDataModel.png"
-              alt="InitialDataModel"
-            />
-          </Carousel.Item>
-        </Carousel>
+          </li>
+          <li>
+            The Google Books API was utilized to fill in book information (e.g., title, authors, category, description) by querying by ISBN from the review data.
+          </li>
+        </div>
       </div>
     </div>
   )
@@ -130,5 +161,15 @@ const AboutSearch = () => {
         </li>
       </div>
     </div>
+  )
+}
+
+const AboutRecommend = () => {
+  return(
+    <Row>
+      <Col>
+        Recommendations
+      </Col>
+    </Row>
   )
 }
