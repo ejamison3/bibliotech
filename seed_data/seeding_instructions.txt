@@ -18,6 +18,7 @@ HOW TO SEED DATABASE
   - function in seed_db.py file
 2. Load reviews_names.json using create_user_rating('seed_data/reviews_names.json', 'rating_errors')
   - function in seed_db.py file
+3. Create and populate average ratings: create_average_ratings()
 
 HOW TO HANDLE ERRORS 
 There are two error files: 

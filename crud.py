@@ -2,14 +2,7 @@
 
 May split this into multiple files in future'''
 
-from model import *
-
-# CURRENT PROBLEMS
-# 1. No way to set has_read attribute in users_books table
-# 2. Relationship between associations tables has problems. 
-#    Needs to be fixed in model.py file but need to talk to Andrew
-
-# categories and tags records are created in db_setup.py file. This is a one time creation. 
+from model import * 
 
 ################################### CREATE FUNCTIONS ###########################
 
@@ -403,7 +396,6 @@ def update_book_user_review(book_id, user_id, review):
         return "failure"
 
 
-
 #######################################DELETE#######################################
 
 def remove_users_books_relationship(book_record, user_record):
@@ -411,6 +403,7 @@ def remove_users_books_relationship(book_record, user_record):
 
     book_record.users.remove(user_record)
     db.session.commit()
+
 
 def remove_users_books_rating(book_id, user_id):
     """Removes rating from ratings table and relationship"""
