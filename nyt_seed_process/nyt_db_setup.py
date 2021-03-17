@@ -61,5 +61,4 @@ if __name__ == "__main__":
 
     db.create_all()
 
-    create_categories()
-    create_tags()
+    # create_tags()

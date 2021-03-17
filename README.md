@@ -5,7 +5,6 @@
     [Tech Stack](#tech)  
     [Why](#why)  
   [How to Install](#install)  
-  [Data](#data)  
   [Search Functionality](#search)  
   [Recommendations](#recommend)  
   [Future Work](#future)
@@ -66,29 +65,21 @@ For your convenience, the seed_data folder also contains a text file, 'seeding_i
 ### New York Best Sellers List Data 
 NYT book data and the functions needed to populate the database with that data, can be found in the folder nyt_seed_process. **Note, the NYT Book data does NOT contain review data or users**
 
-The file nyt_db_setup.py should be run interactively and the create_initial_tags function called in order to set up the database and seed the tags folder with the tags used in the NYT data. (Alternatively, the seeding functions can be rewritten to create the tag record as needed similar to the google seeding functions)
-
-## <a name="data"></a> Data
-[Amazon Reviews](#reviewData)
-[Google Books](#googleData)
-[New York Times Data](#nytData)
-
-Stuff about seeding data
-
-### <a name="reviewData"></a>Amazon Review Data
-
-
-### <a name="googleData"></a>Google Books Data
-
-### <a name="nytData"></a>New York Times Bestseller List Data
+1. The file nyt_db_setup.py should be run interactively and the create_initial_tags function called in order to set up the database and seed the tags folder with the tags used in the NYT data. (Alternatively, the seeding functions can be rewritten to create the tag record as needed similar to the google seeding functions)
+2. The file nyt_seed_db.py should be run interactively and the seed_with_all_lists('/seed_data'). This will load all pre-created NYT seed data files which are contained in nyt_seed_process/seed_data
 
 ## <a name="search"></a> Search Functionality
+BiblioTech offers both a basic search and an advanced search functionality
 
 ## <a name="recommend"></a> Recommendations
+BiblioTech offers the user a book recommendation based on what other users, who have rated at least one book in common with the current user, have rated. 
 
 ## <a name=future></a> Future Work
 The following improvements and enhancements may be explored in the future:
 - Improve seed dataset so that there is book data for ALL included reviews
 
 ## <a name="resources"></a> Resources
-Amazon review data comes from this data  set:
+Amazon review data comes from this data set:
+- **Justifying recommendations using distantly-labeled reviews and fined-grained aspects** Jianmo Ni, Jiacheng Li, Julian McAuley  *Empirical Methods in Natural Language Processing* (EMNLP), 2019
+
+This dataset can be found [here](https://nijianmo.github.io/amazon/index.html)
