@@ -91,6 +91,11 @@ The basic search functionality allows the user to search by the following criter
 ## <a name="recommend"></a> Recommendations
 BiblioTech offers the user a book recommendation based on what other users, who have rated at least one book in common with the current user, have rated. 
 
+To be more explicit, the recommendation algorithm works as following:
+1. Get all users who have rated at least one book in common with the current user
+2. Find all books the users found in step 1 have rated and which the current user has NOT rated.
+3. Return a random book from the books found in step 2.
+
 ## <a name=future></a> Future Work
 The following improvements and enhancements may be explored in the future:
 - Improve seed dataset so that there is book data for ALL included reviews
