@@ -11,7 +11,7 @@
   [Resources](#resources)  
 
 ## <a name="about"></a>About BiblioTech
-[Tech Stack](#tech)
+[Tech Stack](#tech)   
 [Why](#why)  
 BiblioTech is a single page web app (SPWA) that allows users to search, rate, and track books as well as get book recommendations.  
 
@@ -24,6 +24,8 @@ The front end has been stylized using a combination of vanilla CSS and React-Boo
 Initially motivated by a desire to build a digital catalog of my physical books, BiblioTech has evolved to allow me to play with some of my favorite "problems" - searches and recommendations. I have begun to explored these "problems" by  providing enhanced search functionality and a recommendation engine. 
 
 ## <a name="install"></a> How to Install
+[Google & Amazon Seed Data](#googleAmazon)    
+[New York Times Seed Data](#nyt)
 Set-up an environment and install dependencies (see requirements.txt)
 
 BiblioTech requires a populated postgreSQL database to work as intended. There are two options for datasets which can be used as your seed data:
@@ -36,7 +38,7 @@ It is also possible to populate with your own seed data. The methodology used to
 
 Once the database has been setup and seed data populated (see below sections for detailed steps for each dataset), the Flask web server can be started by running the server.py file. This runs the server locally on host 0.0.0.0 - if this is not the desired IP address, it can be changed at the end of the server.py file. 
 
-### Google Books & Amazon Review Data
+### <a name="googleAmazon"></a>Google Books & Amazon Review Data
 Files ready to be loaded into the database have been created and can be found in the 'seed_data' folder. 
 - Google Books Data files:
   - book_seed_file_part1.json
@@ -62,7 +64,7 @@ If you simply want to load the Google Books & Amazon Data and create the databas
 
 For your convenience, the seed_data folder also contains a text file, 'seeding_instructions.txt' with some additional information such as expected number of records and how to handle errors. 
 
-### New York Best Sellers List Data 
+### <a name="nyt"></a>New York Best Sellers List Data 
 NYT book data and the functions needed to populate the database with that data, can be found in the folder nyt_seed_process.  
   **Note, the NYT Book data does NOT contain review data or users**
 
