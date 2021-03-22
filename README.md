@@ -25,7 +25,7 @@ Initially motivated by a desire to build a digital catalog of my physical books,
 
 ## <a name="install"></a> How to Install
 [Google & Amazon Seed Data](#googleAmazon)    
-[New York Times Seed Data](#nyt)
+[New York Times Seed Data](#nyt)    
 Set-up an environment and install dependencies (see requirements.txt)
 
 BiblioTech requires a populated postgreSQL database to work as intended. There are two options for datasets which can be used as your seed data:
